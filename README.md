@@ -15,12 +15,16 @@ Under utveckling, oktober 2026. Experiment utan supportlöfte. Buggrapporter är
 ## Innehåll
 
 ```
-app/                   webbappen (Vite + React), kommer
+PLAN.md                faser, beslut och öppna frågor
+CLAUDE.md              instruktioner för Claude Code
+design/                designprogrammet: token, typsnitt, logotyp och ikoner
+docs/                  UX, arkitektur, svensk text, exempeldata och resultat från fas 0
 app/public/data/       exempeldata från svenska öppna källor
-scripts/               export, verifiering och datahämtning
-docs/                  plan och resultat
+scripts/               export, verifiering, datahämtning och token
 webtest/               latensmätning i onnxruntime-web
 ```
+
+Själva webbappen byggs i fas 1, se `PLAN.md`.
 
 ## Exempeldata
 

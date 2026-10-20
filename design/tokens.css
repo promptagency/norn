@@ -1,0 +1,104 @@
+/* Norn design tokens. Generated from design/tokens.json (the Norn design system).
+   Do not edit values here by hand. Change tokens.json first, then regenerate with scripts/build_tokens_css.py.
+   Rules for how to use each token are in DESIGN.md. */
+
+/* Light theme ("positiv"): linen ground, indigo brand. */
+:root,
+[data-theme="ljus"] {
+  --grund: #EFE8DA; /* page background */
+  --yta: #F8F4EA; /* raised surface: cards, fields, dialogs, the forecast card */
+  --yta-sankt: #E5DCC8; /* sunken surface: footer, file drop zone, disabled fields */
+  --text: #1B1F33; /* body text and headings */
+  --text-dampad: #545664; /* secondary text, help text, axis labels, sources */
+  --indigo: #26325F; /* brand colour: logo, primary button fill, links, active step */
+  --pa-indigo: #EFE8DA; /* text on an --indigo fill */
+  --kant: #D9D0BB; /* decorative dividers and card borders */
+  --kant-kontroll: #7D786B; /* borders on fields and controls (3:1) */
+  --fokus: #26325F; /* focus ring, 2px solid, 2px offset */
+  --krapp: #A8432B; /* accent for the present: the now-line, at most one more mark per view */
+  --fel: #9A2E1F; /* error text, always with words */
+  --prognos-historik: #26325F; /* chart: the past, solid 2.5px */
+  --prognos-median: #26325F; /* chart: most likely path, same colour as history, dotted 1/6 */
+  --prognos-band-90: #C9CEE3; /* chart: nine times out of ten, drawn first */
+  --prognos-band-50: #9AA3CC; /* chart: half of the time, drawn on top of band-90 */
+  --prognos-nu: var(--krapp); /* chart: vertical now-line, 2px */
+  --prognos-utfall: #6B6A72; /* chart: what actually happened in the backtest, solid 2px */
+}
+
+/* Dark theme ("negativ"): night indigo ground, linen brand. */
+[data-theme="mork"] {
+  --grund: #1D2447; /* page background */
+  --yta: #252D55; /* raised surface: cards, fields, dialogs, the forecast card */
+  --yta-sankt: #171D3A; /* sunken surface: footer, file drop zone, disabled fields */
+  --text: #EFE8DA; /* body text and headings */
+  --text-dampad: #B7BBD1; /* secondary text, help text, axis labels, sources */
+  --indigo: #EFE8DA; /* brand colour: logo, primary button fill, links, active step */
+  --pa-indigo: #1D2447; /* text on an --indigo fill */
+  --kant: #39427A; /* decorative dividers and card borders */
+  --kant-kontroll: #8A92C4; /* borders on fields and controls (3:1) */
+  --fokus: #EFE8DA; /* focus ring, 2px solid, 2px offset */
+  --krapp: #E8896F; /* accent for the present: the now-line, at most one more mark per view */
+  --fel: #FFB4A2; /* error text, always with words */
+  --prognos-historik: #EFE8DA; /* chart: the past, solid 2.5px */
+  --prognos-median: #EFE8DA; /* chart: most likely path, same colour as history, dotted 1/6 */
+  --prognos-band-90: #323C74; /* chart: nine times out of ten, drawn first */
+  --prognos-band-50: #4E5A9C; /* chart: half of the time, drawn on top of band-90 */
+  --prognos-nu: var(--krapp); /* chart: vertical now-line, 2px */
+  --prognos-utfall: #A3A7C2; /* chart: what actually happened in the backtest, solid 2px */
+}
+
+/* Follow the operating system unless the app sets data-theme explicitly. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="ljus"]) {
+    --grund: #1D2447;
+    --yta: #252D55;
+    --yta-sankt: #171D3A;
+    --text: #EFE8DA;
+    --text-dampad: #B7BBD1;
+    --indigo: #EFE8DA;
+    --pa-indigo: #1D2447;
+    --kant: #39427A;
+    --kant-kontroll: #8A92C4;
+    --fokus: #EFE8DA;
+    --krapp: #E8896F;
+    --fel: #FFB4A2;
+    --prognos-historik: #EFE8DA;
+    --prognos-median: #EFE8DA;
+    --prognos-band-90: #323C74;
+    --prognos-band-50: #4E5A9C;
+    --prognos-nu: var(--krapp);
+    --prognos-utfall: #A3A7C2;
+  }
+}
+
+:root {
+  --font-display: "Bricolage Grotesque", Figtree, system-ui, sans-serif;
+  --font-text: Figtree, system-ui, sans-serif;
+  --space-1: 4px; /* Minsta avstånd, mellan ikon och text. */
+  --space-2: 8px; /* Inom en kontroll, mellan etikett och fält. */
+  --space-3: 12px; /* Vertikal luft i knappar och fält. */
+  --space-4: 16px; /* Standardavstånd mellan närstående element. */
+  --space-6: 24px; /* Luft inuti kort och paneler. */
+  --space-8: 32px; /* Mellan grupper av innehåll. */
+  --space-12: 48px; /* Mellan avsnitt på en sida. */
+  --space-16: 64px; /* Sidans yttermarginal på stora skärmar och luft kring huvudrubriken. */
+  --radius-sm: 6px; /* Små etiketter och förklaringar i grafen. */
+  --radius-md: 10px; /* Knappar och fält. */
+  --radius-lg: 16px; /* Kort, paneler, prognoskortet och dialoger. */
+  --radius-full: 999px; /* Piller, stegmarkörer och runda märken. */
+}
+
+/* Type styles. Use the classes, or copy the declarations into a component. */
+.rubrik-xl { font-family: var(--font-display); font-size: 56px; line-height: 60px; font-weight: 700; letter-spacing: -0.02em; font-variation-settings: "opsz" 96; } /* Sidans huvudrubrik. En per sida. */
+.rubrik-l { font-family: var(--font-display); font-size: 40px; line-height: 46px; font-weight: 700; letter-spacing: -0.02em; font-variation-settings: "opsz" 96; } /* Rubrik för varje steg, Urd, Verdandi och Skuld. */
+.rubrik-m { font-family: var(--font-display); font-size: 28px; line-height: 34px; font-weight: 700; letter-spacing: -0.01em; font-variation-settings: "opsz" 48; } /* Underrubriker och rubriker i kort. */
+.rubrik-s { font-family: var(--font-display); font-size: 20px; line-height: 26px; font-weight: 600; font-variation-settings: "opsz" 24; } /* Små rubriker i paneler och på exempelkort. */
+.svar { font-family: var(--font-text); font-size: 22px; line-height: 32px; font-weight: 400; } /* Svaret i en mening ovanför grafen. Beloppet sätts i 600. */
+.ingress { font-family: var(--font-text); font-size: 20px; line-height: 30px; font-weight: 400; } /* Inledande stycke under en rubrik. */
+.brod { font-family: var(--font-text); font-size: 16px; line-height: 26px; font-weight: 400; } /* Löpande text. */
+.brod-stark { font-family: var(--font-text); font-size: 16px; line-height: 26px; font-weight: 600; } /* Betoning i löpande text och text på knappar. */
+.liten { font-family: var(--font-text); font-size: 14px; line-height: 20px; font-weight: 400; } /* Hjälptext, källor, axeletiketter och sidfot. */
+.etikett { font-family: var(--font-text); font-size: 12px; line-height: 16px; font-weight: 600; letter-spacing: 0.04em; } /* Fältetiketter, förklaringar i grafen och små överrubriker. */
+
+/* Numbers that are compared (amounts, dates, axis labels) use tabular figures. */
+.siffror { font-variant-numeric: tabular-nums; }
