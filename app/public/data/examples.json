@@ -1,0 +1,43 @@
+{
+  "built": "2026-10-20",
+  "examples": [
+    {
+      "id": "detaljhandel",
+      "title": "Detaljhandel per bransch",
+      "frequency": "månad",
+      "file": "scb_detaljhandel.csv",
+      "time": "månad",
+      "targets": {
+        "leksaksaffärer": "Julhandeln syns som en topp i december, tre gånger en vanlig månad.",
+        "blomsterhandel": "Mors dag och studenten ger en topp i maj, januari är botten.",
+        "sportaffärer": "Två säsonger, vår och jul, plus en långsam trend.",
+        "e-handel": "Stark trend sedan 90-talet med julhandel ovanpå."
+      },
+      "default_target": "leksaksaffärer",
+      "unit": "index, 2021 = 100",
+      "description": "Omsättning i svensk detaljhandel sedan 1991, löpande priser. Välj bransch.",
+      "source": "SCB, Detaljhandelns omsättning efter näringsgren (DetOms07N)",
+      "source_url": "https://www.statistikdatabasen.scb.se/pxweb/sv/ssd/START__HA__HA0101__HA0101B/DetOms07N/",
+      "license": "CC0"
+    },
+    {
+      "id": "elpris",
+      "title": "Elpris per timme, elområde 3",
+      "frequency": "timme",
+      "file": "elpris_se3_temp_goteborg.csv",
+      "time": "tid",
+      "targets": {
+        "elpris_kr_per_kwh": "Dygnsrytm, vinter mot sommar, och ibland negativa priser."
+      },
+      "default_target": "elpris_kr_per_kwh",
+      "covariates": {
+        "temperatur_goteborg": "Temperaturen vet man ofta i förväg via väderprognosen."
+      },
+      "unit": "kr per kWh",
+      "description": "Spotpriset på el i SE3 sedan november 2022, med temperaturen i Göteborg som hjälpserie.",
+      "source": "elprisetjustnu.se (Nord Pool via entsoe) och SMHI station 71420 Göteborg A",
+      "source_url": "https://www.elprisetjustnu.se/elpris-api",
+      "license": "Elpris fritt utan garanti, temperatur CC BY 4.0 SMHI"
+    }
+  ]
+}
