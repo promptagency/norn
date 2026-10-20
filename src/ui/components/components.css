@@ -1,0 +1,309 @@
+/* Norn components. Every value comes from design/tokens.css.
+   Never write a hex value, an rgb() value or a font name here.
+   Class names are prefixed n- so they never collide with the host page. */
+
+/* Only for screen readers. */
+.n-dold { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+/* Knapp ---------------------------------------------------------------- */
+.n-knapp {
+  font: inherit;
+  font-family: var(--font-text);
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 600;
+  min-height: 48px;
+  box-sizing: border-box;
+  padding: var(--space-3) 28px;
+  border-radius: var(--radius-md);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  text-decoration: none;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+.n-knapp:focus-visible,
+.n-valknapp:focus-visible,
+.n-steg__lank:focus-visible,
+.n-exempelkort:focus-visible,
+.n-fraga__rubrik:focus-visible,
+.n-lank:focus-visible,
+.n-sidhuvud__hem:focus-visible {
+  outline: 2px solid var(--fokus);
+  outline-offset: 2px;
+}
+.n-knapp--primar { background: var(--indigo); color: var(--pa-indigo); }
+.n-knapp--primar:hover { filter: brightness(1.12); }
+.n-knapp--sekundar {
+  background: var(--yta);
+  color: var(--text);
+  border-color: var(--kant-kontroll);
+  min-height: 44px;
+  padding: 10px 18px;
+  font-size: 15px;
+}
+.n-knapp--sekundar:hover { background: var(--grund); }
+.n-knapp--lank,
+.n-lank {
+  background: none;
+  border: 0;
+  min-height: 44px;
+  padding: 0 var(--space-1);
+  color: var(--indigo);
+  font-weight: 400;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.n-knapp--lank:hover,
+.n-lank:hover { color: var(--text); }
+.n-knapp:disabled { opacity: 0.5; cursor: not-allowed; filter: none; }
+
+/* Valknapp och Valgrupp ------------------------------------------------ */
+.n-valgrupp { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.n-valknapp {
+  font: inherit;
+  font-family: var(--font-text);
+  font-size: 15px;
+  line-height: 22px;
+  font-weight: 600;
+  min-height: 44px;
+  box-sizing: border-box;
+  padding: 10px 18px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--kant-kontroll);
+  background: var(--yta);
+  color: var(--text);
+  cursor: pointer;
+}
+.n-valknapp:hover { border-color: var(--indigo); }
+.n-valknapp[aria-pressed="true"] {
+  border: 2px solid var(--indigo);
+  padding: 9px 17px;
+  background: var(--indigo);
+  color: var(--pa-indigo);
+}
+
+/* Steg ------------------------------------------------------------------ */
+.n-steg__lista { margin: 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.n-steg__punkt,
+.n-steg__lank {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: var(--space-2) var(--space-4) var(--space-2) var(--space-2);
+  border-radius: var(--radius-full);
+  border: 1px solid var(--kant);
+  color: var(--text-dampad);
+  text-decoration: none;
+}
+.n-steg__lank { border-color: var(--kant-kontroll); color: var(--text); }
+.n-steg__lank:hover { border-color: var(--indigo); }
+.n-steg__punkt[aria-current="step"] { background: var(--indigo); border-color: var(--indigo); color: var(--pa-indigo); }
+.n-steg__markor {
+  width: 28px;
+  height: 28px;
+  flex: none;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--kant-kontroll);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 600;
+  box-sizing: border-box;
+}
+.n-steg__punkt[aria-current="step"] .n-steg__markor { background: var(--pa-indigo); color: var(--indigo); border: 0; }
+.n-steg__lank .n-steg__markor { background: var(--prognos-band-90); color: var(--indigo); border: 0; }
+.n-steg__text { display: flex; flex-direction: column; }
+.n-steg__namn { font-size: 15px; line-height: 18px; font-weight: 600; }
+.n-steg__tips { font-size: 12px; line-height: 16px; }
+.n-steg__lank .n-steg__tips { color: var(--text-dampad); }
+
+/* Släppyta -------------------------------------------------------------- */
+.n-slappyta {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  min-height: 200px;
+  box-sizing: border-box;
+  padding: var(--space-8) var(--space-6);
+  border-radius: var(--radius-lg);
+  background: var(--yta-sankt);
+  border: 2px dashed var(--kant-kontroll);
+  text-align: center;
+  cursor: pointer;
+  color: var(--text);
+}
+.n-slappyta:focus-within { outline: 2px solid var(--fokus); outline-offset: 2px; }
+.n-slappyta--over { border-style: solid; border-color: var(--indigo); background: var(--yta); }
+.n-slappyta--fel { border-color: var(--fel); }
+.n-slappyta__ikon { color: var(--indigo); }
+.n-slappyta__rubrik { font-size: 18px; line-height: 26px; font-weight: 600; }
+.n-slappyta__tips { font-size: 14px; line-height: 20px; color: var(--text-dampad); max-width: 520px; }
+.n-slappyta__fel { font-size: 15px; line-height: 22px; color: var(--fel); font-weight: 600; max-width: 520px; }
+.n-slappyta__input { position: absolute; width: 1px; height: 1px; opacity: 0; overflow: hidden; }
+
+/* Exempelkort ----------------------------------------------------------- */
+.n-exempelkort {
+  font: inherit;
+  text-align: left;
+  text-decoration: none;
+  color: var(--text);
+  background: var(--yta);
+  border: 1px solid var(--kant);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+.n-exempelkort:hover { border-color: var(--indigo); }
+.n-exempelkort__overrad { font-size: 12px; line-height: 16px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--text-dampad); }
+.n-exempelkort__titel { font-family: var(--font-display); font-size: 20px; line-height: 26px; font-weight: 600; font-variation-settings: "opsz" 24; }
+.n-exempelkort__text { font-size: 15px; line-height: 22px; }
+.n-exempelkort__kalla { margin-top: auto; font-size: 14px; line-height: 20px; color: var(--text-dampad); }
+
+/* Betyg ----------------------------------------------------------------- */
+.n-betyg {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  background: var(--yta);
+  border: 2px solid var(--indigo);
+  color: var(--indigo);
+  font-family: var(--font-text);
+  font-size: 16px;
+  line-height: 22px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.n-betyg__fylld { fill: var(--indigo); }
+.n-betyg__tom { fill: none; stroke: var(--indigo); stroke-width: 1.6; }
+
+/* Svar ------------------------------------------------------------------ */
+.n-svar { margin: 0; font-family: var(--font-text); font-size: 22px; line-height: 32px; font-weight: 400; color: var(--text); }
+.n-svar strong, .n-svar b { font-weight: 600; font-variant-numeric: tabular-nums; }
+
+/* Kort ------------------------------------------------------------------ */
+.n-kort {
+  margin: 0;
+  background: var(--yta);
+  border: 1px solid var(--kant);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  color: var(--text);
+}
+
+/* Prognosgraf ----------------------------------------------------------- */
+.n-graf { width: 100%; height: auto; display: block; font-family: var(--font-text); overflow: visible; }
+.n-graf__etikett { fill: var(--text-dampad); font-size: 13px; font-variant-numeric: tabular-nums; }
+.n-graf__nu-text { fill: var(--krapp); font-size: 13px; font-weight: 600; }
+.n-graf__baslinje { stroke: var(--kant); stroke-width: 1; }
+.n-graf__band90 { fill: var(--prognos-band-90); }
+.n-graf__band50 { fill: var(--prognos-band-50); }
+.n-graf__median { fill: none; stroke: var(--prognos-median); stroke-width: 2.5; stroke-dasharray: 1 6; stroke-linecap: round; }
+.n-graf__utfall { fill: none; stroke: var(--prognos-utfall); stroke-width: 2; stroke-linejoin: round; }
+.n-graf__historik { fill: none; stroke: var(--prognos-historik); stroke-width: 2.5; stroke-linejoin: round; stroke-linecap: round; }
+.n-graf__historik--tonad { opacity: 0.55; }
+.n-graf__nu { stroke: var(--prognos-nu); stroke-width: 2; }
+
+/* Förklaring ------------------------------------------------------------ */
+.n-forklaring { margin: 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 10px 28px; font-size: 14px; line-height: 20px; color: var(--text); }
+.n-forklaring__post { display: flex; align-items: center; gap: var(--space-2); }
+.n-forklaring__band { width: 28px; height: 14px; border-radius: 4px; flex: none; }
+.n-forklaring__band--50 { background: var(--prognos-band-50); }
+.n-forklaring__band--90 { background: var(--prognos-band-90); }
+.n-forklaring__linje { flex: none; }
+
+/* Fråga ----------------------------------------------------------------- */
+.n-fraga { background: var(--yta); border: 1px solid var(--kant); border-radius: var(--radius-lg); padding: var(--space-4) var(--space-6); color: var(--text); }
+.n-fraga__rubrik {
+  cursor: pointer;
+  min-height: 32px;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  list-style: none;
+  font-family: var(--font-display);
+  font-size: 20px;
+  line-height: 28px;
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+}
+.n-fraga__rubrik::-webkit-details-marker { display: none; }
+.n-fraga__pil { flex: none; transition: transform 120ms ease; color: var(--indigo); }
+.n-fraga[open] > .n-fraga__rubrik .n-fraga__pil { transform: rotate(90deg); }
+.n-fraga--liten .n-fraga__rubrik { font-family: var(--font-text); font-size: 16px; line-height: 26px; color: var(--indigo); }
+.n-fraga__innehall { margin-top: var(--space-4); display: flex; flex-direction: column; gap: var(--space-4); font-size: 16px; line-height: 26px; }
+
+/* Säkerhetsval ---------------------------------------------------------- */
+.n-sakerhet { margin: 0; padding: 0; border: 0; display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.n-sakerhet__legend { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.n-sakerhet__val {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  box-sizing: border-box;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--kant-kontroll);
+  background: var(--grund);
+  font-size: 15px;
+  line-height: 22px;
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--text);
+}
+.n-sakerhet__val:has(input:checked) { border: 2px solid var(--indigo); padding: 7px 15px; }
+.n-sakerhet__val:has(input:focus-visible) { outline: 2px solid var(--fokus); outline-offset: 2px; }
+.n-sakerhet__radio { width: 18px; height: 18px; margin: 0; accent-color: var(--indigo); }
+
+/* Nyckeltal ------------------------------------------------------------- */
+.n-nyckeltal { margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--space-4) var(--space-8); font-size: 14px; line-height: 20px; }
+.n-nyckeltal__etikett { color: var(--text-dampad); }
+.n-nyckeltal__varde { margin: var(--space-1) 0 0; font-size: 20px; line-height: 28px; font-weight: 600; font-variant-numeric: tabular-nums; color: var(--text); }
+.n-nyckeltal__varde--text { font-size: 16px; line-height: 24px; font-weight: 400; }
+
+/* Sidhuvud och sidfot --------------------------------------------------- */
+.n-sidhuvud {
+  width: 100%;
+  max-width: 1080px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  padding: var(--space-6) var(--space-6) 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-4) var(--space-8);
+}
+.n-sidhuvud__hem { display: flex; border-radius: var(--radius-sm); }
+.n-sidhuvud__logo { height: 30px; width: auto; display: block; }
+.n-sidhuvud__tagg { font-size: 14px; line-height: 20px; color: var(--text-dampad); }
+.n-sidfot { background: var(--yta-sankt); }
+.n-sidfot__inre {
+  max-width: 1080px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  padding: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--text-dampad);
+}
+.n-sidfot__inre p { margin: 0; }

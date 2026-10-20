@@ -28,7 +28,13 @@ Utkast. Ändras när skärmskisserna är godkända.
 | start.lead | Ladda upp en fil med siffror över tid, så visar Norn vad som väntar. |
 | start.privacy | Inget lämnar din dator. |
 | start.drop | Släpp en fil här, eller välj en fil på datorn |
+| start.drop.hint | CSV eller Excel med en kolumn för tid och en med siffror. Du kan också klistra in direkt från ett kalkylark. |
+| start.drop.over | Släpp filen så läser Norn in den |
 | start.examples | Eller prova med riktiga siffror |
+| header.home | Norn, till start |
+| header.tag | Ett experiment från Prompt Agency |
+| step.label | Steg |
+| step.done | klart |
 | step.urd | Urd |
 | step.verdandi | Verdandi |
 | step.skuld | Skuld |
@@ -45,10 +51,18 @@ Utkast. Ändras när skärmskisserna är godkända.
 | verdandi.grade.poor | Osäker |
 | verdandi.details | Visa detaljer |
 | verdandi.next | Visa vad som kommer |
+| chart.seen | Det Norn fick se |
+| chart.guessed | Det Norn fick gissa på |
+| chart.past | Senaste perioden |
+| chart.now | Nu |
+| legend.history | Det som varit |
+| legend.outcome | Det som faktiskt hände |
+| legend.median | Troligast |
+| legend.median.backtest | Norns troligaste gissning |
+| legend.band50 | Hamnar här i hälften av fallen |
+| legend.band90 | Hamnar här i nio fall av tio |
 | skuld.heading | Det som kommer |
-| skuld.band90 | Hamnar här i nio fall av tio |
-| skuld.band50 | Hamnar här i hälften av fallen |
-| skuld.median | Troligast |
+| skuld.horizon | Hur långt fram |
 | skuld.events | Vet du något om framtiden? |
 | skuld.events.none | Den här händelsen ändrar inte prognosen. Norn ser ingen sådan effekt i din historik. |
 | skuld.certainty | Hur säker vill du vara? |

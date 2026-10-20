@@ -22,6 +22,15 @@ docs/                  UX, arkitektur, svensk text, exempeldata och resultat fr�
 app/public/data/       exempeldata från svenska öppna källor
 scripts/               export, verifiering, datahämtning och token
 webtest/               latensmätning i onnxruntime-web
+src/ui/components/     komponenterna, samma kod som i designsystemet
+src/dev/               komponentgalleri med riktig data
+```
+
+```bash
+npm install
+npm run dev        # komponentgalleriet på http://localhost:5173
+npm test
+npm run build:ds   # bygger designsystemets komponentpaket till dist-ds/
 ```
 
 Själva webbappen byggs i fas 1, se `PLAN.md`.

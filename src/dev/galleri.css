@@ -1,0 +1,8 @@
+/* Layout for the dev gallery only. Not part of the component library. */
+body { margin: 0; background: var(--grund); color: var(--text); font-family: var(--font-text); }
+.g-sida { max-width: 1080px; margin: 0 auto; padding: var(--space-12) var(--space-6); display: flex; flex-direction: column; gap: var(--space-12); }
+.g-avsnitt { display: flex; flex-direction: column; gap: var(--space-4); }
+.g-avsnitt > h2 { margin: 0; font-family: var(--font-display); font-size: 28px; line-height: 34px; font-weight: 700; }
+.g-rad { display: flex; flex-wrap: wrap; gap: var(--space-4); align-items: center; }
+.g-rutnat { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--space-4); }
+.g-tema { position: fixed; bottom: var(--space-4); right: var(--space-4); z-index: 1; }

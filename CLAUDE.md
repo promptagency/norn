@@ -35,7 +35,7 @@ Ordinary people with numbers over time and no background in statistics: a shop o
 
 - Vite + React + TypeScript, no UI framework, plain CSS with custom properties from `design/tokens.css`. Minimal, audited dependencies. Hand-built, not Lovable.
 - `onnxruntime-web` (WASM by default, WebGPU only if it is proven equal), pinned to an exact version.
-- uPlot for charts, PapaParse for CSV. Nothing else without asking.
+- Charts are our own SVG component, `Prognosgraf` in `src/ui/components/`. PapaParse for CSV. Nothing else without asking.
 - PWA (service worker) for offline use after the first visit.
 - Deploy: static build to Cloudflare Pages at `norn.promptagency.se`.
 - Tests: Vitest for logic (CSV parsing, frequency detection, the forecast wrapper against fixtures), Playwright for the full flow and the "no external requests" check.
@@ -45,6 +45,8 @@ Ordinary people with numbers over time and no background in statistics: a shop o
 
 - Code, commits and docs under `docs/` except `COPY.md`: English. UI: Swedish, per `docs/COPY.md`.
 - Forecasting behind `src/engine/` with a single interface (`Forecaster`). Nothing outside imports onnxruntime-web or the upstream `timestral.js` directly. The upstream file is vendored unchanged under `src/engine/vendor/` with its licence and a note of the commit it came from.
+- Build every screen from `src/ui/components/`. Read `src/ui/components/README.md` first. Never write a one-off variant of a component; change the component instead.
+- The design system in Claude is built from the same components (`npm run build:ds`). After changing a component, rebuild the bundle and tell the owner it needs uploading, or upload it if you have access.
 - Every number shown to the user has passed through `src/engine/`. The UI never computes a forecast statistic itself.
 - Time is always shown in the user's unit (dagar, veckor, månader, timmar). The word "steg" never appears in the UI.
 - Uncertainty is shown as two bands (50 and 90 percent) and described in words ("i nio fall av tio"). The words kvantil, konfidensintervall, MASE and kovariat never appear in the UI outside "Visa detaljer".
@@ -64,7 +66,7 @@ Add a note under "Open questions" in `PLAN.md` rather than guessing on anything 
 - The visual identity is defined in `design/DESIGN.md`. Read it before any change to the interface.
 - Colours, fonts, spacing and radii come from `design/tokens.css`. Never write a hex value, an `rgb()` value or a font name in component CSS. Use the variables. Chart code reads values from the CSS variables at runtime, so both themes work.
 - Both themes must work. Check every interface change in light and in dark.
-- The forecast chart follows the chart rules in `design/DESIGN.md` exactly: history solid, median dotted in the same colour, band-90 under band-50, the now-line in krapp, bands explained in words.
+- The forecast chart is `Prognosgraf`. It follows the chart rules in `design/DESIGN.md` exactly: history solid, median dotted in the same colour, band-90 under band-50, the now-line in krapp, bands explained in words.
 - The logo files in `design/logo/` and the icons in `design/icon/` are used as they are. Never retype, recolour or redraw the logo.
 - Fonts are served from the repo. Never add a font CDN or any other third-party request for styling.
 - If a design decision is not covered by `DESIGN.md`, ask instead of inventing one.

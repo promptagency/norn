@@ -35,13 +35,16 @@ Results in `docs/fas0-resultat.md` (Swedish). Short version: fp16 weights are th
 
 - [x] Three directions explored, "Tråden" chosen, refined to a typographic logo.
 - [x] Logo outlined, icons, colour tokens with contrast checks, chart tokens, type, tone. In `design/`.
-- [ ] Screen sketches for Start, Urd, Verdandi and Skuld on the design canvas, then components in the design system.
+- [x] Screen sketches for Start, Urd, Verdandi and Skuld on the design canvas "Norn skärmskisser", with real Timestral-28M output on the SE3 price. Approved by the owner 2026-10-20.
+- [x] Components as React code in `src/ui/components/`, built into the design system with `npm run build:ds` (owner's decision 2026-10-20: one source for app and design system). Gallery in `src/dev/`.
+- [ ] Phone layout of the four screens.
 
-Done when: the owner has approved the four screen sketches.
+Decision 2026-10-20: the chart is our own SVG component (`Prognosgraf`) instead of uPlot, so it follows the chart rules exactly and renders the same in the design system.
 
 ## Phase 1 – Engine wrapper
 
-- [ ] Scaffold Vite + React + TS in the repo root (move `app/public/data/` to `public/data/`). Strict CSP in `index.html`.
+- [x] Scaffold Vite 8 + React 19 + TS 7 in the repo root, same versions as Skrubba.
+- [ ] Move `app/public/data/` to `public/data/` (Vite's `publicDir` points at `app/public` until then). Strict CSP in `index.html`.
 - [ ] Vendor `timestral.js` and `worker.js` from `amine-athmani/timestral-in-browser` under `src/engine/vendor/`, unchanged, with the Apache 2.0 licence and the commit hash.
 - [ ] `src/engine/Forecaster.ts`: `init(onProgress)`, `forecast(series, horizon, options)`, `backtest(series, horizon)`, types `Series`, `Forecast` (median and the 50 and 90 bands per step), `Backtest`.
 - [ ] Worker runs onnxruntime-web, loads the model once, reports byte-level progress.

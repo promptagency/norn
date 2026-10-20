@@ -126,9 +126,15 @@ Rules:
 
 The full copy rules and fixed strings are in `docs/COPY.md`. In short: Swedish, "du", short sentences, one answer per screen, uncertainty in everyday words, honest when the model finds no pattern.
 
+## Components
+
+The components are React code in `src/ui/components/`, documented in `src/ui/components/README.md`. The design system in Claude shows the same code. Build screens from them: `Sidhuvud` with `Steg`, `Svar`, `Kort` with `Prognosgraf` and `Forklaring`, `Betyg`, `Fraga`, `Sakerhetsval`, `Nyckeltal`, `Valgrupp` with `Valknapp`, `Knapp`, `Slappyta`, `Exempelkort` and `Sidfot`. One `primar` button per screen.
+
+The approved screen sketches (Start, Urd, Verdandi, Skuld, with real Timestral output on the SE3 price) are on the design canvas "Norn skärmskisser" in Claude.
+
 ## Not yet defined
 
-- Components. They will be drawn after the screen sketches for Start, Urd, Verdandi and Skuld exist. Until then, build from tokens and keep components plain.
-- Icons. Write actions out in words until an icon set is chosen.
+- Icons. Write actions out in words until an icon set is chosen. The only drawn marks are the upload arrow, the tick in `Steg`, the chevron in `Fraga` and the dots in `Betyg`.
+- The phone layout of the four screens.
 
 If a design decision is not covered here, ask instead of inventing one.

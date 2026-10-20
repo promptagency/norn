@@ -1,6 +1,6 @@
 # ARCHITECTURE.md
 
-Planned structure. Nothing under `src/` exists yet; Phase 1 in `PLAN.md` creates it. Keep this file in step with the code.
+Planned structure. `src/ui/components/`, `src/ui/copy.ts` and `src/dev/` exist; the rest is created in Phase 1 (`PLAN.md`). Keep this file in step with the code.
 
 ## Modules
 
@@ -26,8 +26,11 @@ src/
     examples.ts          reads public/data/examples.json
   ui/
     App.tsx              the four screens and step navigation
-    Chart.tsx            uPlot wrapper that follows design/DESIGN.md's chart rules
     copy.ts              every Swedish string, from docs/COPY.md
+    components/          the component library (README.md, types.ts, chart.ts, components.css, one .tsx each)
+                         Prognosgraf is the chart, own SVG, following design/DESIGN.md's chart rules
+  dev/
+    Galleri.tsx          every component with real SE3 data, light and dark (npm run dev until App exists)
 public/
   data/                  example datasets and examples.json (built by scripts/build_datasets.py)
 design/                  tokens, fonts, logo, icons (see design/DESIGN.md)
