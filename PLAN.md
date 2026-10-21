@@ -16,10 +16,10 @@ Needs the owner:
 
 Engineering, not done yet:
 
-6. ~~**Firefox and Safari.**~~ Done 2026-10-21: the end-to-end suite runs in Chromium, Firefox and WebKit, locally, against `nornor.app` and on CI. The phone tests skip Firefox, which Playwright cannot emulate as a phone. WebKit is Playwright's build, not Safari itself; a check in real Safari on a Mac is still worth doing once.
-7. ~~**CI.**~~ Done 2026-10-21: `.github/workflows/test.yml`, adapted from Skrubba's. Type check and unit tests on every push and pull request; the Playwright suite on release tags (`v*`) or when started by hand. No release pages, since Norn has no versions or CHANGELOG.
-8. **Not checked by hand:** an Excel upload in a real browser (unit tests cover the dates), printing Skuld, Verdandi in the dark theme, and tablets in portrait (744 to 834 px wide get the app).
-9. **Small:** `wrangler login` to refresh its permissions (it warns, nothing depends on it), and `model.ready` in COPY.md, which nothing shows; use it or remove it.
+6. **Check by hand in real browsers**, which the automated tests cannot cover: one full run in real Safari on a Mac (CI uses Playwright's WebKit, not Safari), an Excel upload (unit tests cover the dates), printing Skuld, Verdandi in the dark theme, and a tablet in portrait (744 to 834 px wide gets the app).
+7. **Small:** `wrangler login` to refresh its permissions (it warns, nothing depends on it), and `model.ready` in COPY.md, which nothing shows; use it or remove it.
+
+Done since launch (2026-10-21): CI in `.github/workflows/test.yml`, adapted from Skrubba's (type check and unit tests on every push, the Playwright suite on `v*` tags or by hand), and the end-to-end suite in Chromium, Firefox and WebKit, locally, against `nornor.app` and on CI (the phone tests skip Firefox, which Playwright cannot emulate as a phone).
 
 ## Decisions so far
 
