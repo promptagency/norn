@@ -19,7 +19,7 @@ PLAN.md                faser, beslut och öppna frågor
 CLAUDE.md              instruktioner för Claude Code
 design/                designprogrammet: token, typsnitt, logotyp och ikoner
 docs/                  UX, arkitektur, svensk text, exempeldata och resultat från fas 0
-app/public/data/       exempeldata från svenska öppna källor
+public/data/           exempeldata från svenska öppna källor
 scripts/               export, verifiering, datahämtning och token
 webtest/               latensmätning i onnxruntime-web
 src/ui/components/     komponenterna, samma kod som i designsystemet

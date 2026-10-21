@@ -1,6 +1,6 @@
 """Fetch Norn's example datasets from Swedish open data sources and write them as CSV.
 
-Output goes to app/public/data/ together with examples.json (title, description, source,
+Output goes to public/data/ together with examples.json (title, description, source,
 licence, time column, target column, covariate columns). The app ships these files
 statically and never calls the sources at runtime.
 
@@ -24,7 +24,7 @@ from pathlib import Path
 
 import requests
 
-OUT = Path(__file__).resolve().parent.parent / "app" / "public" / "data"
+OUT = Path(__file__).resolve().parent.parent / "public" / "data"
 UA = {"User-Agent": "norn-build-datasets/0.1 (https://norn.promptagency.se; open source)"}
 EXAMPLES: list[dict] = []
 

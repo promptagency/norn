@@ -31,7 +31,7 @@ Results in `docs/fas0-resultat.md` (Swedish). Short version: fp16 weights are th
 
 ## Phase 0b – Example data (done)
 
-- [x] `scripts/build_datasets.py` fetches SCB retail turnover (four trades, monthly since 1991), SE3 spot price per hour since November 2022 with Göteborg temperature from SMHI, and writes `app/public/data/` plus `examples.json`.
+- [x] `scripts/build_datasets.py` fetches SCB retail turnover (four trades, monthly since 1991), SE3 spot price per hour since November 2022 with Göteborg temperature from SMHI, and writes `public/data/` plus `examples.json`.
 - [x] Backtest with Timestral-28M on the real data. Recorded in `docs/DATA.md`.
 - [x] Wikipedia page views (`python scripts/build_datasets.py wiki`), built on the owner's machine 2026-10-21. Backtest and peak check in `docs/DATA.md`. Default series melodifestivalen (owner's decision).
 
@@ -48,7 +48,7 @@ Decision 2026-10-20: the chart is our own SVG component (`Prognosgraf`) instead 
 ## Phase 1 – Engine wrapper
 
 - [x] Scaffold Vite 8 + React 19 + TS 7 in the repo root, same versions as Skrubba.
-- [ ] Move `app/public/data/` to `public/data/` (Vite's `publicDir` points at `app/public` until then). Strict CSP in `index.html`.
+- [x] Move the example data to `public/data/`. Strict CSP, injected into `index.html` at build by `vite.config.ts` (the dev server needs an inline script).
 - [ ] Vendor `timestral.js` and `worker.js` from `amine-athmani/timestral-in-browser` under `src/engine/vendor/`, unchanged, with the Apache 2.0 licence and the commit hash.
 - [ ] `src/engine/Forecaster.ts`: `init(onProgress)`, `forecast(series, horizon, options)`, `backtest(series, horizon)`, types `Series`, `Forecast` (median and the 50 and 90 bands per step), `Backtest`.
 - [ ] Worker runs onnxruntime-web, loads the model once, reports byte-level progress.

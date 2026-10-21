@@ -1,6 +1,6 @@
 # DATA.md – example datasets
 
-Norn's examples are real Swedish open data, not synthetic. They are built by `scripts/build_datasets.py`, written to `app/public/data/` (moving to `public/data/` in Phase 1) and shipped statically. The app never calls the sources at runtime.
+Norn's examples are real Swedish open data, not synthetic. They are built by `scripts/build_datasets.py`, written to `public/data/` and shipped statically. The app never calls the sources at runtime.
 
 ```
 python scripts/build_datasets.py              # all

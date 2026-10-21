@@ -55,7 +55,7 @@ scripts/                 Python: export spike, verification, dataset and token b
 - No backend. The build is static files.
 - Every request goes to our own origin, including the model chunks in `public/model/` and the Plausible page view through a Pages Function (decisions in `PLAN.md`). A Playwright test lists every request and fails on any other origin.
 - User data stays in memory. The service worker caches app files, the model and the runtime, never user data.
-- Strict CSP in `index.html`: no inline scripts, `connect-src` limited to what `src/config.ts` names.
+- Strict CSP, injected into `index.html` at build by `vite.config.ts`: no inline scripts, `connect-src 'self'`.
 
 ## Performance
 

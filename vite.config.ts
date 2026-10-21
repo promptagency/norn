@@ -1,11 +1,31 @@
 /// <reference types="vitest/config" />
 import react from "@vitejs/plugin-react";
-import { defineConfig } from "vite";
+import { defineConfig, type Plugin } from "vite";
 
-// Phase 1 scaffold. CSP, service worker and model hosting come later (see PLAN.md).
-// The example data still lives in app/public/ until it moves to public/ in Phase 1.
+// Strict CSP, see docs/ARCHITECTURE.md. 'wasm-unsafe-eval' lets onnxruntime-web compile its WASM.
+// Build only: the dev server's React refresh preamble is an inline script.
+const CSP = [
+  "default-src 'self'",
+  "script-src 'self' 'wasm-unsafe-eval'",
+  "style-src 'self'",
+  "img-src 'self' data:",
+  "font-src 'self'",
+  "connect-src 'self'",
+  "worker-src 'self'",
+  "object-src 'none'",
+  "base-uri 'none'",
+  "form-action 'none'",
+].join("; ");
+
+const csp = (): Plugin => ({
+  name: "norn-csp",
+  apply: "build",
+  transformIndexHtml: () => [
+    { tag: "meta", attrs: { "http-equiv": "Content-Security-Policy", content: CSP }, injectTo: "head-prepend" },
+  ],
+});
+
 export default defineConfig({
-  plugins: [react()],
-  publicDir: "app/public",
+  plugins: [react(), csp()],
   test: { include: ["src/**/*.test.ts", "src/**/*.test.tsx"] },
 });
