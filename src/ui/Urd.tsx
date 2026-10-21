@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { describe, columnName, unit } from "../data/describe.ts";
-import { buildSeries, detectColumns, type Columns, type DataSeries } from "../data/detect.ts";
+import { buildSeries, detectColumns, type Columns, type Combine, type DataSeries } from "../data/detect.ts";
 import type { Table } from "../data/parse.ts";
 import { Knapp, Kort, Prognosgraf, Svar, Valgrupp, Valknapp } from "./components/index.ts";
 import { COPY, t } from "./copy.ts";
@@ -11,15 +11,18 @@ interface Props {
   columns: Columns;
   /** Column index of the series to forecast. */
   value: number;
+  /** How several rows per day are put together, once the user has said. */
+  combine?: Combine;
   onColumns: (columns: Columns, value: number) => void;
+  onCombine: (combine: Combine) => void;
   onJa: (series: DataSeries) => void;
 }
 
 const number = new Intl.NumberFormat("sv-SE", { maximumFractionDigits: 2 });
 
-export function Urd({ table, columns, value, onColumns, onJa }: Props) {
+export function Urd({ table, columns, value, combine, onColumns, onCombine, onJa }: Props) {
   const [andra, setAndra] = useState(false);
-  const result = buildSeries(table, columns, value);
+  const result = buildSeries(table, columns, value, combine);
   const valjTid = (time: number) => {
     const c = detectColumns(table, time);
     if (c.ok) onColumns(c.value, c.value.numeric.includes(value) ? value : c.value.numeric[0]);
@@ -40,6 +43,17 @@ export function Urd({ table, columns, value, onColumns, onJa }: Props) {
             <figcaption className="liten dampad">{t("urd.bucketed", { grupp: h.grupp, enhet: unit(result.value.frequency) })}</figcaption>
           )}
         </Kort>
+      )}
+
+      {(combine || (!result.ok && result.error.key === "urd.many")) && (
+        <section className="avsnitt">
+          <h2 className="rubrik-s">{COPY["urd.many.pick"]}</h2>
+          <Valgrupp etikett={COPY["urd.many.pick"]}>
+            <Valknapp vald={combine === "summa"} onClick={() => onCombine("summa")}>{COPY["urd.many.sum"]}</Valknapp>
+            <Valknapp vald={combine === "snitt"} onClick={() => onCombine("snitt")}>{COPY["urd.many.mean"]}</Valknapp>
+          </Valgrupp>
+          <p className="liten dampad">{COPY["urd.many.hint"]}</p>
+        </section>
       )}
 
       {(andra || !result.ok) && columns.times.length > 1 && (

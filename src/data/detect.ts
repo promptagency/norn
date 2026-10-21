@@ -25,6 +25,13 @@ export interface DataSeries {
   others: Record<string, (number | null)[]>;
 }
 
+/** How several rows in the same period are put together, chosen by the user in Urd. */
+export type Combine = "summa" | "snitt";
+
+/** The period rows are put together in: days for dates and times, otherwise the kind itself. */
+const PERIOD: Record<TimeKind, Frequency> = { tid: "dag", datum: "dag", månad: "månad", kvartal: "kvartal", år: "år" };
+const periodStart = (kind: TimeKind, t: Time) => (PERIOD[kind] === "dag" ? Math.floor(t / DAY) * DAY : t);
+
 export interface DataError {
   key: CopyKey;
   values?: Record<string, string>;
@@ -90,8 +97,11 @@ function timeAt(freq: Frequency, from: Time, k: number): Time {
   return Date.UTC(a.getUTCFullYear(), a.getUTCMonth() + k * MONTHS[freq]!, 1);
 }
 
-/** Sorts by time, places the values on a regular grid and checks that there is enough to forecast. */
-export function buildSeries(table: Table, columns: Columns, value: number): Result<DataSeries> {
+/**
+ * Sorts by time, places the values on a regular grid and checks that there is enough to forecast.
+ * With `combine`, rows in the same day (or month) are summed or averaged first.
+ */
+export function buildSeries(table: Table, columns: Columns, value: number, combine?: Combine): Result<DataSeries> {
   const name = table.headers[value];
   const isYears = /^(år|ar|year)$/i.test(table.headers[columns.time]);
   const parsed = table.rows
@@ -101,16 +111,20 @@ export function buildSeries(table: Table, columns: Columns, value: number): Resu
   const irregular: Result<DataSeries> = { ok: false, error: { key: "error.irregular" } };
   if (parsed.length < 2) return { ok: false, error: { key: "error.short" } };
 
-  const times = parsed.map((p) => p.t.time);
-  const freq = frequencyOf(parsed[0].t.kind, times);
-  if (!freq) return irregular;
+  const kind = parsed[0].t.kind;
+  const times = parsed.map((p) => (combine ? periodStart(kind, p.t.time) : p.t.time));
+  // Several rows per day (one per sale, or a reading every 15 minutes) is a question for the user, not an error.
+  const many = parsed.length - new Set(parsed.map((p) => periodStart(kind, p.t.time))).size > Math.max(1, TOLERATED * parsed.length);
+  const unclear: Result<DataSeries> = many ? { ok: false, error: { key: "urd.many", values: { enhet: PERIOD[kind] } } } : irregular;
+  const freq = combine ? PERIOD[kind] : frequencyOf(kind, times);
+  if (!freq) return unclear;
 
   const from = times[0];
-  const slots = parsed.map((p) => step(freq, from, p.t.time));
+  const slots = times.map((t) => step(freq, from, t));
   const length = Math.max(...slots.map((s) => s ?? 0)) + 1;
   const offGrid = slots.filter((s) => s === null).length;
   const repeats = parsed.length - new Set(slots).size;
-  if (offGrid + repeats > Math.max(1, TOLERATED * parsed.length) || length > 2 * parsed.length) return irregular;
+  if (!combine && (offGrid + repeats > Math.max(1, TOLERATED * parsed.length) || length > 2 * parsed.length)) return unclear;
 
   const cols = [value, ...columns.numeric.filter((c) => c !== value)];
   const grids = cols.map(() => Array.from({ length }, () => [] as number[]));
@@ -122,8 +136,11 @@ export function buildSeries(table: Table, columns: Columns, value: number): Resu
     });
   });
   // A time that appears twice (the autumn hour of daylight saving) gets the mean of its values.
-  const mean = (vs: number[]) => (vs.length ? vs.reduce((a, b) => a + b, 0) / vs.length : null);
-  const [values, ...rest] = grids.map((g) => g.map(mean));
+  const sum = (vs: number[]) => vs.reduce((a, b) => a + b, 0);
+  // shortcut: when summing, a day without rows counts as 0 (a closed shop), so a day missing from the export
+  // also reads as 0; ask the user instead if real files turn out to have holes.
+  const put = (vs: number[]) => (combine === "summa" ? sum(vs) : vs.length ? sum(vs) / vs.length : null);
+  const [values, ...rest] = grids.map((g) => g.map(put));
 
   if (filled(table.rows.map((r) => r[value])).length && values.every((v) => v === null))
     return { ok: false, error: { key: "error.column", values: { namn: name } } };

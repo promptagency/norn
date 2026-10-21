@@ -78,9 +78,30 @@ group("detect and build", () => {
   });
 
   it("says so when the times are irregular", () => {
-    const rows = days(200).filter((_, i) => i % 3 !== 0 || i % 7 === 0).map((d) => `${d},1`);
-    rows.push("2024-03-10 13:17,1", "2024-03-11 09:02,1", "2024-03-12 15:45,1");
+    // Every 36 hours: one row per day at most, but no regular step.
+    const rows = Array.from({ length: 100 }, (_, i) => `${new Date(day("2024-01-01T00:00") + i * 36 * 3_600_000).toISOString().slice(0, 16)},1`);
     expect(series(rows.join("\n"))).toEqual({ ok: false, error: { key: "error.irregular" } });
+  });
+
+  it("asks how to put several rows per day together, then sums or averages them", () => {
+    // A till export: one row per sale, two or three sales a day, nothing on 15 January.
+    const rows = days(80).flatMap((d, i) => (i === 14 ? [] : [`${d} 10:12,100`, `${d} 13:40,50`, ...(i % 2 ? [`${d} 16:05,30`] : [])]));
+    const table = parseText(`tid,belopp\n${rows.join("\n")}`);
+    const cols = detectColumns(table);
+    if (!cols.ok) throw new Error(cols.error.key);
+    expect(buildSeries(table, cols.value, 1)).toEqual({ ok: false, error: { key: "urd.many", values: { enhet: "dag" } } });
+    const summa = buildSeries(table, cols.value, 1, "summa");
+    if (!summa.ok) throw new Error(summa.error.key);
+    expect(summa.value).toMatchObject({ frequency: "dag", missing: 0 });
+    expect(summa.value.values.slice(12, 16)).toEqual([150, 180, 0, 180]);
+    const snitt = buildSeries(table, cols.value, 1, "snitt");
+    expect(snitt.ok && snitt.value.values.slice(12, 16)).toEqual([75, 60, null, 60]);
+  });
+
+  it("leaves regular hourly data alone", () => {
+    const hours = Array.from({ length: 100 }, (_, i) => new Date(day("2024-01-01T00:00") + i * 3_600_000).toISOString().slice(0, 16));
+    const r = series(`tid,pris\n${hours.map((h, i) => `${h},${i}`).join("\n")}`);
+    expect(r.ok && r.value.frequency).toBe("timme");
   });
 
   it("says so when there is no time column", () => {

@@ -65,6 +65,7 @@ Follow `docs/UX.md`.
 - [x] Start: one sentence, file drop zone, example cards from `examples.json` (which gains `source_short`, `since` and `labels`).
 - [x] CSV, pasted text and Excel (SheetJS 0.20.3, owner's decision 2026-10-21, loaded only for Excel files): separator, decimal comma, Swedish and ISO dates, sorting, gaps. The repeated hour when clocks go back is averaged.
 - [x] Guess time column, value column and frequency. Write the one-sentence description of the data.
+- [x] Several rows per day (a till export, readings every 15 minutes): Urd asks "Hur ska raderna läggas ihop?" with Summera or Ta snittet (owner's decision 2026-10-21). When summing, a day without rows counts as 0.
 - [x] "Stämmer det?" with Ja and "Nej, ändra kolumner". The link shows only when there is more than one possible time column; the value columns are always shown when there is a choice. Ja leads to an empty Verdandi until Phase 3.
 - [x] Clear errors with a suggestion: too few points, irregular time, unreadable column, no time column, unreadable file. Errors that another column choice could fix stay in Urd; the rest go to the drop zone on Start.
 

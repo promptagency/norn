@@ -2,7 +2,7 @@
 import { useCallback, useEffect, useState } from "react";
 import logoNegativ from "../../design/logo/norn-logotyp-negativ.svg";
 import logoPositiv from "../../design/logo/norn-logotyp-positiv.svg";
-import { buildSeries, detectColumns, type Columns, type DataSeries } from "../data/detect.ts";
+import { buildSeries, detectColumns, type Columns, type Combine, type DataSeries } from "../data/detect.ts";
 import { loadExample, type Example } from "../data/examples.ts";
 import { parseExcel, parseText, type Table } from "../data/parse.ts";
 import { NORNORNA, Sidfot, Sidhuvud, Steg } from "./components/index.ts";
@@ -13,8 +13,10 @@ import "./app.css";
 
 type Screen =
   | { name: "start"; fel?: string }
-  | { name: "urd"; table: Table; columns: Columns; value: number }
-  | { name: "verdandi"; series: DataSeries; urd: { table: Table; columns: Columns; value: number } };
+  | ({ name: "urd" } & UrdState)
+  | { name: "verdandi"; series: DataSeries; urd: UrdState };
+
+type UrdState = { table: Table; columns: Columns; value: number; combine?: Combine };
 
 function useDark() {
   const query = "(prefers-color-scheme: dark)";
@@ -39,7 +41,7 @@ export function App() {
     const value = c.value.numeric.includes(wanted) ? wanted : c.value.numeric[0];
     // An error that no other choice of columns can fix belongs on Start, where another file can be dropped.
     const r = buildSeries(table, c.value, value);
-    if (!r.ok && c.value.times.length === 1 && c.value.numeric.length === 1)
+    if (!r.ok && r.error.key !== "urd.many" && c.value.times.length === 1 && c.value.numeric.length === 1)
       return setScreen({ name: "start", fel: t(r.error.key, r.error.values) });
     setScreen({ name: "urd", table, columns: c.value, value });
   }, []);
@@ -64,6 +66,7 @@ export function App() {
           key={screen.table.headers.join()}
           {...screen}
           onColumns={(columns, value) => setScreen({ ...screen, columns, value })}
+          onCombine={(combine) => setScreen({ ...screen, combine })}
           onJa={(series) => setScreen({ name: "verdandi", series, urd: screen })}
         />
       )}
