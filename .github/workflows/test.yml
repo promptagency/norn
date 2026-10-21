@@ -2,7 +2,7 @@
 #
 #   checks   every push to main and every pull request: type check and unit tests, the parity tests against
 #            the real model included. A few minutes.
-#   browser  the full Playwright suite in Chromium against a production build. Runs for release tags (v*) and
+#   browser  the full Playwright suite in Chromium, Firefox and WebKit against a production build. Runs for release tags (v*) and
 #            when started by hand (Actions → Tests → Run workflow), to save Actions minutes while the repo is
 #            private. Run `npm run e2e` locally before relying on it.
 #
@@ -76,17 +76,17 @@ jobs:
         id: browsers
         with:
           path: ~/.cache/ms-playwright
-          key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+          key: playwright-3-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
 
-      - name: Install the test browser
+      - name: Install the test browsers
         if: steps.browsers.outputs.cache-hit != 'true'
-        run: npx playwright install --with-deps chromium
+        run: npx playwright install --with-deps chromium firefox webkit
 
-      - name: Install the test browser's system libraries
+      - name: Install the test browsers' system libraries
         if: steps.browsers.outputs.cache-hit == 'true'
-        run: npx playwright install-deps chromium
+        run: npx playwright install-deps chromium firefox webkit
 
-      - name: Browser tests (Chromium)
+      - name: Browser tests (Chromium, Firefox, WebKit)
         run: npm run e2e
 
       - uses: actions/upload-artifact@v7

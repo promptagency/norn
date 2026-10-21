@@ -9,7 +9,11 @@ export default defineConfig({
   timeout: 180_000,
   retries: 0,
   use: { baseURL: live ?? "http://localhost:4175" },
-  projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"] } }],
+  projects: [
+    { name: "chromium", use: { ...devices["Desktop Chrome"] } },
+    { name: "firefox", use: { ...devices["Desktop Firefox"] } },
+    { name: "webkit", use: { ...devices["Desktop Safari"] } },
+  ],
   webServer: live ? undefined : {
     command: "npm run build && npx vite preview --port 4175 --strictPort",
     url: "http://localhost:4175",

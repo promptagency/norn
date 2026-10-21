@@ -2,6 +2,8 @@
 import { expect, test } from "@playwright/test";
 
 test.use({ viewport: { width: 390, height: 844 }, screen: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
+// Playwright cannot emulate a phone in Firefox (no isMobile), so these run in Chromium and WebKit.
+test.skip(({ browserName }) => browserName === "firefox", "Firefox has no phone emulation in Playwright");
 
 for (const path of ["/", "/?exempel=wikipedia&horisont=1"]) {
   test(`a phone opening ${path} gets the explainer and no model`, async ({ context, page }) => {
