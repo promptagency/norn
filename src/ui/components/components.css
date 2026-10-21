@@ -213,6 +213,11 @@
 .n-graf { width: 100%; height: auto; display: block; font-family: var(--font-text); overflow: visible; }
 .n-graf__etikett { fill: var(--text-dampad); font-size: 13px; font-variant-numeric: tabular-nums; }
 .n-graf__nu-text { fill: var(--krapp); font-size: 13px; font-weight: 600; }
+/* Faint lines at the values on the vertical axis, behind everything else (design/DESIGN.md). */
+.n-graf__rutnat {
+  stroke: var(--kant);
+  stroke-width: 1;
+}
 .n-graf__baslinje { stroke: var(--kant); stroke-width: 1; }
 .n-graf__band90 { fill: var(--prognos-band-90); }
 .n-graf__band50 { fill: var(--prognos-band-50); }

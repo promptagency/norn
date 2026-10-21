@@ -92,7 +92,7 @@ Rules:
 - The bands take more of the picture than the median line. Uncertainty is the point, not the line.
 - The future never looks as certain as the past: the median is dotted, history is solid.
 - Always explain the bands in words next to the chart ("Hamnar här i nio fall av tio"). Colour never carries meaning alone. The bands also differ in lightness, not only in hue.
-- No grid. At most three values on the vertical axis, with the unit written once.
+- At most three values on the vertical axis, with the unit written once, each with a faint 1 px line across the chart in `kant`, drawn behind the bands (owner's decision 2026-10-21; before that the chart had no grid). No vertical grid lines.
 - Time on the horizontal axis in the user's unit (days, weeks, months), never "steps".
 
 ## Type

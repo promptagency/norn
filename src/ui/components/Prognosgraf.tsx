@@ -24,6 +24,9 @@ export function Prognosgraf({
       {g.yTicks.map((t) => (
         <text key={t.value} className="n-graf__etikett" x="0" y={t.y + 4}>{formatY(t.value)}</text>
       ))}
+      {g.yTicks.map((t) => (
+        <line key={`r${t.value}`} className="n-graf__rutnat" x1={layout.padLeft} x2={layout.width - layout.padRight} y1={t.y} y2={t.y} />
+      ))}
       <line className="n-graf__baslinje" x1={layout.padLeft} x2={layout.width - layout.padRight} y1={g.baseY} y2={g.baseY} />
       {g.band90 && <path className="n-graf__band90" d={g.band90} />}
       {g.band50 && <path className="n-graf__band50" d={g.band50} />}
