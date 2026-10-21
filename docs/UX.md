@@ -73,7 +73,7 @@ Runs automatically after **Ja**. A backtest on the last period, its length set b
 
 - The footer says it is an experiment from Prompt Agency, with no support, and that the data never leaves the computer. Credits to Mistral (Timestral), amine40 (ONNX export and JavaScript port) and the data sources.
 - The first visit downloads the model once, with honest progress in megabytes. After that Norn works offline.
-- Works at phone width: the step names wrap, the chart keeps its full width, buttons stack.
+- On a phone, Norn shows one page instead of the app: what Norn does, the three steps, that everything runs on your computer, and a firm request to open it on a computer, with a button to copy the link. No way through to the app, and the model is never downloaded there (decision in `PLAN.md`).
 
 ## Not in v1
 

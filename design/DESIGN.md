@@ -135,6 +135,6 @@ The approved screen sketches (Start, Urd, Verdandi, Skuld, with real Timestral o
 ## Not yet defined
 
 - Icons. Write actions out in words until an icon set is chosen. The only drawn marks are the upload arrow, the tick in `Steg`, the chevron in `Fraga` and the dots in `Betyg`.
-- The phone layout of the four screens.
+- The layout of the phone explainer page (copy drafted in `docs/COPY.md`). The four screens have no phone layout; phones get that page instead (`PLAN.md`).
 
 If a design decision is not covered here, ask instead of inventing one.

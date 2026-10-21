@@ -175,3 +175,24 @@ Utkast. Ändras när skärmskisserna är godkända.
 | error.notime | Norn hittar ingen kolumn med datum eller tid. Filen behöver en kolumn för tid och en med siffror. |
 | footer.experiment | Norn är ett experiment från Prompt Agency. Ingen support, ingen garanti. Din data lämnar aldrig datorn. |
 | footer.credits | Prognoserna görs av Timestral från Mistral AI, i webbläsaren tack vare amine40:s ONNX-export. Exempeldata från SCB, SMHI, elprisetjustnu.se och Wikimedia. |
+
+## Utkast, telefonsidan
+
+Inte godkänt. Används inte i appen förrän ägaren har godkänt texterna och sidans layout finns i `design/DESIGN.md`. Sidan visas i stället för appen på telefoner. {mb} och {adress} fylls i från `src/config.ts`.
+
+| Nyckel | Text |
+|---|---|
+| mobil.heading | Se vad som väntar i dina egna siffror |
+| mobil.lead | Du har siffror över tid, kanske försäljning per dag eller elräkningen per månad. Norn visar vad som troligen kommer och hur säker du kan vara. |
+| mobil.steps | Tre steg, som de tre nornorna |
+| mobil.urd | Urd, det som varit. Norn läser din fil och berättar med en mening vad den ser. |
+| mobil.verdandi | Verdandi, det som är. Norn gissar på en period den inte fått se och jämför med det som faktiskt hände. Då vet du hur mycket du kan lita på den. |
+| mobil.skuld | Skuld, det som kommer. Prognosen, med ett band där det hamnar i hälften av fallen och ett där det hamnar i nio fall av tio. |
+| mobil.tech.heading | Allt händer i din dator |
+| mobil.tech | Prognoserna görs av Timestral, en modell från Mistral AI som har lärt sig av mängder av tidsserier. Norn laddar ner modellen en gång och kör den i din webbläsare. Din fil skickas aldrig någonstans. |
+| mobil.desktop.heading | Öppna Norn på en dator |
+| mobil.desktop | Norn behöver en större skärm, och modellen är {mb} MB. Dina filer finns troligen på datorn också. Gå till {adress} där, så kan du börja direkt. Det finns exempel med riktiga siffror om du vill prova utan egna. |
+| mobil.shared | Någon har delat en prognos med dig. Öppna länken på en dator så ser du den. |
+| mobil.link | Kopiera länken |
+| mobil.link.done | Länken är kopierad |
+
