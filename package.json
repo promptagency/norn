@@ -10,9 +10,14 @@
     "preview": "vite preview",
     "typecheck": "tsc -b",
     "test": "vitest run",
-    "build:ds": "node scripts/build_ds_bundle.mjs"
+    "build:ds": "node scripts/build_ds_bundle.mjs",
+    "fetch-model": "node scripts/fetch-model.mjs",
+    "predev": "npm run fetch-model",
+    "prebuild": "npm run fetch-model",
+    "pretest": "npm run fetch-model"
   },
   "dependencies": {
+    "onnxruntime-web": "1.30.0",
     "react": "^19.3.1",
     "react-dom": "^19.3.1"
   },
