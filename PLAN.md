@@ -17,7 +17,7 @@ Needs the owner:
 Engineering, not done yet:
 
 6. **Firefox and Safari.** The end-to-end suite runs in Chromium only; Skrubba's runs Chromium, Firefox and WebKit. Safari is the likeliest to differ (cross-origin isolation, WASM threads, the service worker).
-7. **CI.** Tests run only on a developer's machine; there is no GitHub Actions workflow. Copy Skrubba's `.github/workflows/test.yml` (type check and unit tests on every push, the full browser suite on release tags).
+7. ~~**CI.**~~ Done 2026-10-21: `.github/workflows/test.yml`, adapted from Skrubba's. Type check and unit tests on every push and pull request; the Playwright suite on release tags (`v*`) or when started by hand. No release pages, since Norn has no versions or CHANGELOG.
 8. **Not checked by hand:** an Excel upload in a real browser (unit tests cover the dates), printing Skuld, Verdandi in the dark theme, and tablets in portrait (744 to 834 px wide get the app).
 9. **Small:** `wrangler login` to refresh its permissions (it warns, nothing depends on it), and `model.ready` in COPY.md, which nothing shows; use it or remove it.
 
