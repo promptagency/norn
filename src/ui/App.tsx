@@ -3,11 +3,12 @@ import { useCallback, useEffect, useState } from "react";
 import logoNegativ from "../../design/logo/norn-logotyp-negativ.svg";
 import logoPositiv from "../../design/logo/norn-logotyp-positiv.svg";
 import { buildSeries, detectColumns, type Columns, type Combine, type DataSeries } from "../data/detect.ts";
-import { loadExample, type Example } from "../data/examples.ts";
+import { loadExample, loadExamples, type Example } from "../data/examples.ts";
 import { parseExcel, parseText, type Table } from "../data/parse.ts";
-import { createForecaster } from "../engine/index.ts";
+import { createForecaster, EVENTS, type EventId } from "../engine/index.ts";
 import { NORNORNA, Sidfot, Sidhuvud, Steg } from "./components/index.ts";
 import { COPY, t } from "./copy.ts";
+import { Skuld, type SkuldSettings } from "./Skuld.tsx";
 import { Start } from "./Start.tsx";
 import { Urd } from "./Urd.tsx";
 import { Verdandi } from "./Verdandi.tsx";
@@ -17,9 +18,17 @@ type Screen =
   | { name: "start"; fel?: string }
   | ({ name: "urd" } & UrdState)
   | { name: "verdandi"; series: DataSeries; urd: UrdState }
-  | { name: "skuld"; series: DataSeries; urd: UrdState };
+  | { name: "skuld"; series: DataSeries; urd: UrdState; initial?: Partial<SkuldSettings> };
 
-type UrdState = { table: Table; columns: Columns; value: number; combine?: Combine };
+/** `exempel` is set when the data is one of Norn's examples, which is what makes a shareable link possible. */
+type UrdState = { table: Table; columns: Columns; value: number; combine?: Combine; exempel?: string };
+
+/** A link to an example in Skuld. Settings only, never values: CLAUDE.md. */
+function exampleLink(urd: UrdState, s: SkuldSettings): string {
+  const q = new URLSearchParams({ exempel: urd.exempel!, kolumn: urd.table.headers[urd.value], horisont: String(s.horisont), sakerhet: s.sakerhet });
+  if (s.handelser.length) q.set("handelser", s.handelser.join(","));
+  return `${location.origin}/?${q}`;
+}
 
 function useDark() {
   const query = "(prefers-color-scheme: dark)";
@@ -51,7 +60,7 @@ export function App() {
     );
   }, [hasData]);
 
-  const open = useCallback((table: Table, target?: string) => {
+  const open = useCallback((table: Table, target?: string, exempel?: string) => {
     const c = detectColumns(table);
     if (!c.ok) return setScreen({ name: "start", fel: t(c.error.key, c.error.values) });
     const wanted = target === undefined ? -1 : table.headers.indexOf(target);
@@ -60,14 +69,44 @@ export function App() {
     const r = buildSeries(table, c.value, value);
     if (!r.ok && r.error.key !== "urd.many" && c.value.times.length === 1 && c.value.numeric.length === 1)
       return setScreen({ name: "start", fel: t(r.error.key, r.error.values) });
-    setScreen({ name: "urd", table, columns: c.value, value });
+    setScreen({ name: "urd", table, columns: c.value, value, exempel });
   }, []);
   const failed = () => setScreen({ name: "start", fel: COPY["error.file"] });
 
   const onFil = (file: File) =>
     (/\.xlsx?$/i.test(file.name) ? file.arrayBuffer().then(parseExcel) : file.text().then(parseText)).then((table) => open(table), failed);
   const onText = useCallback((text: string) => open(parseText(text)), [open]);
-  const onExempel = (ex: Example) => loadExample(ex).then(({ table, target }) => open(table, target), failed);
+  const onExempel = (ex: Example) => loadExample(ex).then(({ table, target }) => open(table, target, ex.id), failed);
+
+  // A copied link opens its example straight in Skuld; Urd and Verdandi stay one click back.
+  useEffect(() => {
+    const q = new URLSearchParams(location.search);
+    const id = q.get("exempel");
+    if (!id) return;
+    loadExamples()
+      .then((all) => all.find((e) => e.id === id) ?? Promise.reject(new Error(id)))
+      .then(loadExample)
+      .then(({ table, target }) => {
+        const c = detectColumns(table);
+        if (!c.ok) throw new Error(c.error.key);
+        const wanted = table.headers.indexOf(q.get("kolumn") ?? target);
+        const value = c.value.numeric.includes(wanted) ? wanted : table.headers.indexOf(target);
+        const r = buildSeries(table, c.value, value);
+        if (!r.ok) throw new Error(r.error.key);
+        const sakerhet = q.get("sakerhet");
+        setScreen({
+          name: "skuld",
+          series: r.value,
+          urd: { table, columns: c.value, value, exempel: id },
+          initial: {
+            horisont: Number(q.get("horisont")) || 0,
+            sakerhet: sakerhet === "90" || sakerhet === "95" ? sakerhet : "median",
+            handelser: (q.get("handelser")?.split(",") ?? []).filter((e): e is EventId => (EVENTS as string[]).includes(e)),
+          },
+        });
+      })
+      .catch(failed);
+  }, []);
 
   const step = ["urd", "verdandi", "skuld"].indexOf(screen.name);
   const back = [
@@ -99,9 +138,13 @@ export function App() {
         />
       )}
       {screen.name === "skuld" && (
-        <main className="sida sida--steg">
-          <h1 className="rubrik-l">{COPY["skuld.heading"]}</h1>
-        </main>
+        <Skuld
+          series={screen.series}
+          forecaster={forecaster}
+          download={download}
+          initial={screen.initial}
+          link={screen.urd.exempel ? (s) => exampleLink(screen.urd, s) : undefined}
+        />
       )}
       <Sidfot />
     </div>

@@ -1,6 +1,6 @@
 # ARCHITECTURE.md
 
-Planned structure. Everything exists except `holidays.ts` and the Skuld screen; the rest comes in later phases (`PLAN.md`). Keep this file in step with the code.
+Planned structure. Everything exists; the rest comes in later phases (`PLAN.md`). Keep this file in step with the code.
 
 ## Modules
 
@@ -16,6 +16,7 @@ src/
     parity.test.ts       run.ts against the Python package, fixtures in fixtures/parity.json
     backtest.ts          backtest period by frequency, errors, naive baseline, band coverage, and the grade
     holidays.ts          Swedish public holidays and fixed events as known-future covariates
+    summary.ts           a total or an average over the horizon, with the cautious summed range
     vendor/
       timestral.js       upstream, unchanged (amine-athmani/timestral-in-browser, Apache 2.0)
       timestral.d.ts     our types for it
@@ -24,11 +25,13 @@ src/
   data/
     parse.ts             CSV and pasted text: separator, decimal comma, dates, sorting
     detect.ts            time column, value columns, frequency, gaps
-    describe.ts          the one-sentence description shown in Urd
+    describe.ts          the one-sentence description shown in Urd, unit and period words, total or average
+    horizon.ts           Skuld's horizon buttons in calendar steps
     examples.ts          reads public/data/examples.json
   ui/
     App.tsx              the screens and step navigation; holds the user's data in React state only
-    Start.tsx, Urd.tsx, Verdandi.tsx   one file per screen
+    Start.tsx, Urd.tsx, Verdandi.tsx, Skuld.tsx   one file per screen
+    csv.ts               the forecast as a CSV for Swedish Excel
     historik.ts          history for the chart: means per day or week for long series, time labels
     app.css              page layout, tokens only
     copy.ts              every Swedish string, from docs/COPY.md

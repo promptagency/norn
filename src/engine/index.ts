@@ -48,3 +48,5 @@ export function createForecaster(): Forecaster {
 }
 
 export { backtestSteps, grade, improvement, percentFits, score, SEASON, THRESHOLDS, type Grade, type Score } from "./backtest.ts";
+export { EVENTS, eventOn, eventSeries, type EventId } from "./holidays.ts";
+export { summarize, type Summary, type Summing } from "./summary.ts";

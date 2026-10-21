@@ -23,6 +23,8 @@ export interface DataSeries {
   missing: number;
   /** The other number columns on the same grid, kept for Skuld. */
   others: Record<string, (number | null)[]>;
+  /** How several rows per period were put together, when they were. */
+  combined?: Combine;
 }
 
 /** How several rows in the same period are put together, chosen by the user in Urd. */
@@ -156,6 +158,13 @@ export function buildSeries(table: Table, columns: Columns, value: number, combi
       values,
       missing: length - observed,
       others: Object.fromEntries(cols.slice(1).map((c, j) => [table.headers[c], rest[j]])),
+      combined: combine,
     },
   };
+}
+
+/** The next `steps` points on the series' grid, after its last one. */
+export function futureTimes(s: DataSeries, steps: number): Time[] {
+  const last = s.times.length - 1;
+  return Array.from({ length: steps }, (_, k) => timeAt(s.frequency, s.times[0], last + 1 + k));
 }

@@ -16,6 +16,10 @@ body { margin: 0; background: var(--grund); color: var(--text); font-family: var
 .smal { max-width: 820px; }
 .betyg-rad { display: flex; align-items: flex-start; flex-wrap: wrap; gap: var(--space-4); }
 .betyg-rad > .n-svar { flex: 1 1 420px; }
+.knapprad { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+@media print {
+  .n-steg, .n-valgrupp, .knapprad { display: none; }
+}
 @media (max-width: 600px) {
   .sida { padding: var(--space-8) var(--space-4); }
 }

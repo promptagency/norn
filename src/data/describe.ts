@@ -50,3 +50,9 @@ export function comparedWith(freq: Frequency): string {
   if (freq === "år") return t("jamfort.forra");
   return t(freq === "timme" || freq === "dag" ? "jamfort.vecka" : "jamfort.ar", { enhet: unit(freq) });
 }
+
+/** A total for amounts (sales, visits), an average for levels (price, temperature): PLAN.md, 2026-10-21. */
+export function summing(s: DataSeries): "summa" | "snitt" {
+  if (s.combined) return s.combined;
+  return s.values.every((v) => v === null || (v >= 0 && Number.isInteger(v))) ? "summa" : "snitt";
+}

@@ -105,6 +105,41 @@ Utkast. Ändras när skärmskisserna är godkända.
 | skuld.download | Ladda ner |
 | skuld.print | Skriv ut |
 | skuld.link | Kopiera länk |
+| skuld.answer.summa | {Period} landar det troligen på totalt {median}, mellan {lag} och {hog} i minst nio fall av tio. |
+| skuld.answer.snitt | {Period} landar snittet troligen på {median}, mellan {lag} och {hog} i minst nio fall av tio. |
+| skuld.plan.summa | Räkna med {varde} totalt {period}, så räcker det i minst {fall}. |
+| skuld.plan.snitt | Räkna med högst {varde} i snitt {period}, så räcker det i minst {fall}. |
+| skuld.fall.90 | nio fall av tio |
+| skuld.fall.95 | 19 fall av 20 |
+| skuld.wait | Norn räknar fram prognosen. |
+| skuld.chart | {namn} den senaste tiden och Norns prognos för {period}. |
+| skuld.details | Varför står det minst? |
+| skuld.details.text | Norn räknar fram ett intervall för varje {enhet} och lägger ihop dem. Det antar att alla {enheter} slår åt samma håll samtidigt, så intervallet för helheten blir hellre för brett än för smalt. Därför står det minst nio fall av tio. |
+| skuld.events.lead | Slå på det som gäller under perioden. Norn räknar om prognosen. |
+| skuld.events.effect | Med {handelser} landar det på {med} i stället för {utan}. |
+| skuld.events.empty | Inga av de händelser Norn känner till infaller under perioden. |
+| skuld.events.daily | Norn känner bara till händelser för data per dag eller timme. |
+| skuld.link.done | Länken är kopierad |
+| event.roda | Röda dagar |
+| event.midsommar | Midsommarafton |
+| event.lucia | Lucia |
+| event.julhandel | Julhandeln |
+| event.industrisemester | Industrisemestern |
+| narmast.dygn | det närmaste dygnet |
+| narmast.vecka | den närmaste veckan |
+| narmast.månad | den närmaste månaden |
+| narmast.kvartal | det närmaste kvartalet |
+| narmast.år | det närmaste året |
+| narmast.n | de närmaste {antal} {enheter} |
+| enhet.dygn | dygn |
+| enhet.dygn.flera | dygn |
+| enhet.dygn.bestamd | dygnen |
+| csv.filename | norn-prognos.csv |
+| csv.time | tid |
+| csv.median | troligast |
+| csv.low | lägst i nio fall av tio |
+| csv.high | högst i nio fall av tio |
+| csv.level | kvantil {procent} % |
 | model.ready | Klar. Norn fungerar nu även utan internet. |
 | error.short | Serien är för kort. Norn behöver minst 64 värden för att se ett mönster. |
 | error.irregular | Tiderna i filen kommer inte med jämna mellanrum. Välj en kolumn med datum eller tid i ordning. |

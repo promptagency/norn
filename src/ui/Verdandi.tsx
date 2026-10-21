@@ -5,6 +5,7 @@ import type { DataSeries } from "../data/detect.ts";
 import { backtestSteps, grade, improvement, percentFits, score, SEASON, THRESHOLDS, type Backtest, type Forecaster } from "../engine/index.ts";
 import { Betyg, Forklaring, Fraga, Knapp, Kort, Nyckeltal, Prognosgraf, Svar } from "./components/index.ts";
 import { COPY, t } from "./copy.ts";
+import { emphasize } from "./emphasize.tsx";
 import { timeLabels } from "./historik.ts";
 
 interface Props {
@@ -18,12 +19,6 @@ interface Props {
 const number = new Intl.NumberFormat("sv-SE", { maximumSignificantDigits: 3 });
 const percent = (x: number) => Math.round(100 * x);
 const mb = (bytes: number) => Math.round(bytes / 1e6);
-
-/** The sentence with `part` in <strong>, as Svar wants the important number. */
-function emphasize(text: string, part: string): ReactNode {
-  const i = text.indexOf(part);
-  return i < 0 ? text : <>{text.slice(0, i)}<strong>{part}</strong>{text.slice(i + part.length)}</>;
-}
 
 export function Verdandi({ series, forecaster, download, onNext }: Props) {
   const n = series.values.length;

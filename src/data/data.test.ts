@@ -149,3 +149,21 @@ group("the examples reach Urd with the right description", () => {
     expect(describe(r.value).replace(/ /g, " ")).toBe(expected[id]);
   });
 });
+
+group("Skuld's horizons and totals", () => {
+  it("counts calendar steps for each button", async () => {
+    const { horizons } = await import("./horizon.ts");
+    const last = day("2026-01-31T00:00");
+    expect(horizons("dag", last).map((h) => h.steps)).toEqual([14, 28, 89, 181]);
+    expect(horizons("timme", last).map((h) => h.steps)).toEqual([24, 72, 168, 336]);
+    expect(horizons("månad", last).map((h) => h.steps)).toEqual([3, 6, 12, 24]);
+  });
+
+  it("sums whole non-negative numbers and averages the rest, unless the user chose", async () => {
+    const { summing } = await import("./describe.ts");
+    const base = { name: "x", frequency: "dag" as const, times: [], missing: 0, others: {} };
+    expect(summing({ ...base, values: [3, 0, null, 12] })).toBe("summa");
+    expect(summing({ ...base, values: [0.35, 1.2] })).toBe("snitt");
+    expect(summing({ ...base, values: [0.35, 1.2], combined: "summa" })).toBe("summa");
+  });
+});

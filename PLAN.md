@@ -18,6 +18,7 @@ Taken by the owner, 2026-10-20. Do not revisit without asking.
 - Licence holder (2026-10-21): Prompt Agency AB, as `LICENSE` says.
 - Parity bar (2026-10-21): the engine must match the official Python package within 1 percent of the mean width of the 90 band, on every case. amine40's fp16 weights land at 0.1 to 0.7 percent; the earlier bar of 1e-3 of the series' standard deviation fails on long horizons, where the fed-back median compounds the fp16 rounding (an fp32 export passes, so the port is right). fp16 stays.
 - Verdandi's grade (2026-10-21): Pålitlig when Norn's error is at least 20 percent below repeating the last season and at least 80 percent of outcomes fall inside the 90 band; Osäker when Norn does not beat repeating the last season; Ungefärlig otherwise. No upper limit on coverage: with 12 monthly points a perfectly honest band covers all of them about a quarter of the time. The baseline is the same hour or day last week for hourly and daily data, the same period last year otherwise. Daily data holds out a year, not three months, so yearly peaks are part of the test. Constants in `src/engine/backtest.ts`.
+- Skuld (2026-10-21): the answer is a total or an average over the horizon, made by adding up each step's levels. That range is cautious (the real total fell inside the summed nine-in-ten range 99 times in 100 across the examples), so the words say "i minst nio fall av tio". Total when the user chose Summera in Urd or every value is a whole number of zero or more; average otherwise. "Kopiera länk" only for examples.
 - Domains (2026-10-21): the canonical address is `norn.promptagency.se`. `nornor.app` is a short address that 301-redirects there (Cloudflare zone exists, redirect to be set up at launch, same setup as `skrubba.app`). The app never refers to `nornor.app`.
 
 ## Phase 0 – Spike (done)
@@ -83,11 +84,12 @@ Done when: the grade on each example matches what the backtest table in `docs/DA
 
 ## Phase 4 – Skuld
 
-- [ ] Forecast chart per `design/DESIGN.md`, the answer in one sentence above it.
-- [ ] Horizon buttons in the user's unit.
-- [ ] "Hur säker vill du vara?" (most likely, nine of ten, nineteen of twenty).
-- [ ] "Vet du något om framtiden?" with Swedish public holidays and the user's own events as known-future covariates. Show when an event does not change the forecast.
-- [ ] Download CSV with all quantiles, print, copy link (settings only).
+- [x] Forecast chart per `design/DESIGN.md`, the answer in one sentence above it, all its numbers rounded to the same step.
+- [x] Horizon buttons in the user's unit, counted in calendar steps (`src/data/horizon.ts`).
+- [x] "Hur säker vill du vara?" (most likely, nine of ten, nineteen of twenty), with a sentence on what to plan for.
+- [x] "Vet du något om framtiden?" with Swedish events as known-future covariates for daily and hourly data: röda dagar, midsommarafton, lucia, julhandeln, industrisemestern (`src/engine/holidays.ts`). Only events the history has seen and the horizon contains are offered. The difference is said in words; less than 1 percent says the event changes nothing.
+- [ ] The user's own events ("Kampanj 3 till 9 november") and the difference as a second line in the chart. Both need design first: a date-range field and a comparison line style are not in `design/DESIGN.md` (owner's decision 2026-10-21 to wait).
+- [x] Download CSV with all quantiles (semicolons and decimal commas for Swedish Excel), print, copy link (settings only, examples only). A link opens straight in Skuld.
 
 Done when: a user can go from file to forecast and change horizon and certainty in under a minute without reading anything twice.
 
@@ -103,7 +105,7 @@ Done when: a user can go from file to forecast and change horizon and certainty 
 
 ## Open questions
 
-- **The covariate example.** Göteborg temperature lowers the SE3 price error by only 2 percent. Find consumption data where a known-future series really helps, or show honestly that it sometimes does not.
+- **The covariate example.** Answered 2026-10-21 by the events: a midsommarafton marker moves Norn's guess for the peak day on the Midsommar page from 3,944 to 7,845 (actual 10,464) and lowers the year's error by 28 percent; lucia does the same for the Lucia page. Göteborg temperature (2 percent better for SE3) is not offered in the UI, since its future is not known without a weather forecast.
 - **Weak hardware.** When does Norn fall back to the 5M model without asking? Proposal: if the first 28M forecast takes over 3 s. Note: on a Mac in Chrome, single-threaded (no cross-origin isolation yet), the first 28M forecast already takes about 2.7 s. COOP/COEP headers in Phase 5 would allow threads; measure again before setting the threshold.
 - **Build depends on amine40's Hugging Face repos.** `scripts/fetch-model.mjs` downloads the model at a pinned revision and sha256 on every clean build (Cloudflare included); the chunks are not in git. If amine40 deletes or renames the files, new deploys fail loudly (no silent swap), while the live site and local builds (`.cache/model/`) keep working. Accepted for now (owner, 2026-10-21), same as Skrubba. Options if it bites: a backup copy we control (for example R2) as a fallback in the fetch script, or committing the chunks (about 72 MB, check the licence terms for redistribution first).
 - **History cap.** amine40 caps history at 4,096 steps in the browser. Keep that, or offer more for hourly data?
