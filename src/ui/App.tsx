@@ -8,6 +8,7 @@ import { parseExcel, parseText, type Table } from "../data/parse.ts";
 import { createForecaster, EVENTS, type EventId } from "../engine/index.ts";
 import { NORNORNA, Sidfot, Sidhuvud, Steg } from "./components/index.ts";
 import { COPY, t } from "./copy.ts";
+import { serviceWorkerReady } from "./serviceWorker.ts";
 import { Skuld, type SkuldSettings } from "./Skuld.tsx";
 import { Start } from "./Start.tsx";
 import { Urd } from "./Urd.tsx";
@@ -42,8 +43,8 @@ function useDark() {
   return dark;
 }
 
-// One worker for the whole visit; the model loads once.
-const forecaster = createForecaster();
+// One worker for the whole visit; the model loads once, through the offline cache when there is one.
+const forecaster = createForecaster(serviceWorkerReady);
 
 export function App() {
   const [screen, setScreen] = useState<Screen>({ name: "start" });

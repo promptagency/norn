@@ -6,6 +6,7 @@ import { backtestSteps, grade, improvement, percentFits, score, SEASON, THRESHOL
 import { Betyg, Forklaring, Fraga, Knapp, Kort, Nyckeltal, Prognosgraf, Svar } from "./components/index.ts";
 import { COPY, t } from "./copy.ts";
 import { emphasize } from "./emphasize.tsx";
+import { loadingText } from "./model.ts";
 import { timeLabels } from "./historik.ts";
 
 interface Props {
@@ -18,7 +19,6 @@ interface Props {
 
 const number = new Intl.NumberFormat("sv-SE", { maximumSignificantDigits: 3 });
 const percent = (x: number) => Math.round(100 * x);
-const mb = (bytes: number) => Math.round(bytes / 1e6);
 
 export function Verdandi({ series, forecaster, download, onNext }: Props) {
   const n = series.values.length;
@@ -42,7 +42,7 @@ export function Verdandi({ series, forecaster, download, onNext }: Props) {
 
   let svar: ReactNode;
   if (result === "fel" || (result && !s)) svar = COPY["error.model"];
-  else if (!s) svar = download ? t("model.loading", { mb: mb(download.loaded), total: mb(download.total) }) : COPY["verdandi.wait"];
+  else if (!s) svar = download ? loadingText(download) : COPY["verdandi.wait"];
   else if (niva === "osaker") svar = COPY["verdandi.poor"];
   else {
     const Period = period.charAt(0).toUpperCase() + period.slice(1);

@@ -6,13 +6,23 @@ export type * from "./Forecaster.ts";
 
 type Pending = { resolve: (v: unknown) => void; reject: (e: Error) => void; onProgress?: Progress };
 
-export function createForecaster(): Forecaster {
-  const worker = new Worker(new URL("./worker.ts", import.meta.url), { type: "module" });
+/**
+ * `before` runs once before the worker starts: the app waits there for the service worker, since only a worker
+ * created under its control has its model downloads cached for offline use.
+ */
+export function createForecaster(before: () => Promise<unknown> = async () => {}): Forecaster {
   const pending = new Map<number, Pending>();
   let next = 0;
   let ready: Promise<void> | null = null;
+  let started: Promise<Worker> | null = null;
+  const start = () => (started ??= before().catch(() => {}).then(() => {
+    const worker = new Worker(new URL("./worker.ts", import.meta.url), { type: "module" });
+    worker.onmessage = onmessage;
+    worker.onerror = onerror;
+    return worker;
+  }));
 
-  worker.onmessage = ({ data }: MessageEvent<Response>) => {
+  const onmessage = ({ data }: MessageEvent<Response>) => {
     const p = pending.get(data.id);
     if (!p) return;
     if (data.type === "progress") return p.onProgress?.(data.loaded, data.total);
@@ -21,7 +31,7 @@ export function createForecaster(): Forecaster {
     else p.reject(new Error(data.message));
   };
   // A worker that fails to start or crashes leaves nothing to answer the open requests.
-  worker.onerror = (e) => {
+  const onerror = (e: ErrorEvent) => {
     for (const p of pending.values()) p.reject(new Error(e.message || "The forecasting worker stopped."));
     pending.clear();
   };
@@ -30,7 +40,7 @@ export function createForecaster(): Forecaster {
     const id = next++;
     return new Promise<T>((resolve, reject) => {
       pending.set(id, { resolve: resolve as (v: unknown) => void, reject, onProgress });
-      worker.postMessage({ ...req, id });
+      void start().then((worker) => worker.postMessage({ ...req, id }));
     });
   }
 

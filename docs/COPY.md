@@ -83,6 +83,7 @@ Utkast. Ändras när skärmskisserna är godkända.
 | enhet.kvartal.bestamd | kvartalen |
 | enhet.år.bestamd | åren |
 | model.loading | Norn laddar ner prognosmodellen, {mb} av {total} MB. |
+| model.once | Det sker bara första gången. |
 | error.model | Norn kunde inte göra prognosen. Ladda om sidan och försök igen. |
 | chart.seen | Det Norn fick se |
 | chart.guessed | Det Norn fick gissa på |

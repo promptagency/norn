@@ -7,6 +7,7 @@ import { Forklaring, Fraga, Knapp, Kort, Prognosgraf, Sakerhetsval, Svar, Valgru
 import type { Sakerhetsniva } from "./components/index.ts";
 import { COPY, t, type CopyKey } from "./copy.ts";
 import { emphasize } from "./emphasize.tsx";
+import { loadingText } from "./model.ts";
 import { forecastCsv } from "./csv.ts";
 import { timeLabels } from "./historik.ts";
 
@@ -34,7 +35,6 @@ function sameStep(reference: number) {
   return (x: number) => f.format(Math.round(x / 10 ** exp) * 10 ** exp);
 }
 const list = new Intl.ListFormat("sv", { type: "conjunction" });
-const mb = (bytes: number) => Math.round(bytes / 1e6);
 const capital = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
 /** "den närmaste veckan", "de närmaste 3 månaderna". */
@@ -85,7 +85,7 @@ export function Skuld({ series, forecaster, download, initial = {}, link }: Prop
 
   let svar: ReactNode;
   if (result === "fel") svar = COPY["error.model"];
-  else if (!sum) svar = download ? t("model.loading", { mb: mb(download.loaded), total: mb(download.total) }) : COPY["skuld.wait"];
+  else if (!sum) svar = download ? loadingText(download) : COPY["skuld.wait"];
   else {
     const fmt = sameStep(sum.median);
     const median = fmt(sum.median);
