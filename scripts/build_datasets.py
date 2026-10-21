@@ -71,6 +71,7 @@ def build_scb() -> None:
     write_csv("scb_detaljhandel.csv", header, rows)
     EXAMPLES.append({
         "id": "detaljhandel",
+        "source_short": "SCB",
         "title": "Detaljhandel per bransch",
         "frequency": "månad",
         "file": "scb_detaljhandel.csv",
@@ -152,6 +153,7 @@ def build_el_smhi() -> None:
     write_csv("elpris_se3_temp_goteborg.csv", ["tid", "elpris_kr_per_kwh", "temperatur_goteborg"], rows)
     EXAMPLES.append({
         "id": "elpris",
+        "source_short": "elprisetjustnu.se och SMHI",
         "title": "Elpris per timme, elområde 3",
         "frequency": "timme",
         "file": "elpris_se3_temp_goteborg.csv",
@@ -159,6 +161,7 @@ def build_el_smhi() -> None:
         "targets": {"elpris_kr_per_kwh": "Dygnsrytm, vinter mot sommar, och ibland negativa priser."},
         "default_target": "elpris_kr_per_kwh",
         "covariates": {"temperatur_goteborg": "Temperaturen vet man ofta i förväg via väderprognosen."},
+        "labels": {"elpris_kr_per_kwh": "Elpris", "temperatur_goteborg": "Temperatur i Göteborg"},
         "unit": "kr per kWh",
         "description": "Spotpriset på el i SE3 sedan november 2022, med temperaturen i Göteborg som hjälpserie.",
         "source": "elprisetjustnu.se (Nord Pool via entsoe) och SMHI station 71420 Göteborg A",
@@ -194,6 +197,7 @@ def build_wiki() -> None:
     write_csv("wikipedia_sv.csv", ["datum"] + [a.lower() for a in WIKI_ARTICLES], rows)
     EXAMPLES.append({
         "id": "wikipedia",
+        "source_short": "Wikimedia",
         "title": "Besök på svenska Wikipedia",
         "frequency": "dag",
         "file": "wikipedia_sv.csv",
@@ -231,6 +235,9 @@ def main() -> None:
         existing[e["id"]] = e
     order = ["detaljhandel", "elpris", "wikipedia"]
     out = [existing[k] for k in order if k in existing]
+    for e in out:  # the year the data starts, for the example cards
+        with open(OUT / e["file"], newline="") as f:
+            e["since"] = list(csv.reader(f))[1][0][:4]
     ex_path.write_text(json.dumps({"built": dt.date.today().isoformat(), "examples": out},
                                   ensure_ascii=False, indent=2))
     print("examples.json:", [e["id"] for e in out])

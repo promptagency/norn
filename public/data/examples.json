@@ -18,7 +18,9 @@
       "description": "Omsättning i svensk detaljhandel sedan 1991, löpande priser. Välj bransch.",
       "source": "SCB, Detaljhandelns omsättning efter näringsgren (DetOms07N)",
       "source_url": "https://www.statistikdatabasen.scb.se/pxweb/sv/ssd/START__HA__HA0101__HA0101B/DetOms07N/",
-      "license": "CC0"
+      "license": "CC0",
+      "source_short": "SCB",
+      "since": "1991"
     },
     {
       "id": "elpris",
@@ -37,7 +39,13 @@
       "description": "Spotpriset på el i SE3 sedan november 2022, med temperaturen i Göteborg som hjälpserie.",
       "source": "elprisetjustnu.se (Nord Pool via entsoe) och SMHI station 71420 Göteborg A",
       "source_url": "https://www.elprisetjustnu.se/elpris-api",
-      "license": "Elpris fritt utan garanti, temperatur CC BY 4.0 SMHI"
+      "license": "Elpris fritt utan garanti, temperatur CC BY 4.0 SMHI",
+      "labels": {
+        "elpris_kr_per_kwh": "Elpris",
+        "temperatur_goteborg": "Temperatur i Göteborg"
+      },
+      "source_short": "elprisetjustnu.se och SMHI",
+      "since": "2022"
     },
     {
       "id": "wikipedia",
@@ -55,7 +63,9 @@
       "description": "Dagliga besök på tre artiklar sedan 2016. Veckorytm och en årlig topp.",
       "source": "Wikimedia REST API, pageviews per article",
       "source_url": "https://wikimedia.org/api/rest_v1/",
-      "license": "CC0"
+      "license": "CC0",
+      "source_short": "Wikimedia",
+      "since": "2016"
     }
   ]
 }

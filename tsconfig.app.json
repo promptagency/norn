@@ -20,5 +20,5 @@
     "noFallthroughCasesInSwitch": true
   },
   "include": ["src"],
-  "exclude": ["src/engine/parity.test.ts"]
+  "exclude": ["src/**/*.test.ts"]
 }
