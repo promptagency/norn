@@ -142,7 +142,6 @@ Utkast. Ändras när skärmskisserna är godkända.
 | csv.low | lägst i nio fall av tio |
 | csv.high | högst i nio fall av tio |
 | csv.level | kvantil {procent} % |
-| model.ready | Klar. Norn fungerar nu även utan internet. |
 | error.short | Serien är för kort. Norn behöver minst 64 värden för att se ett mönster. |
 | error.irregular | Tiderna i filen kommer inte med jämna mellanrum. Välj en kolumn med datum eller tid i ordning. |
 | error.column | Norn kan inte läsa kolumnen {namn} som tal. Kontrollera att den bara innehåller siffror. |

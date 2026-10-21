@@ -17,7 +17,7 @@ Needs the owner:
 Engineering, not done yet:
 
 6. **Check by hand in real browsers**, which the automated tests cannot cover: one full run in real Safari on a Mac (CI uses Playwright's WebKit, not Safari), an Excel upload (unit tests cover the dates), printing Skuld, Verdandi in the dark theme, and a tablet in portrait (744 to 834 px wide gets the app).
-7. **Small:** `wrangler login` to refresh its permissions (it warns, nothing depends on it), and `model.ready` in COPY.md, which nothing shows; use it or remove it.
+7. **Small:** `wrangler login` to refresh its permissions (it warns, nothing depends on it).
 
 Done since launch (2026-10-21): CI in `.github/workflows/test.yml`, adapted from Skrubba's (type check and unit tests on every push, the Playwright suite on `v*` tags or by hand), and the end-to-end suite in Chromium, Firefox and WebKit, locally, against `nornor.app` and on CI (the phone tests skip Firefox, which Playwright cannot emulate as a phone).
 
@@ -116,7 +116,7 @@ Done when: a user can go from file to forecast and change horizon and certainty 
 
 ## Phase 5 – Ship
 
-- [x] Service worker from Skrubba: small files on install, the model, runtime and example CSVs when first fetched, never user data. Works offline after the first forecast (Playwright). "Det sker bara första gången." (`model.once`) is shown only while the service worker controls the page. `model.ready` is not used: there is no moment on screen where it would be read. Kill switch with `SW_KILL=1`. Cross-origin isolation in `public/_headers` lets the model run on several threads.
+- [x] Service worker from Skrubba: small files on install, the model, runtime and example CSVs when first fetched, never user data. Works offline after the first forecast (Playwright). "Det sker bara första gången." (`model.once`) is shown only while the service worker controls the page. `model.ready` was removed from COPY.md (2026-10-21): there is no moment on screen where it would be read. Kill switch with `SW_KILL=1`. Cross-origin isolation in `public/_headers` lets the model run on several threads.
 - [x] Playwright: full flow on each example, a test that fails on any request to another origin, offline after the first forecast, and nothing stored in the browser (`npm run e2e`).
 - [x] Footer: experiment, no support, data never leaves the computer, credits to Mistral, amine40 and the data sources (`footer.experiment`, `footer.credits`).
 - [x] Plausible page views through a Pages Function, copied from Skrubba (`functions/api/event.ts`). Plausible site `nornor.app`, receiving page views since 2026-10-21. The Playwright request test sees no other origin.
