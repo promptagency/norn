@@ -93,7 +93,9 @@ Rules:
 - The future never looks as certain as the past: the median is dotted, history is solid.
 - Always explain the bands in words next to the chart ("Hamnar här i nio fall av tio"). Colour never carries meaning alone. The bands also differ in lightness, not only in hue.
 - At most four values on the vertical axis (owner's decision 2026-10-21, was three), with the unit written once, each with a faint 1 px line across the chart in `kant`, drawn behind the bands (owner's decision 2026-10-21; before that the chart had no grid). No vertical grid lines.
+- The vertical axis's unit is written once, above its top value, in `etikett` weight: the example's unit from `examples.json` ("MWh per timme"), or the column's own name for a user's file (owner's decision 2026-10-21). The horizontal axis carries only its dates.
 - Time on the horizontal axis in the user's unit (days, weeks, months), never "steps".
+- Hover indicator (owner's decision 2026-10-21): a 1 px vertical guide line in `kant-kontroll`, a dot on each line at that time (the line's colour, a 2 px ring in `yta`), and a small card on `yta` with a `kant` border and `radius-sm` that gives the time ("18 oktober 2026 kl. 03:00") and the values in the legend's words: "Det som varit", "Det som faktiskt hände", "Troligast", "I nio fall av tio … till …". It follows the pointer and a finger, and the arrow keys (Home and End too) when the chart has focus. The card sits at the top of the chart, on the side away from the edge. The phone page's illustration has none.
 
 ## Type
 

@@ -3,6 +3,7 @@ import { useCallback, useEffect, useState } from "react";
 import logoNegativ from "../../design/logo/norn-logotyp-negativ.svg";
 import logoPositiv from "../../design/logo/norn-logotyp-positiv.svg";
 import { buildSeries, detectColumns, type Columns, type Combine, type DataSeries } from "../data/detect.ts";
+import type { Units } from "../data/describe.ts";
 import { loadExample, loadExamples, type Example } from "../data/examples.ts";
 import { parseExcel, parseText, type Table } from "../data/parse.ts";
 import { createForecaster, EVENTS, type EventId } from "../engine/index.ts";
@@ -23,7 +24,7 @@ type Screen =
   | { name: "skuld"; series: DataSeries; urd: UrdState; initial?: Partial<SkuldSettings> };
 
 /** `exempel` is set when the data is one of Norn's examples, which is what makes a shareable link possible. */
-type UrdState = { table: Table; columns: Columns; value: number; combine?: Combine; exempel?: string };
+type UrdState = { table: Table; columns: Columns; value: number; combine?: Combine; exempel?: string; units?: Units };
 
 /** A link to an example in Skuld. Settings only, never values: CLAUDE.md. */
 function exampleLink(urd: UrdState, s: SkuldSettings): string {
@@ -51,7 +52,7 @@ export function App() {
     );
   }, [hasData]);
 
-  const open = useCallback((table: Table, target?: string, exempel?: string) => {
+  const open = useCallback((table: Table, target?: string, exempel?: string, units?: Units) => {
     const c = detectColumns(table);
     if (!c.ok) return setScreen({ name: "start", fel: t(c.error.key, c.error.values) });
     const wanted = target === undefined ? -1 : table.headers.indexOf(target);
@@ -60,7 +61,7 @@ export function App() {
     const r = buildSeries(table, c.value, value);
     if (!r.ok && r.error.key !== "urd.many" && c.value.times.length === 1 && c.value.numeric.length === 1)
       return setScreen({ name: "start", fel: t(r.error.key, r.error.values) });
-    setScreen({ name: "urd", table, columns: c.value, value, exempel });
+    setScreen({ name: "urd", table, columns: c.value, value, exempel, units });
   }, []);
   const failed = () => setScreen({ name: "start", fel: COPY["error.file"] });
 
@@ -69,7 +70,7 @@ export function App() {
   const onText = useCallback((text: string) => open(parseText(text)), [open]);
   // Example data is fetched under the service worker's control, like the model, so it is there offline later.
   const fetchExample = (ex: Example) => serviceWorkerReady().then(() => loadExample(ex));
-  const onExempel = (ex: Example) => fetchExample(ex).then(({ table, target }) => open(table, target, ex.id), failed);
+  const onExempel = (ex: Example) => fetchExample(ex).then(({ table, target, units }) => open(table, target, ex.id, units), failed);
 
   // A copied link opens its example straight in Skuld; Urd and Verdandi stay one click back.
   useEffect(() => {
@@ -79,7 +80,7 @@ export function App() {
     loadExamples()
       .then((all) => all.find((e) => e.id === id) ?? Promise.reject(new Error(id)))
       .then(fetchExample)
-      .then(({ table, target }) => {
+      .then(({ table, target, units }) => {
         const c = detectColumns(table);
         if (!c.ok) throw new Error(c.error.key);
         const wanted = table.headers.indexOf(q.get("kolumn") ?? target);
@@ -90,7 +91,7 @@ export function App() {
         setScreen({
           name: "skuld",
           series: r.value,
-          urd: { table, columns: c.value, value, exempel: id },
+          urd: { table, columns: c.value, value, exempel: id, units },
           initial: {
             horisont: Number(q.get("horisont")) || 0,
             sakerhet: sakerhet === "90" || sakerhet === "95" ? sakerhet : "median",
@@ -127,6 +128,7 @@ export function App() {
           series={screen.series}
           forecaster={forecaster}
           download={download}
+          units={screen.urd.units}
           onNext={() => setScreen({ ...screen, name: "skuld" })}
         />
       )}
@@ -136,6 +138,7 @@ export function App() {
           forecaster={forecaster}
           download={download}
           initial={screen.initial}
+          units={screen.urd.units}
           link={screen.urd.exempel ? (s) => exampleLink(screen.urd, s) : undefined}
         />
       )}

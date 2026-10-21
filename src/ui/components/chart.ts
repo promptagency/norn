@@ -35,8 +35,39 @@ export interface ChartGeometry {
   nowX?: number;
   yTicks: { value: number; y: number }[];
   baseY: number;
+  /** Points on the time axis: the history, then the forecast. */
+  total: number;
   x: (index: number) => number;
   y: (value: number) => number;
+}
+
+/** The point on the time axis nearest to `vx` (in viewBox units), for the hover indicator. */
+export function indexAt(vx: number, total: number, layout: ChartLayout = DEFAULT_LAYOUT): number {
+  const w = layout.width - layout.padLeft - layout.padRight;
+  return Math.min(total - 1, Math.max(0, Math.round(((vx - layout.padLeft) / w) * (total - 1))));
+}
+
+export interface Reading {
+  /** The value in the history, at or before the now-line. */
+  history?: number;
+  /** What actually happened, backtest only. */
+  outcome?: number;
+  median?: number;
+  low90?: number;
+  high90?: number;
+}
+
+/** What the chart shows at one point, for the hover card. The now-line point belongs to the history. */
+export function readingAt(index: number, history: number[], forecast?: ForecastSeries, outcome?: number[]): Reading {
+  const n = history.length;
+  if (index < n) return { history: history[index] };
+  const k = index - n;
+  return {
+    outcome: outcome?.[k],
+    median: forecast?.median[k],
+    low90: forecast?.band90.lo[k],
+    high90: forecast?.band90.hi[k],
+  };
 }
 
 /** Up to four round values covering [min, max], always including 0 when it is in range (design/DESIGN.md). */
@@ -118,6 +149,7 @@ export function layoutChart(
     history: line(history.map((_, i) => i), history, x, y),
     yTicks: niceTicks(lo, hi).map((value) => ({ value, y: y(value) })),
     baseY: y(lo < 0 && hi > 0 ? 0 : lo),
+    total,
     x,
     y,
   };

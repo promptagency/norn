@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState, type ReactNode } from "react";
-import { columnName, summing, unit } from "../data/describe.ts";
+import { axisUnit, columnName, formatPoint, summing, textUnit, unit, type Units } from "../data/describe.ts";
 import { futureTimes, type DataSeries } from "../data/detect.ts";
 import { DEFAULT_HORIZON, horizons, type Horizon } from "../data/horizon.ts";
 import { EVENTS, eventOn, eventSeries, summarize, type EventId, type Forecast, type Forecaster } from "../engine/index.ts";
@@ -24,6 +24,8 @@ interface Props {
   initial?: Partial<SkuldSettings>;
   /** A link that opens these settings again; only examples have one (settings only, never data). */
   link?: (settings: SkuldSettings) => string;
+  /** Known for the examples; puts the unit on the axis and after the amounts. */
+  units?: Units;
 }
 
 const number = new Intl.NumberFormat("sv-SE", { maximumSignificantDigits: 3 });
@@ -42,7 +44,7 @@ const ahead = (h: Horizon) =>
   h.n === 1 ? t(`narmast.${h.unit}` as CopyKey) : t("narmast.n", { antal: h.n, enheter: t(`enhet.${h.unit}.bestamd` as CopyKey) });
 const label = (h: Horizon) => `${h.n} ${t(`enhet.${h.unit}${h.n === 1 ? "" : ".flera"}` as CopyKey)}`;
 
-export function Skuld({ series, forecaster, download, initial = {}, link }: Props) {
+export function Skuld({ series, forecaster, download, initial = {}, link, units }: Props) {
   const n = series.values.length;
   const options = useMemo(() => horizons(series.frequency, series.times[n - 1]), [series, n]);
   const [h, setH] = useState(Math.min(initial.horisont ?? DEFAULT_HORIZON, options.length - 1));
@@ -80,6 +82,9 @@ export function Skuld({ series, forecaster, download, initial = {}, link }: Prop
   const ready = result && result !== "fel" ? result : null;
   const shown = ready ? (ready.events ?? ready.base) : null;
   const how = summing(series);
+  // "18 300 sidvisningar", "8 500 MWh per timme": the unit once, after the main amount, where it is known.
+  const tu = textUnit(series, how, units);
+  const withUnit = (v: string) => (tu ? `${v} ${tu}` : v);
   const period = ahead(options[h]);
   const sum = shown && summarize(shown, how);
 
@@ -88,7 +93,7 @@ export function Skuld({ series, forecaster, download, initial = {}, link }: Prop
   else if (!sum) svar = download ? loadingText(download) : COPY["skuld.wait"];
   else {
     const fmt = sameStep(sum.median);
-    const median = fmt(sum.median);
+    const median = withUnit(fmt(sum.median));
     svar = emphasize(t(`skuld.answer.${how}`, { Period: capital(period), median, lag: fmt(sum.low), hog: fmt(sum.high) }), median);
   }
 
@@ -100,7 +105,7 @@ export function Skuld({ series, forecaster, download, initial = {}, link }: Prop
       ? COPY["skuld.events.none"]
       : t("skuld.events.effect", {
           handelser: list.format(active.map((id) => t(`event.${id}` as CopyKey).toLowerCase())),
-          med: sameStep(sum.median)(sum.median),
+          med: withUnit(sameStep(sum.median)(sum.median)),
           utan: sameStep(sum.median)(utan),
         });
   }
@@ -150,6 +155,8 @@ export function Skuld({ series, forecaster, download, initial = {}, link }: Prop
             foreText={COPY["chart.past"]}
             tonadHistorik
             hojd={340}
+            enhet={axisUnit(series, units)}
+            tidtext={(i) => formatPoint(series.frequency, [...series.times.slice(shownFrom), ...future][i])}
             beskrivning={t("skuld.chart", { namn: columnName(series.name), period })}
           />
           <Forklaring poster={["median", "band50", "band90"]} />
@@ -185,8 +192,8 @@ export function Skuld({ series, forecaster, download, initial = {}, link }: Prop
         {sum && niva !== "median" && (
           <p role="status">
             {emphasize(
-              t(`skuld.plan.${how}`, { varde: sameStep(sum.median)(niva === "90" ? sum.plan90 : sum.plan95), period, fall }),
-              sameStep(sum.median)(niva === "90" ? sum.plan90 : sum.plan95),
+              t(`skuld.plan.${how}`, { varde: withUnit(sameStep(sum.median)(niva === "90" ? sum.plan90 : sum.plan95)), period, fall }),
+              withUnit(sameStep(sum.median)(niva === "90" ? sum.plan90 : sum.plan95)),
             )}
           </p>
         )}

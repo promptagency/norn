@@ -120,6 +120,7 @@ def build_el(end: dt.date | None = None) -> None:
         "default_target": "elforbrukning_mwh",
         "labels": {"elforbrukning_mwh": "Elförbrukning"},
         "unit": "MWh per timme",
+        "amount_unit": "MWh",
         "description": "All el som används i elområde 3 varje timme sedan november 2022.",
         "source": "eSett Open Data, förbrukning per elområde (EXP15)",
         "source_url": "https://opendata.esett.com/consumption",
@@ -165,6 +166,7 @@ def build_wiki() -> None:
         # The card's sentence, since it covers all four articles and not only the default.
         "card": "Finalen och påsken flyttar sig varje år. Välj påsk, 6 månader och röda dagar, så hittar Norn påsken också.",
         "unit": "sidvisningar per dag",
+        "amount_unit": "sidvisningar",
         "description": "Dagliga besök på fyra artiklar sedan 2016. Veckorytm och en årlig topp.",
         "source": "Wikimedia REST API, pageviews per article",
         "source_url": "https://wikimedia.org/api/rest_v1/",

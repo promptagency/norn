@@ -113,6 +113,13 @@ export interface PrognosgrafProps {
   tonadHistorik?: boolean;
   /** Height of the drawing in viewBox units; the width is always 1000. */
   hojd?: number;
+  /** What the values are, written once above the vertical axis ("MWh per timme"). */
+  enhet?: string;
+  /**
+   * The time of a point on the combined axis, in words ("21 oktober 2026 kl. 14"). Given, it turns on the hover
+   * indicator: a guide line, a dot on each line and a card with the values, by pointer, touch or arrow keys.
+   */
+  tidtext?: (index: number) => string;
   /** Describes the chart for screen readers. Required. */
   beskrivning: string;
 }

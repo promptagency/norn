@@ -56,3 +56,27 @@ export function summing(s: DataSeries): "summa" | "snitt" {
   if (s.combined) return s.combined;
   return s.values.every((v) => v === null || (v >= 0 && Number.isInteger(v))) ? "summa" : "snitt";
 }
+
+/** What the numbers are: the axis title, and the word after an amount ("MWh", "sidvisningar"), when known. */
+export interface Units {
+  axis: string;
+  amount?: string;
+}
+
+/** The vertical axis title: the example's unit, else the column's own name ("Försäljning (kr)"). */
+export const axisUnit = (s: DataSeries, units?: Units) => units?.axis ?? columnName(s.name);
+
+/** The words after a total or an average in a sentence: "sidvisningar", "MWh per timme". Empty when unknown. */
+export function textUnit(s: DataSeries, how: "summa" | "snitt", units?: Units): string {
+  if (!units?.amount) return "";
+  return how === "summa" ? units.amount : `${units.amount} per ${unit(s.frequency)}`;
+}
+
+const clock = new Intl.DateTimeFormat("sv-SE", { timeZone: "UTC", hour: "2-digit", minute: "2-digit" });
+
+/** One point's time for the hover card: "21 oktober 2026 kl. 14:00", "veckan från 3 mars 2025", "januari 1991". */
+export function formatPoint(freq: Frequency, time: Time): string {
+  if (freq === "timme") return t("graf.klockslag", { datum: formatTime("dag", time), tid: clock.format(new Date(time)) });
+  if (freq === "vecka") return t("graf.vecka", { datum: formatTime("dag", time) });
+  return formatTime(freq, time);
+}

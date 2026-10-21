@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { bucketMeans, layoutChart, niceTicks } from "./chart.ts";
+import { bucketMeans, DEFAULT_LAYOUT, indexAt, layoutChart, niceTicks, readingAt } from "./chart.ts";
 
 describe("niceTicks", () => {
   it("gives at most four round values, the top one included", () => {
@@ -40,5 +40,23 @@ describe("layoutChart", () => {
   it("includes the whole 90 band in the value range", () => {
     const g = layoutChart([0, 1, 2], forecast);
     expect(g.y(5)).toBeGreaterThanOrEqual(0);
+  });
+});
+
+describe("the hover indicator", () => {
+  it("finds the nearest point on the time axis, and stays inside it", () => {
+    const { padLeft, width, padRight } = DEFAULT_LAYOUT;
+    expect(indexAt(padLeft, 11)).toBe(0);
+    expect(indexAt(width - padRight, 11)).toBe(10);
+    expect(indexAt(padLeft + (width - padLeft - padRight) * 0.52, 11)).toBe(5);
+    expect(indexAt(-50, 11)).toBe(0);
+    expect(indexAt(5000, 11)).toBe(10);
+  });
+
+  it("reads the history up to the now-line and the forecast after it", () => {
+    const f = { median: [5, 6], band50: { lo: [4, 5], hi: [6, 7] }, band90: { lo: [3, 4], hi: [7, 8] } };
+    expect(readingAt(1, [1, 2, 3], f)).toEqual({ history: 2 });
+    expect(readingAt(2, [1, 2, 3], f)).toEqual({ history: 3 });
+    expect(readingAt(4, [1, 2, 3], f, [9, 10])).toEqual({ outcome: 10, median: 6, low90: 4, high90: 8 });
   });
 });

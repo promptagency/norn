@@ -1,5 +1,5 @@
 // Prepares a history for Prognosgraf: long series are drawn as means per day or week, with a few time labels.
-import { formatTime, unit } from "../data/describe.ts";
+import { formatPoint, formatTime, unit } from "../data/describe.ts";
 import type { DataSeries, Frequency } from "../data/detect.ts";
 import type { Time } from "../data/parse.ts";
 import { bucketMeans } from "./components/chart.ts";
@@ -12,6 +12,8 @@ export interface Historik {
   labels: Axeletikett[];
   /** Set when the chart shows means: what each point stands for ("vecka"). */
   grupp?: string;
+  /** Each drawn point's time in words, for the hover card. */
+  tid: (index: number) => string;
 }
 
 function bucket(freq: Frequency, n: number): { size: number; grupp?: Frequency } {
@@ -25,7 +27,8 @@ export function historik(s: DataSeries): Historik {
   const { size, grupp } = bucket(s.frequency, s.values.length);
   const values = bucketMeans(s.values.map((v) => v ?? NaN), size);
   const labels = timeLabels(s.times, size);
-  return { values, labels, grupp: grupp && unit(grupp) };
+  const tid = (i: number) => formatPoint(grupp ?? s.frequency, s.times[i * size]);
+  return { values, labels, grupp: grupp && unit(grupp), tid };
 }
 
 /** Labels the first point of each new year, else month, else day: the coarsest that gives at least two, at most six. */

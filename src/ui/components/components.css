@@ -211,6 +211,21 @@
 
 /* Prognosgraf ----------------------------------------------------------- */
 .n-graf { width: 100%; height: auto; display: block; font-family: var(--font-text); overflow: visible; }
+.n-graf:focus-visible { outline: 2px solid var(--fokus); outline-offset: 4px; border-radius: var(--radius-sm); }
+.n-graf__enhet { font-weight: 600; }
+/* The hover indicator (design/DESIGN.md): a guide line, a dot on each line, and a card with the values. */
+.n-graf-ram { position: relative; }
+.n-graf__guide { stroke: var(--kant-kontroll); stroke-width: 1; }
+.n-graf__punkt { fill: var(--prognos-historik); stroke: var(--yta); stroke-width: 2; }
+.n-graf-kort {
+  position: absolute; top: 0; margin-left: var(--space-3); pointer-events: none; white-space: nowrap;
+  background: var(--yta); border: 1px solid var(--kant); border-radius: var(--radius-sm);
+  padding: var(--space-2) var(--space-3); color: var(--text); font-family: var(--font-text);
+  font-size: 13px; line-height: 18px; font-variant-numeric: tabular-nums;
+}
+.n-graf-kort--vanster { transform: translateX(-100%); margin-left: calc(-1 * var(--space-3)); }
+.n-graf-kort__tid { font-weight: 600; margin-bottom: var(--space-1); }
+.n-graf-kort strong { font-weight: 600; }
 .n-graf__etikett { fill: var(--text-dampad); font-size: 13px; font-variant-numeric: tabular-nums; }
 .n-graf__nu-text { fill: var(--krapp); font-size: 13px; font-weight: 600; }
 /* Faint lines at the values on the vertical axis, behind everything else (design/DESIGN.md). */

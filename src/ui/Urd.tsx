@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { describe, columnName, unit } from "../data/describe.ts";
+import { axisUnit, describe, columnName, unit, type Units } from "../data/describe.ts";
 import { buildSeries, detectColumns, type Columns, type Combine, type DataSeries } from "../data/detect.ts";
 import type { Table } from "../data/parse.ts";
 import { Knapp, Kort, Prognosgraf, Svar, Valgrupp, Valknapp } from "./components/index.ts";
@@ -13,14 +13,16 @@ interface Props {
   value: number;
   /** How several rows per day are put together, once the user has said. */
   combine?: Combine;
+  /** Known for the examples (examples.json); an own file's axis is titled with the column's name. */
+  units?: Units;
   onColumns: (columns: Columns, value: number) => void;
   onCombine: (combine: Combine) => void;
   onJa: (series: DataSeries) => void;
 }
 
-const number = new Intl.NumberFormat("sv-SE", { maximumFractionDigits: 2 });
+const number = new Intl.NumberFormat("sv-SE", { maximumSignificantDigits: 4 });
 
-export function Urd({ table, columns, value, combine, onColumns, onCombine, onJa }: Props) {
+export function Urd({ table, columns, value, combine, units, onColumns, onCombine, onJa }: Props) {
   const [andra, setAndra] = useState(false);
   const result = buildSeries(table, columns, value, combine);
   const valjTid = (time: number) => {
@@ -38,7 +40,15 @@ export function Urd({ table, columns, value, combine, onColumns, onCombine, onJa
 
       {result.ok && h && (
         <Kort figur>
-          <Prognosgraf historik={h.values} xEtiketter={h.labels} formatY={number.format} hojd={300} beskrivning={describe(result.value)} />
+          <Prognosgraf
+            historik={h.values}
+            xEtiketter={h.labels}
+            formatY={number.format}
+            hojd={300}
+            enhet={axisUnit(result.value, units)}
+            tidtext={h.tid}
+            beskrivning={describe(result.value)}
+          />
           {h.grupp && (
             <figcaption className="liten dampad">{t("urd.bucketed", { grupp: h.grupp, enhet: unit(result.value.frequency) })}</figcaption>
           )}

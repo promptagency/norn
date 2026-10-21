@@ -71,3 +71,22 @@ test("never stores the user's data in the browser", async ({ page }) => {
   expect(stored).toMatchObject({ local: 0, session: 0, cookies: "", databases: 0 });
   for (const path of stored.cached) expect(path).toMatch(/^\/(index\.html|assets\/|model\/|data\/|__sw-manifest)/);
 });
+
+test("the chart says its unit and shows the values under the pointer", async ({ page }) => {
+  await page.goto("/?exempel=wikipedia&horisont=1");
+  await expect(page.locator(".n-svar")).toContainText("sidvisningar", { timeout: 120_000 });
+  const chart = page.locator("svg.n-graf");
+  await expect(chart.locator(".n-graf__enhet")).toHaveText("sidvisningar per dag");
+  const box = (await chart.boundingBox())!;
+  await page.mouse.move(box.x + box.width * 0.8, box.y + box.height / 2);
+  const card = page.locator(".n-graf-kort");
+  await expect(card).toContainText("Troligast");
+  await expect(card).toContainText("I nio fall av tio");
+  await page.mouse.move(box.x + box.width * 0.2, box.y + box.height / 2);
+  await expect(card).toContainText("Det som varit");
+  // The keyboard reaches the same values.
+  await page.mouse.move(0, 0);
+  await chart.focus();
+  await page.keyboard.press("End");
+  await expect(card).toContainText("Troligast");
+});

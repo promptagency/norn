@@ -41,7 +41,8 @@
       "source": "eSett Open Data, förbrukning per elområde (EXP15)",
       "source_url": "https://opendata.esett.com/consumption",
       "license": "CC0",
-      "since": "2022"
+      "since": "2022",
+      "amount_unit": "MWh"
     },
     {
       "id": "wikipedia",
@@ -63,7 +64,8 @@
       "source": "Wikimedia REST API, pageviews per article",
       "source_url": "https://wikimedia.org/api/rest_v1/",
       "license": "CC0",
-      "since": "2016"
+      "since": "2016",
+      "amount_unit": "sidvisningar"
     }
   ]
 }

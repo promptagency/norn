@@ -98,6 +98,10 @@ Utkast. Ändras när skärmskisserna är godkända.
 | legend.median.backtest | Norns troligaste gissning |
 | legend.band50 | Hamnar här i hälften av fallen |
 | legend.band90 | Hamnar här i nio fall av tio |
+| graf.nio | I nio fall av tio |
+| graf.intervall | {lag} till {hog} |
+| graf.klockslag | {datum} kl. {tid} |
+| graf.vecka | veckan från {datum} |
 | skuld.heading | Det som kommer |
 | skuld.horizon | Hur långt fram |
 | skuld.events | Vet du något om framtiden? |
