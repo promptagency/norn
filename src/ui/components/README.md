@@ -152,6 +152,7 @@ En upphöjd yta för en graf med förklaring, en fråga eller en grupp nyckeltal
 
 - Använd `figur` för en graf med sin förklaring, så hör de ihop för skärmläsare.
 - Skilj kort från grunden med `yta` och en kant i `kant`, aldrig med skugga.
+- Använd `framhavd` för det enda kort en skärm pekar mot, till exempel Öppna Norn på en dator på telefonsidan. Högst ett per skärm.
 
 ## Exempel
 

@@ -17,6 +17,16 @@ body { margin: 0; background: var(--grund); color: var(--text); font-family: var
 .betyg-rad { display: flex; align-items: flex-start; flex-wrap: wrap; gap: var(--space-4); }
 .betyg-rad > .n-svar { flex: 1 1 420px; }
 .knapprad { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+/* The phone page (design/DESIGN.md). */
+.telefon { padding-top: var(--space-8); gap: var(--space-8); }
+.telefon__steg { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: var(--space-4); }
+.telefon__steg li { display: flex; gap: var(--space-3); align-items: flex-start; }
+.telefon__steg strong { font-weight: 600; }
+.telefon__nummer {
+  flex: none; width: 28px; height: 28px; border-radius: var(--radius-full); background: var(--indigo); color: var(--pa-indigo);
+  display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 600;
+}
+.telefon__knapp { width: 100%; margin-top: var(--space-2); }
 @media print {
   .n-steg, .n-valgrupp, .knapprad { display: none; }
 }

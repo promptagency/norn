@@ -12,6 +12,7 @@ import { serviceWorkerReady } from "./serviceWorker.ts";
 import { Skuld, type SkuldSettings } from "./Skuld.tsx";
 import { Start } from "./Start.tsx";
 import { Urd } from "./Urd.tsx";
+import { useDark } from "./theme.ts";
 import { Verdandi } from "./Verdandi.tsx";
 import "./app.css";
 
@@ -31,17 +32,6 @@ function exampleLink(urd: UrdState, s: SkuldSettings): string {
   return `${location.origin}/?${q}`;
 }
 
-function useDark() {
-  const query = "(prefers-color-scheme: dark)";
-  const [dark, setDark] = useState(() => matchMedia(query).matches);
-  useEffect(() => {
-    const m = matchMedia(query);
-    const change = () => setDark(m.matches);
-    m.addEventListener("change", change);
-    return () => m.removeEventListener("change", change);
-  }, []);
-  return dark;
-}
 
 // One worker for the whole visit; the model loads once, through the offline cache when there is one.
 const forecaster = createForecaster(serviceWorkerReady);

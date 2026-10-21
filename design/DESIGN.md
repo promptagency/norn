@@ -132,9 +132,20 @@ The components are React code in `src/ui/components/`, documented in `src/ui/com
 
 The approved screen sketches (Start, Urd, Verdandi, Skuld, with real Timestral output on the SE3 price) are on the design canvas "Norn skärmskisser" in Claude.
 
+## The phone page
+
+Phones get one page instead of the app (decision in `PLAN.md`), approved on the design canvas "Norn skärmskisser" (artboard Telefon) on 2026-10-21. One column, 16 px side margin, light and dark from the tokens like every other screen.
+
+1. `Sidhuvud` with the tagline, as on Start.
+2. Heading in `rubrik-l` (`rubrik-xl` is too large at this width) and the lead in `ingress`.
+3. A `Kort figur` with a `Prognosgraf` illustration: a made-up history up to the now-line, then the median and both bands widening. No axis numbers, since nothing on it is a real forecast.
+4. "Tre steg, som de tre nornorna" in `rubrik-s`, then the three steps as a list with an indigo number marker (28 px, `radius-full`), the step's name in `brod-stark`.
+5. "Allt händer i din dator" on a `Kort`.
+6. "Öppna Norn på en dator" on a `Kort framhavd` with a heading in `rubrik-m`, and the page's one `primar` button, Kopiera länken, at full width.
+7. `Sidfot`.
+
 ## Not yet defined
 
 - Icons. Write actions out in words until an icon set is chosen. The only drawn marks are the upload arrow, the tick in `Steg`, the chevron in `Fraga` and the dots in `Betyg`.
-- The layout of the phone explainer page (copy drafted in `docs/COPY.md`). The four screens have no phone layout; phones get that page instead (`PLAN.md`).
 
 If a design decision is not covered here, ask instead of inventing one.

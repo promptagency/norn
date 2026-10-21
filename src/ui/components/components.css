@@ -205,6 +205,9 @@
   gap: var(--space-4);
   color: var(--text);
 }
+.n-kort--framhavd {
+  border: 2px solid var(--indigo);
+}
 
 /* Prognosgraf ----------------------------------------------------------- */
 .n-graf { width: 100%; height: auto; display: block; font-family: var(--font-text); overflow: visible; }

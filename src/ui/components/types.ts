@@ -79,6 +79,8 @@ export interface KortProps {
   children: ReactNode;
   /** Renders a <figure> so a chart and its legend belong together. */
   figur?: boolean;
+  /** A 2 px border in indigo, for the one card a screen points to (the phone page's Öppna Norn på en dator). */
+  framhavd?: boolean;
 }
 
 export interface Axeletikett {

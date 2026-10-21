@@ -31,6 +31,7 @@ src/
   ui/
     App.tsx              the screens and step navigation; holds the user's data in React state only
     Start.tsx, Urd.tsx, Verdandi.tsx, Skuld.tsx   one file per screen
+    Telefon.tsx          the page phones get instead of the app, and isPhone()
     csv.ts               the forecast as a CSV for Swedish Excel
     historik.ts          history for the chart: means per day or week for long series, time labels
     app.css              page layout, tokens only

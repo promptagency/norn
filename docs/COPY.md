@@ -173,15 +173,6 @@ Utkast. Ändras när skärmskisserna är godkända.
 | enhet.år.flera | år |
 | error.file | Norn kan inte läsa filen. Spara den som CSV eller Excel och försök igen, eller klistra in siffrorna direkt. |
 | error.notime | Norn hittar ingen kolumn med datum eller tid. Filen behöver en kolumn för tid och en med siffror. |
-| footer.experiment | Norn är ett experiment från Prompt Agency. Ingen support, ingen garanti. Din data lämnar aldrig datorn. |
-| footer.credits | Prognoserna görs av Timestral från Mistral AI, i webbläsaren tack vare amine40:s ONNX-export. Exempeldata från SCB, SMHI, elprisetjustnu.se och Wikimedia. |
-
-## Utkast, telefonsidan
-
-Inte godkänt. Används inte i appen förrän ägaren har godkänt texterna och sidans layout finns i `design/DESIGN.md`. Sidan visas i stället för appen på telefoner. {mb} och {adress} fylls i från `src/config.ts`.
-
-| Nyckel | Text |
-|---|---|
 | mobil.heading | Se vad som väntar i dina egna siffror |
 | mobil.lead | Du har siffror över tid, kanske försäljning per dag eller elräkningen per månad. Norn visar vad som troligen kommer och hur säker du kan vara. |
 | mobil.steps | Tre steg, som de tre nornorna |
@@ -194,4 +185,5 @@ Inte godkänt. Används inte i appen förrän ägaren har godkänt texterna och 
 | mobil.desktop | Norn behöver en större skärm, och modellen är {mb} MB. Dina filer finns troligen på datorn också. Gå till {adress} där, så kan du börja direkt. Det finns exempel med riktiga siffror om du vill prova utan egna. |
 | mobil.link | Kopiera länken |
 | mobil.link.done | Länken är kopierad |
-
+| footer.experiment | Norn är ett experiment från Prompt Agency. Ingen support, ingen garanti. Din data lämnar aldrig datorn. |
+| footer.credits | Prognoserna görs av Timestral från Mistral AI, i webbläsaren tack vare amine40:s ONNX-export. Exempeldata från SCB, SMHI, elprisetjustnu.se och Wikimedia. |

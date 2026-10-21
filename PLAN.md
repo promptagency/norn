@@ -45,7 +45,7 @@ Results in `docs/fas0-resultat.md` (Swedish). Short version: fp16 weights are th
 - [x] Logo outlined, icons, colour tokens with contrast checks, chart tokens, type, tone. In `design/`.
 - [x] Screen sketches for Start, Urd, Verdandi and Skuld on the design canvas "Norn skärmskisser", with real Timestral-28M output on the SE3 price. Approved by the owner 2026-10-20.
 - [x] Components as React code in `src/ui/components/`, built into the design system with `npm run build:ds` (owner's decision 2026-10-20: one source for app and design system). Gallery in `src/dev/`.
-- [ ] Phone explainer page instead of a phone layout (decision above). Copy drafted in `docs/COPY.md` under "Utkast, telefonsidan", awaiting the owner. Layout to be added to `design/DESIGN.md` before it is built.
+- [x] Phone explainer page instead of a phone layout (decision above). Copy and layout approved 2026-10-21 (`docs/COPY.md`, `design/DESIGN.md`), built in `src/ui/Telefon.tsx`. Phones register no service worker and never load the model or the worker (Playwright, `tests/e2e/telefon.spec.ts`).
 
 Decision 2026-10-20: the chart is our own SVG component (`Prognosgraf`) instead of uPlot, so it follows the chart rules exactly and renders the same in the design system.
 
