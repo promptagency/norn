@@ -3,6 +3,7 @@
   "examples": [
     {
       "id": "detaljhandel",
+      "source_short": "SCB",
       "title": "Detaljhandel per bransch",
       "frequency": "månad",
       "file": "scb_detaljhandel.csv",
@@ -19,7 +20,6 @@
       "source": "SCB, Detaljhandelns omsättning efter näringsgren (DetOms07N)",
       "source_url": "https://www.statistikdatabasen.scb.se/pxweb/sv/ssd/START__HA__HA0101__HA0101B/DetOms07N/",
       "license": "CC0",
-      "source_short": "SCB",
       "since": "1991"
     },
     {
@@ -37,12 +37,12 @@
         "elforbrukning_mwh": "Elförbrukning"
       },
       "unit": "MWh per timme",
+      "amount_unit": "MWh",
       "description": "All el som används i elområde 3 varje timme sedan november 2022.",
       "source": "eSett Open Data, förbrukning per elområde (EXP15)",
       "source_url": "https://opendata.esett.com/consumption",
       "license": "CC0",
-      "since": "2022",
-      "amount_unit": "MWh"
+      "since": "2022"
     },
     {
       "id": "wikipedia",
@@ -60,12 +60,12 @@
       "default_target": "melodifestivalen",
       "card": "Finalen och påsken flyttar sig varje år. Välj påsk, 6 månader och röda dagar, så hittar Norn påsken också.",
       "unit": "sidvisningar per dag",
+      "amount_unit": "sidvisningar",
       "description": "Dagliga besök på fyra artiklar sedan 2016. Veckorytm och en årlig topp.",
       "source": "Wikimedia REST API, pageviews per article",
       "source_url": "https://wikimedia.org/api/rest_v1/",
       "license": "CC0",
-      "since": "2016",
-      "amount_unit": "sidvisningar"
+      "since": "2016"
     }
   ]
 }
