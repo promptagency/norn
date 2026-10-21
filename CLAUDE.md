@@ -28,7 +28,8 @@ Ordinary people with numbers over time and no background in statistics: a shop o
 - User data (the file, the parsed series, forecasts) lives **in memory only** in v1. Never `localStorage`, `sessionStorage`, IndexedDB, cookies or URL params. The only persistence is an explicit user-triggered download. A per-viewer convenience (theme) may use `localStorage`; nothing derived from the data may.
 - "Kopiera länk" encodes settings only (example id, horizon, certainty level), never values from the user's file.
 - All inference runs in a **Web Worker**. The main thread never blocks.
-- Model and ONNX runtime files are cached by the service worker so the app works offline after the first visit. Where they are served from is an open question in `PLAN.md`; until it is decided, keep the URLs in `src/config.ts` only.
+- Model and ONNX runtime files are served from our own origin (split into chunks under 25 MiB, joined in the worker) and cached by the service worker so the app works offline after the first visit. URLs live in `src/config.ts` only.
+- The only analytics is anonymous page views to self-hosted Plausible through a Pages Function on our own origin, as in Skrubba. No custom events, nothing from the user's data.
 - Never claim anything in the UI about where data is processed or stored that is not true of the code as it stands.
 
 ## Stack
