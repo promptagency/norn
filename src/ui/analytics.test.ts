@@ -21,32 +21,32 @@ afterEach(() => vi.unstubAllGlobals());
 
 describe("countVisit", () => {
   it("sends one page view to Norn's own address, never to another", () => {
-    visit("https://norn.promptagency.se/");
+    visit("https://nornor.app/");
     expect(sent).toHaveBeenCalledTimes(1);
     const [url, init] = sent.mock.calls[0];
     expect(url).toBe("/api/event");
     expect(init.method).toBe("POST");
     expect(JSON.parse(init.body)).toEqual({
       n: "pageview",
-      u: "https://norn.promptagency.se/",
-      d: "norn.promptagency.se",
+      u: "https://nornor.app/",
+      d: "nornor.app",
       r: null,
     });
   });
 
   it("keeps only utm_* from the address, and only origin and path of the referrer", () => {
-    visit("https://norn.promptagency.se/?utm_source=linkedin&q=secret", {}, "https://www.google.com/search?q=x");
+    visit("https://nornor.app/?utm_source=linkedin&q=secret", {}, "https://www.google.com/search?q=x");
     const body = JSON.parse(sent.mock.calls[0][1].body);
-    expect(body.u).toBe("https://norn.promptagency.se/?utm_source=linkedin");
+    expect(body.u).toBe("https://nornor.app/?utm_source=linkedin");
     expect(body.r).toBe("https://www.google.com/search");
   });
 
   it.each([
     ["another host", "https://skrubba.pages.dev/", {}],
     ["localhost", "http://localhost:4173/", {}],
-    ["Do Not Track", "https://norn.promptagency.se/", { doNotTrack: "1" }],
-    ["Global Privacy Control", "https://norn.promptagency.se/", { globalPrivacyControl: true }],
-    ["an automated browser", "https://norn.promptagency.se/", { webdriver: true }],
+    ["Do Not Track", "https://nornor.app/", { doNotTrack: "1" }],
+    ["Global Privacy Control", "https://nornor.app/", { globalPrivacyControl: true }],
+    ["an automated browser", "https://nornor.app/", { webdriver: true }],
   ])("counts nothing on %s", (_, href, nav) => {
     visit(href, nav);
     expect(sent).not.toHaveBeenCalled();

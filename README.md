@@ -11,7 +11,7 @@
 </p>
 
 <p align="center">
-  <a href="https://norn.promptagency.se">norn.promptagency.se</a>
+  <a href="https://nornor.app">nornor.app</a>
 </p>
 
 ## What it does

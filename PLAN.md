@@ -6,7 +6,7 @@ Phased plan for Norn. Each phase ends in something runnable. Do not start a phas
 
 Taken by the owner, 2026-10-20. Do not revisit without asking.
 
-- Norn is an open source labs project under Prompt Agency, at `norn.promptagency.se`, MIT. Experiment, no support promise. Marketing for Prompt Agency as much as open source.
+- Norn is an open source labs project under Prompt Agency, at `nornor.app`, MIT. Experiment, no support promise. Marketing for Prompt Agency as much as open source.
 - One tool, not several. Presets and examples cover different kinds of data; the core is the same.
 - Engine: amine40's Timestral ONNX exports and the `timestral.js` port from `amine-athmani/timestral-in-browser`. We do not publish our own exports to Hugging Face. Our own export from the spike stays in `scripts/` as a verification tool.
 - Norn is a less technical version of amine40's app for ordinary users. Clear example data from different sources is kept from amine40's idea. No links out of the app in the user flow.
@@ -19,7 +19,7 @@ Taken by the owner, 2026-10-20. Do not revisit without asking.
 - Parity bar (2026-10-21): the engine must match the official Python package within 1 percent of the mean width of the 90 band, on every case. amine40's fp16 weights land at 0.1 to 0.7 percent; the earlier bar of 1e-3 of the series' standard deviation fails on long horizons, where the fed-back median compounds the fp16 rounding (an fp32 export passes, so the port is right). fp16 stays.
 - Verdandi's grade (2026-10-21): Pålitlig when Norn's error is at least 20 percent below repeating the last season and at least 80 percent of outcomes fall inside the 90 band; Osäker when Norn does not beat repeating the last season; Ungefärlig otherwise. No upper limit on coverage: with 12 monthly points a perfectly honest band covers all of them about a quarter of the time. The baseline is the same hour or day last week for hourly and daily data, the same period last year otherwise. Daily data holds out a year, not three months, so yearly peaks are part of the test. Constants in `src/engine/backtest.ts`.
 - Skuld (2026-10-21): the answer is a total or an average over the horizon, made by adding up each step's levels. That range is cautious (the real total fell inside the summed nine-in-ten range 99 times in 100 across the examples), so the words say "i minst nio fall av tio". Total when the user chose Summera in Urd or every value is a whole number of zero or more; average otherwise. "Kopiera länk" only for examples.
-- Domains (2026-10-21): the canonical address is `norn.promptagency.se`. `nornor.app` is a short address that 301-redirects there (Cloudflare zone exists, redirect to be set up at launch, same setup as `skrubba.app`). The app never refers to `nornor.app`.
+- Domains (changed 2026-10-21): the canonical address is `nornor.app` (Cloudflare zone exists), with `www.nornor.app` 301-redirecting to it. `norn.promptagency.se` is not used; the owner has a separate marketing plan. The address lives in `src/config.ts` only.
 
 ## Phase 0 – Spike (done)
 
@@ -98,9 +98,9 @@ Done when: a user can go from file to forecast and change horizon and certainty 
 - [x] Service worker from Skrubba: small files on install, the model, runtime and example CSVs when first fetched, never user data. Works offline after the first forecast (Playwright). "Det sker bara första gången." (`model.once`) is shown only while the service worker controls the page. `model.ready` is not used: there is no moment on screen where it would be read. Kill switch with `SW_KILL=1`. Cross-origin isolation in `public/_headers` lets the model run on several threads.
 - [x] Playwright: full flow on each example, a test that fails on any request to another origin, offline after the first forecast, and nothing stored in the browser (`npm run e2e`).
 - [x] Footer: experiment, no support, data never leaves the computer, credits to Mistral, amine40 and the data sources (`footer.experiment`, `footer.credits`).
-- [x] Plausible page views through a Pages Function, copied from Skrubba (`functions/api/event.ts`). The site must be added in Plausible as `norn.promptagency.se` before launch. The Playwright request test sees no other origin.
-- [ ] Deploy to Cloudflare Pages at `norn.promptagency.se`.
-- [ ] `nornor.app` and `www.nornor.app`: AAAA `100::` proxied, Always Use HTTPS, one Single Redirect rule (301, keep path and query) to `https://norn.promptagency.se`.
+- [x] Plausible page views through a Pages Function, copied from Skrubba (`functions/api/event.ts`). The site must be added in Plausible as `nornor.app` before launch. The Playwright request test sees no other origin.
+- [ ] Deploy to Cloudflare Pages, custom domain `nornor.app` (same Cloudflare account, so no CNAME elsewhere).
+- [ ] `www.nornor.app`: AAAA `100::` proxied, Always Use HTTPS, one Single Redirect rule (301, keep path and query) to `https://nornor.app`.
 - [x] README in Prompt Agency's voice (English, like Skrubba's), with what worked and what did not.
 
 ## Open questions

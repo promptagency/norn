@@ -25,7 +25,7 @@ from pathlib import Path
 import requests
 
 OUT = Path(__file__).resolve().parent.parent / "public" / "data"
-UA = {"User-Agent": "norn-build-datasets/0.1 (https://norn.promptagency.se; open source)"}
+UA = {"User-Agent": "norn-build-datasets/0.1 (https://nornor.app; open source)"}
 EXAMPLES: list[dict] = []
 
 

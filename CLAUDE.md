@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-Product name: **Norn**. Free, open source (MIT), a labs project from Prompt Agency, to launch at `norn.promptagency.se`. It is a technology experiment with no support promise, and a marketing project for Prompt Agency as much as an open source one. Name and URL live in `src/config.ts` only.
+Product name: **Norn**. Free, open source (MIT), a labs project from Prompt Agency, to launch at `nornor.app`. It is a technology experiment with no support promise, and a marketing project for Prompt Agency as much as an open source one. Name and URL live in `src/config.ts` only.
 
 ## What this is
 
@@ -38,7 +38,7 @@ Ordinary people with numbers over time and no background in statistics: a shop o
 - `onnxruntime-web` (WASM by default, WebGPU only if it is proven equal), pinned to an exact version.
 - Charts are our own SVG component, `Prognosgraf` in `src/ui/components/`. PapaParse for CSV. Nothing else without asking.
 - PWA (service worker) for offline use after the first visit.
-- Deploy: static build to Cloudflare Pages at `norn.promptagency.se`.
+- Deploy: static build to Cloudflare Pages at `nornor.app`.
 - Tests: Vitest for logic (CSV parsing, frequency detection, the forecast wrapper against fixtures), Playwright for the full flow and the "no external requests" check.
 - Python in `scripts/` only (export spike, dataset builder, token builder). The app never depends on it at runtime.
 

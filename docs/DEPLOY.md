@@ -12,14 +12,14 @@ Norn is a static site on Cloudflare Pages, project `norn`, built from `main` on 
 | Build command | `npm run build` |
 | Build output directory | `dist` |
 | Node version | from `.node-version` (24) |
-| Custom domain | `norn.promptagency.se`, a CNAME to `norn.pages.dev` at the DNS host of promptagency.se |
+| Custom domain | `nornor.app`, added under the project's Custom domains; the zone is in the same Cloudflare account, so Cloudflare creates the record |
 | Web Analytics | Off. It injects a script from another origin, which the CSP blocks and the privacy promise forbids. Visits are counted with our own Plausible instead (below) |
 
-`nornor.app` and `www.nornor.app` redirect to `https://norn.promptagency.se` with a 301 that keeps path and query: an AAAA record `100::`, proxied, Always Use HTTPS, and one Single Redirect rule in the `nornor.app` zone. The app never refers to `nornor.app`.
+`www.nornor.app` redirects to `https://nornor.app` with a 301 that keeps path and query: an AAAA record `100::`, proxied, Always Use HTTPS, and one Single Redirect rule in the `nornor.app` zone.
 
 **If a push does not go live.** Skrubba's launch saw deploys fail at the last step with "Failed to publish your Function. Got error: Unknown internal error occurred". It is on Cloudflare's side; retrying the same deployment fixed it every time (Workers & Pages → norn → Deployments → the failed one → Retry deployment).
 
-**Visit counting.** `functions/api/event.ts` passes the page's anonymous page view on to Plausible (`plausible.app.promptagency.se`, site `norn.promptagency.se`, which must exist in Plausible). Automated browsers are never counted.
+**Visit counting.** `functions/api/event.ts` passes the page's anonymous page view on to Plausible (`plausible.app.promptagency.se`, site `nornor.app`, which must exist in Plausible). Automated browsers are never counted.
 
 **The model.** The build downloads amine40's ONNX files from Hugging Face at a pinned revision and checks their sha256 (`scripts/fetch-model.mjs`), retrying a 429 up to five times. If amine40's repositories go away, new builds fail loudly while the live site keeps working (open question in `PLAN.md`).
 
