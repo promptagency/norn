@@ -77,7 +77,9 @@ export function App() {
   const onFil = (file: File) =>
     (/\.xlsx?$/i.test(file.name) ? file.arrayBuffer().then(parseExcel) : file.text().then(parseText)).then((table) => open(table), failed);
   const onText = useCallback((text: string) => open(parseText(text)), [open]);
-  const onExempel = (ex: Example) => loadExample(ex).then(({ table, target }) => open(table, target, ex.id), failed);
+  // Example data is fetched under the service worker's control, like the model, so it is there offline later.
+  const fetchExample = (ex: Example) => serviceWorkerReady().then(() => loadExample(ex));
+  const onExempel = (ex: Example) => fetchExample(ex).then(({ table, target }) => open(table, target, ex.id), failed);
 
   // A copied link opens its example straight in Skuld; Urd and Verdandi stay one click back.
   useEffect(() => {
@@ -86,7 +88,7 @@ export function App() {
     if (!id) return;
     loadExamples()
       .then((all) => all.find((e) => e.id === id) ?? Promise.reject(new Error(id)))
-      .then(loadExample)
+      .then(fetchExample)
       .then(({ table, target }) => {
         const c = detectColumns(table);
         if (!c.ok) throw new Error(c.error.key);

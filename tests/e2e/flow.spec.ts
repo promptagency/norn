@@ -3,12 +3,13 @@ import { expect, test, type BrowserContext, type Page } from "@playwright/test";
 
 /** Every URL the page, its worker and its service worker ask for, plus any CSP refusal in the console. */
 function watch(context: BrowserContext, page: Page) {
+  const origin = new URL(test.info().project.use.baseURL!).origin;
   const requests: string[] = [];
   const refused: string[] = [];
   context.on("request", (r) => requests.push(r.url()));
   page.on("console", (m) => /Content Security Policy|Refused to/.test(m.text()) && refused.push(m.text()));
   return {
-    foreign: () => requests.filter((u) => !u.startsWith("http://localhost:4175/") && !u.startsWith("data:") && !u.startsWith("blob:http://localhost:4175/")),
+    foreign: () => requests.filter((u) => !u.startsWith(`${origin}/`) && !u.startsWith("data:") && !u.startsWith(`blob:${origin}/`)),
     refused,
     requests,
   };
