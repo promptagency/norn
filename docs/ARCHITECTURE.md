@@ -1,22 +1,25 @@
 # ARCHITECTURE.md
 
-Planned structure. `src/ui/components/`, `src/ui/copy.ts` and `src/dev/` exist; the rest is created in Phase 1 (`PLAN.md`). Keep this file in step with the code.
+Planned structure. `src/config.ts`, `src/engine/` (except `backtest.ts`, `grade.ts`, `holidays.ts`), `src/ui/components/`, `src/ui/copy.ts` and `src/dev/` exist; the rest comes in later phases (`PLAN.md`). Keep this file in step with the code.
 
 ## Modules
 
 ```
 src/
-  config.ts              product name, URL, model URLs and sizes, pinned onnxruntime-web version
+  config.ts              product name, URL, models pinned by revision, size and sha256, chunk URLs
   engine/
     Forecaster.ts        interface + types (Series, Forecast, Backtest, Covariate)
     index.ts             createForecaster(): the only import for the UI
-    worker.ts            Web Worker: loads onnxruntime-web and the model once, runs forecasts
+    worker.ts            Web Worker: fetches the model chunks once, loads onnxruntime-web, runs requests in order
+    run.ts               what the worker does with one request (forecast, backtest); the Node tests run it too
     protocol.ts          worker message types
+    parity.test.ts       run.ts against the Python package, fixtures in fixtures/parity.json
     backtest.ts          backtest period by frequency, errors, naive baseline, band coverage
     grade.ts             Pålitlig / Ungefärlig / Osäker from a Backtest (thresholds in PLAN.md)
     holidays.ts          Swedish public holidays and fixed events as known-future covariates
     vendor/
       timestral.js       upstream, unchanged (amine-athmani/timestral-in-browser, Apache 2.0)
+      timestral.d.ts     our types for it
       LICENSE            Apache 2.0
       SOURCE.md          upstream commit hash and what was taken
   data/
@@ -33,6 +36,7 @@ src/
     Galleri.tsx          every component with real SE3 data, light and dark (npm run dev until App exists)
 public/
   data/                  example datasets and examples.json (built by scripts/build_datasets.py)
+  model/                 model chunks, written by scripts/fetch-model.mjs before dev, build and test (gitignored)
 design/                  tokens, fonts, logo, icons (see design/DESIGN.md)
 scripts/                 Python: export spike, verification, dataset and token builders
 ```
@@ -48,7 +52,7 @@ scripts/                 Python: export spike, verification, dataset and token b
 ## Verification
 
 - `scripts/verify_onnx.py` compares any ONNX export against the official PyTorch forecaster. Re-run it when the model files change.
-- Phase 1 adds `scripts/make_fixtures.py` (official package → JSON fixtures) and a Vitest suite that runs the worker on them. Tolerance: 1e-3 of the series' standard deviation.
+- `scripts/make_fixtures.py` (official package → `src/engine/fixtures/parity.json`) and `src/engine/parity.test.ts`, which runs `run.ts` with onnxruntime-web WASM in Node on the same fp16 file the browser gets. Tolerance: 1 percent of the mean width of the 90 band (decision in `PLAN.md`). Re-run the script when the model or the vendored code changes.
 
 ## Privacy constraints
 
@@ -59,6 +63,6 @@ scripts/                 Python: export spike, verification, dataset and token b
 
 ## Performance
 
-- Measured in the spike (Node, onnxruntime-web WASM, slow two-core container): 28M about 0.5 to 1.1 s for 2,000 steps of context and 96 ahead, 5M about 0.1 to 0.3 s. A laptop should be two to four times faster.
+- Measured in the spike (Node, onnxruntime-web WASM, slow two-core container): 28M about 0.5 to 1.1 s for 2,000 steps of context and 96 ahead, 5M about 0.1 to 0.3 s. A laptop should be two to four times faster. In Chrome on a Mac, single-threaded (Phase 1 check): 28M about 2.7 s for the first forecast, 2 s after. Threads need cross-origin isolation (COOP/COEP headers), not set yet.
 - Model loading shows byte-level progress. The model loads once and stays in the worker.
 - Backtest and forecast run in the same worker, one after the other, so Verdandi and Skuld feel instant once Urd is confirmed.
