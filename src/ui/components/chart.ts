@@ -39,16 +39,18 @@ export interface ChartGeometry {
   y: (value: number) => number;
 }
 
-/** Up to three round values covering [min, max], always including 0 when it is in range. */
-export function niceTicks(min: number, max: number, count = 3): number[] {
+/** Up to four round values covering [min, max], always including 0 when it is in range (design/DESIGN.md). */
+export function niceTicks(min: number, max: number, count = 4): number[] {
   if (!Number.isFinite(min) || !Number.isFinite(max) || min === max) return [min];
   const span = max - min;
   const raw = span / count;
   const mag = 10 ** Math.floor(Math.log10(raw));
-  const step = [1, 2, 2.5, 5, 10].map((m) => m * mag).find((s) => span / s <= count) ?? 10 * mag;
+  // The smallest round step whose values in range fit the count, so the top value is never cut off.
+  const fits = (s: number) => Math.floor(max / s + 1e-9) - Math.ceil(min / s - 1e-9) + 1 <= count;
+  const step = [1, 2, 2.5, 5, 10, 20].map((m) => m * mag).find(fits) ?? 20 * mag;
   const start = Math.ceil(min / step) * step;
   const ticks: number[] = [];
-  for (let v = start; v <= max + step * 1e-9 && ticks.length < count; v += step) ticks.push(Math.round(v / step) * step + 0);
+  for (let v = start; v <= max + step * 1e-9 && ticks.length < count; v += step) ticks.push(Number((Math.round(v / step) * step).toPrecision(12)) + 0); // 0.3, not 0.30000000000000004
   return ticks;
 }
 

@@ -2,11 +2,18 @@ import { describe, expect, it } from "vitest";
 import { bucketMeans, layoutChart, niceTicks } from "./chart.ts";
 
 describe("niceTicks", () => {
-  it("gives at most three round values", () => {
-    expect(niceTicks(0, 3.1)).toEqual([0, 2]);
+  it("gives at most four round values, the top one included", () => {
+    expect(niceTicks(0, 3.1)).toEqual([0, 1, 2, 3]);
     expect(niceTicks(-0.2, 4.2)).toEqual([0, 2, 4]);
-    expect(niceTicks(-0.2, 4.2).length).toBeLessThanOrEqual(3);
     expect(niceTicks(0, 100)).toEqual([0, 50, 100]);
+    expect(niceTicks(0, 2.9)).toEqual([0, 1, 2]);
+    expect(niceTicks(-0.25, 0.95)).toEqual([0, 0.5]); // a step of 0.25 would need five values
+    for (const [lo, hi] of [[0, 7], [3, 9.9], [-5, 120], [0.07, 0.3], [0, 36_000]]) {
+      const ticks = niceTicks(lo, hi);
+      expect(ticks.length, `${lo}..${hi}`).toBeLessThanOrEqual(4);
+      expect(ticks.length, `${lo}..${hi}`).toBeGreaterThanOrEqual(2);
+      expect(ticks.every((t) => t >= lo && t <= hi), `${lo}..${hi}`).toBe(true);
+    }
   });
 });
 

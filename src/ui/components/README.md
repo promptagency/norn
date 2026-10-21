@@ -176,7 +176,7 @@ Prognosgrafen, en och samma komponent för historiken i Urd, backtestet i Verdan
 - Band 90 ligger under band 50, och medianen är prickad i samma färg som historiken. Byt aldrig ordning eller stil.
 - Varje värde på den lodräta axeln får en svag linje i `kant` bakom banden. Inga lodräta linjer.
 - Ge alltid `beskrivning`, som läses av skärmläsare, och sätt `Forklaring` under grafen.
-- Skriv `xEtiketter` i användarens enhet. `formatY` lägger till enheten på den lodräta axeln, som har högst tre värden.
+- Skriv `xEtiketter` i användarens enhet. `formatY` lägger till enheten på den lodräta axeln, som har högst fyra värden.
 - Grafen ritar alla punkter den får. Minska långa historiker med `bucketMeans` först, till exempel snitt per vecka för timdata över flera år.
 - Ritytan är alltid 1000 enheter bred och skalar till sin behållare. `hojd` sätter höjden i samma enheter.
 
