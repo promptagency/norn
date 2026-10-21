@@ -10,6 +10,17 @@ import { dirname, join } from "node:path";
 import { CHUNK_BYTES, MODELS, modelChunkUrls } from "../src/config.ts";
 
 const sha256 = (buf) => createHash("sha256").update(buf).digest("hex");
+
+// Hugging Face sometimes answers 429 when several builds run close together (Skrubba's launch, docs/DEPLOY.md).
+async function fetchWithRetry(url, tries = 5) {
+  for (let i = 1; ; i++) {
+    const res = await fetch(url);
+    if (res.ok || i === tries || (res.status !== 429 && res.status < 500)) return res;
+    const wait = Number(res.headers.get("retry-after")) * 1000 || 2000 * 2 ** i;
+    console.log(`${url}: ${res.status}, trying again in ${Math.round(wait / 1000)} s`);
+    await new Promise((r) => setTimeout(r, wait));
+  }
+}
 const wanted = new Set();
 
 for (const [size, m] of Object.entries(MODELS)) {
@@ -17,7 +28,7 @@ for (const [size, m] of Object.entries(MODELS)) {
   if (!existsSync(raw) || sha256(readFileSync(raw)) !== m.sha256) {
     const url = `https://huggingface.co/${m.hubId}/resolve/${m.revision}/${m.file}`;
     console.log(`fetching ${url}`);
-    const res = await fetch(url);
+    const res = await fetchWithRetry(url);
     if (!res.ok) throw new Error(`${url}: ${res.status} ${res.statusText}`);
     const buf = Buffer.from(await res.arrayBuffer());
     if (sha256(buf) !== m.sha256) throw new Error(`checksum mismatch for ${m.file}, refusing to use it`);
