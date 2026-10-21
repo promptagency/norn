@@ -95,13 +95,13 @@ Done when: a user can go from file to forecast and change horizon and certainty 
 
 ## Phase 5 – Ship
 
-- [ ] PWA with model and runtime cached. Works offline after the first visit. Then add "Det sker bara första gången." back to `model.loading` and show `model.ready`; both are only true once the service worker caches the model.
-- [ ] Playwright: full flow on each example, and a test that fails on any request to another origin after first load.
-- [ ] Footer: experiment, no support, data never leaves the computer, credits to Mistral, amine40 and the data sources.
-- [ ] Plausible page views through a Pages Function, copied from Skrubba. Verify in the Playwright request test that nothing else leaves the origin.
+- [x] Service worker from Skrubba: small files on install, the model, runtime and example CSVs when first fetched, never user data. Works offline after the first forecast (Playwright). "Det sker bara första gången." (`model.once`) is shown only while the service worker controls the page. `model.ready` is not used: there is no moment on screen where it would be read. Kill switch with `SW_KILL=1`. Cross-origin isolation in `public/_headers` lets the model run on several threads.
+- [x] Playwright: full flow on each example, a test that fails on any request to another origin, offline after the first forecast, and nothing stored in the browser (`npm run e2e`).
+- [x] Footer: experiment, no support, data never leaves the computer, credits to Mistral, amine40 and the data sources (`footer.experiment`, `footer.credits`).
+- [x] Plausible page views through a Pages Function, copied from Skrubba (`functions/api/event.ts`). The site must be added in Plausible as `norn.promptagency.se` before launch. The Playwright request test sees no other origin.
 - [ ] Deploy to Cloudflare Pages at `norn.promptagency.se`.
 - [ ] `nornor.app` and `www.nornor.app`: AAAA `100::` proxied, Always Use HTTPS, one Single Redirect rule (301, keep path and query) to `https://norn.promptagency.se`.
-- [ ] README in Prompt Agency's voice, with what worked and what did not.
+- [x] README in Prompt Agency's voice (English, like Skrubba's), with what worked and what did not.
 
 ## Open questions
 
