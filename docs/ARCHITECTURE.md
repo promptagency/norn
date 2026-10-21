@@ -1,6 +1,6 @@
 # ARCHITECTURE.md
 
-Planned structure. Everything exists except `backtest.ts`, `grade.ts`, `holidays.ts` and the Verdandi and Skuld screens; the rest comes in later phases (`PLAN.md`). Keep this file in step with the code.
+Planned structure. Everything exists except `holidays.ts` and the Skuld screen; the rest comes in later phases (`PLAN.md`). Keep this file in step with the code.
 
 ## Modules
 
@@ -14,8 +14,7 @@ src/
     run.ts               what the worker does with one request (forecast, backtest); the Node tests run it too
     protocol.ts          worker message types
     parity.test.ts       run.ts against the Python package, fixtures in fixtures/parity.json
-    backtest.ts          backtest period by frequency, errors, naive baseline, band coverage
-    grade.ts             Pålitlig / Ungefärlig / Osäker from a Backtest (thresholds in PLAN.md)
+    backtest.ts          backtest period by frequency, errors, naive baseline, band coverage, and the grade
     holidays.ts          Swedish public holidays and fixed events as known-future covariates
     vendor/
       timestral.js       upstream, unchanged (amine-athmani/timestral-in-browser, Apache 2.0)
@@ -29,7 +28,7 @@ src/
     examples.ts          reads public/data/examples.json
   ui/
     App.tsx              the screens and step navigation; holds the user's data in React state only
-    Start.tsx, Urd.tsx   one file per screen
+    Start.tsx, Urd.tsx, Verdandi.tsx   one file per screen
     historik.ts          history for the chart: means per day or week for long series, time labels
     app.css              page layout, tokens only
     copy.ts              every Swedish string, from docs/COPY.md

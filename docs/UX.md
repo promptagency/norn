@@ -46,7 +46,7 @@ Runs automatically after **Ja**. A backtest on the last period, its length set b
 | Frequency | Backtest period |
 |---|---|
 | Hour | the last 7 days |
-| Day | the last 3 months |
+| Day | the last 12 months (owner's decision 2026-10-21, so yearly peaks are tested) |
 | Week | the last 6 months |
 | Month | the last 12 months |
 | Quarter, year | the last 4 periods |
@@ -56,7 +56,7 @@ Runs automatically after **Ja**. A backtest on the last period, its length set b
   - **Pålitlig.** "Norn träffade i snitt inom 6 procent de senaste tre månaderna, betydligt bättre än att upprepa förra året."
   - **Ungefärlig.** "Norn träffade inom 18 procent. Bättre än att gissa, men lita mer på intervallet än på linjen."
   - **Osäker.** "Norn såg inget tydligt mönster i den här datan. Prognosen blir bred. Fler datapunkter eller en jämnare serie hjälper."
-- The numbers behind the grade (error, error of repeating last season, share inside each band) sit under a collapsible "Visa detaljer". The thresholds are an open question in `PLAN.md`.
+- The numbers behind the grade (error, error of repeating last season, share inside each band) sit under a collapsible "Visa detaljer", with the rule in words. The thresholds are decided in `PLAN.md`.
 - One button: **Visa vad som kommer**.
 
 ## 3. Skuld, what is to come

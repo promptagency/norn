@@ -46,3 +46,5 @@ export function createForecaster(): Forecaster {
     backtest: (series, horizon, options) => send<Backtest>({ type: "backtest", series, horizon, options }),
   };
 }
+
+export { backtestSteps, grade, improvement, percentFits, score, SEASON, THRESHOLDS, type Grade, type Score } from "./backtest.ts";

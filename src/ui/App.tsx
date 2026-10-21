@@ -5,16 +5,19 @@ import logoPositiv from "../../design/logo/norn-logotyp-positiv.svg";
 import { buildSeries, detectColumns, type Columns, type Combine, type DataSeries } from "../data/detect.ts";
 import { loadExample, type Example } from "../data/examples.ts";
 import { parseExcel, parseText, type Table } from "../data/parse.ts";
+import { createForecaster } from "../engine/index.ts";
 import { NORNORNA, Sidfot, Sidhuvud, Steg } from "./components/index.ts";
 import { COPY, t } from "./copy.ts";
 import { Start } from "./Start.tsx";
 import { Urd } from "./Urd.tsx";
+import { Verdandi } from "./Verdandi.tsx";
 import "./app.css";
 
 type Screen =
   | { name: "start"; fel?: string }
   | ({ name: "urd" } & UrdState)
-  | { name: "verdandi"; series: DataSeries; urd: UrdState };
+  | { name: "verdandi"; series: DataSeries; urd: UrdState }
+  | { name: "skuld"; series: DataSeries; urd: UrdState };
 
 type UrdState = { table: Table; columns: Columns; value: number; combine?: Combine };
 
@@ -30,9 +33,23 @@ function useDark() {
   return dark;
 }
 
+// One worker for the whole visit; the model loads once.
+const forecaster = createForecaster();
+
 export function App() {
   const [screen, setScreen] = useState<Screen>({ name: "start" });
+  const [download, setDownload] = useState<{ loaded: number; total: number }>();
   const dark = useDark();
+
+  // Start the model download as soon as there is data, so it is usually ready by the time the user says Ja.
+  const hasData = screen.name !== "start";
+  useEffect(() => {
+    if (!hasData) return;
+    forecaster.init((loaded, total) => setDownload(loaded < total ? { loaded, total } : undefined)).then(
+      () => setDownload(undefined),
+      () => setDownload(undefined), // Verdandi says so when the backtest fails
+    );
+  }, [hasData]);
 
   const open = useCallback((table: Table, target?: string) => {
     const c = detectColumns(table);
@@ -52,8 +69,11 @@ export function App() {
   const onText = useCallback((text: string) => open(parseText(text)), [open]);
   const onExempel = (ex: Example) => loadExample(ex).then(({ table, target }) => open(table, target), failed);
 
-  const step = screen.name === "urd" ? 0 : screen.name === "verdandi" ? 1 : -1;
-  const back = [() => screen.name === "verdandi" && setScreen({ name: "urd", ...screen.urd })];
+  const step = ["urd", "verdandi", "skuld"].indexOf(screen.name);
+  const back = [
+    () => "urd" in screen && setScreen({ name: "urd", ...screen.urd }),
+    () => screen.name === "skuld" && setScreen({ ...screen, name: "verdandi" }),
+  ];
 
   return (
     <div className="app">
@@ -71,8 +91,16 @@ export function App() {
         />
       )}
       {screen.name === "verdandi" && (
+        <Verdandi
+          series={screen.series}
+          forecaster={forecaster}
+          download={download}
+          onNext={() => setScreen({ ...screen, name: "skuld" })}
+        />
+      )}
+      {screen.name === "skuld" && (
         <main className="sida sida--steg">
-          <h1 className="rubrik-l">{COPY["verdandi.heading"]}</h1>
+          <h1 className="rubrik-l">{COPY["skuld.heading"]}</h1>
         </main>
       )}
       <Sidfot />

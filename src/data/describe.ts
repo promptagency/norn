@@ -37,3 +37,16 @@ export function describe(s: DataSeries): string {
   const count = { antal: number.format(n), enheter: unit(s.frequency, n), saknas: number.format(s.missing) };
   return `${first} ${t(s.missing ? "urd.count.missing" : "urd.count", count)}`;
 }
+
+/** The held-out period in words: "det senaste året", "de senaste 7 dagarna". */
+export function periodWords(freq: Frequency, steps: number): string {
+  if (freq === "timme" && steps % 24 === 0) return periodWords("dag", steps / 24);
+  if ((freq === "dag" && steps === 365) || (freq === "månad" && steps === 12) || (freq === "kvartal" && steps === 4)) return t("period.ar");
+  return t("period.n", { antal: steps, enheter: t(`enhet.${freq}.bestamd` as CopyKey) });
+}
+
+/** What Norn is compared with, matching SEASON in src/engine/backtest.ts: "samma dag förra veckan". */
+export function comparedWith(freq: Frequency): string {
+  if (freq === "år") return t("jamfort.forra");
+  return t(freq === "timme" || freq === "dag" ? "jamfort.vecka" : "jamfort.ar", { enhet: unit(freq) });
+}

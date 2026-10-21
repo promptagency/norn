@@ -17,6 +17,7 @@ Taken by the owner, 2026-10-20. Do not revisit without asking.
 - Analytics (2026-10-21): the same setup as Skrubba. Self-hosted Plausible, anonymous page views only, proxied through a Cloudflare Pages Function on our own origin so `connect-src` stays `'self'`. No events carrying anything from the user's data.
 - Licence holder (2026-10-21): Prompt Agency AB, as `LICENSE` says.
 - Parity bar (2026-10-21): the engine must match the official Python package within 1 percent of the mean width of the 90 band, on every case. amine40's fp16 weights land at 0.1 to 0.7 percent; the earlier bar of 1e-3 of the series' standard deviation fails on long horizons, where the fed-back median compounds the fp16 rounding (an fp32 export passes, so the port is right). fp16 stays.
+- Verdandi's grade (2026-10-21): Pålitlig when Norn's error is at least 20 percent below repeating the last season and at least 80 percent of outcomes fall inside the 90 band; Osäker when Norn does not beat repeating the last season; Ungefärlig otherwise. No upper limit on coverage: with 12 monthly points a perfectly honest band covers all of them about a quarter of the time. The baseline is the same hour or day last week for hourly and daily data, the same period last year otherwise. Daily data holds out a year, not three months, so yearly peaks are part of the test. Constants in `src/engine/backtest.ts`.
 - Domains (2026-10-21): the canonical address is `norn.promptagency.se`. `nornor.app` is a short address that 301-redirects there (Cloudflare zone exists, redirect to be set up at launch, same setup as `skrubba.app`). The app never refers to `nornor.app`.
 
 ## Phase 0 – Spike (done)
@@ -73,12 +74,12 @@ Done when: every example and five messy real-world CSVs (owner supplies) reach U
 
 ## Phase 3 – Verdandi
 
-- [ ] Automatic backtest on the last period (length by frequency, see `docs/UX.md`).
-- [ ] Chart of the period with forecast bands over what happened.
-- [ ] Grade in three levels with one sentence. Thresholds per open question below.
-- [ ] "Visa detaljer" with the numbers behind the grade.
+- [x] Automatic backtest on the last period (length by frequency, see `docs/UX.md`; a short series holds out a quarter of itself). The model starts downloading when Urd opens, with progress in megabytes in Verdandi.
+- [x] Chart of the period with forecast bands over what happened, with as much history before it.
+- [x] Grade in three levels with one sentence, per the decision above. The error is said as a percent only when every value in the period is above zero and the percent is at most 100; otherwise in the data's own numbers per hour or day.
+- [x] "Visa detaljer" with the numbers behind the grade and the rule in words.
 
-Done when: the grade on each example matches what the backtest table in `docs/DATA.md` would lead a person to expect.
+Done when: the grade on each example matches what the backtest table in `docs/DATA.md` would lead a person to expect. Met 2026-10-21: Leksaksaffärer Ungefärlig (3 percent better than last year), Elpris, Melodifestivalen and the other trades Pålitlig, Göteborg temperature Osäker. Checked in Chrome on a production build.
 
 ## Phase 4 – Skuld
 
@@ -92,7 +93,7 @@ Done when: a user can go from file to forecast and change horizon and certainty 
 
 ## Phase 5 – Ship
 
-- [ ] PWA with model and runtime cached. Works offline after the first visit.
+- [ ] PWA with model and runtime cached. Works offline after the first visit. Then add "Det sker bara första gången." back to `model.loading` and show `model.ready`; both are only true once the service worker caches the model.
 - [ ] Playwright: full flow on each example, and a test that fails on any request to another origin after first load.
 - [ ] Footer: experiment, no support, data never leaves the computer, credits to Mistral, amine40 and the data sources.
 - [ ] Plausible page views through a Pages Function, copied from Skrubba. Verify in the Playwright request test that nothing else leaves the origin.
@@ -102,7 +103,6 @@ Done when: a user can go from file to forecast and change horizon and certainty 
 
 ## Open questions
 
-- **Grading thresholds in Verdandi.** An editorial choice that must be defensible in "Visa detaljer". Proposal to discuss: Pålitlig when the error is clearly below repeating last season and coverage of the 90 band is between 80 and 97 percent; Osäker when the model does not beat repeating last season; Ungefärlig otherwise.
 - **The covariate example.** Göteborg temperature lowers the SE3 price error by only 2 percent. Find consumption data where a known-future series really helps, or show honestly that it sometimes does not.
 - **Weak hardware.** When does Norn fall back to the 5M model without asking? Proposal: if the first 28M forecast takes over 3 s. Note: on a Mac in Chrome, single-threaded (no cross-origin isolation yet), the first 28M forecast already takes about 2.7 s. COOP/COEP headers in Phase 5 would allow threads; measure again before setting the threshold.
 - **Build depends on amine40's Hugging Face repos.** `scripts/fetch-model.mjs` downloads the model at a pinned revision and sha256 on every clean build (Cloudflare included); the chunks are not in git. If amine40 deletes or renames the files, new deploys fail loudly (no silent swap), while the live site and local builds (`.cache/model/`) keep working. Accepted for now (owner, 2026-10-21), same as Skrubba. Options if it bites: a backup copy we control (for example R2) as a fallback in the fetch script, or committing the chunks (about 72 MB, check the licence terms for redistribution first).
