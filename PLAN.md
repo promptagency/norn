@@ -29,7 +29,7 @@ Results in `docs/fas0-resultat.md` (Swedish). Short version: fp16 weights are th
 
 - [x] `scripts/build_datasets.py` fetches SCB retail turnover (four trades, monthly since 1991), SE3 spot price per hour since November 2022 with Göteborg temperature from SMHI, and writes `app/public/data/` plus `examples.json`.
 - [x] Backtest with Timestral-28M on the real data. Recorded in `docs/DATA.md`.
-- [ ] Wikipedia page views (`python scripts/build_datasets.py wiki`). Must run from the owner's machine; the cloud container is rate-limited by Wikimedia.
+- [x] Wikipedia page views (`python scripts/build_datasets.py wiki`), built on the owner's machine 2026-10-21. Backtest and peak check in `docs/DATA.md`. Default series melodifestivalen (owner's decision).
 
 ## Phase 0c – Design programme (done)
 

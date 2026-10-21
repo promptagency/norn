@@ -1,5 +1,5 @@
 {
-  "built": "2026-10-20",
+  "built": "2026-10-21",
   "examples": [
     {
       "id": "detaljhandel",
@@ -38,6 +38,24 @@
       "source": "elprisetjustnu.se (Nord Pool via entsoe) och SMHI station 71420 Göteborg A",
       "source_url": "https://www.elprisetjustnu.se/elpris-api",
       "license": "Elpris fritt utan garanti, temperatur CC BY 4.0 SMHI"
+    },
+    {
+      "id": "wikipedia",
+      "title": "Besök på svenska Wikipedia",
+      "frequency": "dag",
+      "file": "wikipedia_sv.csv",
+      "time": "datum",
+      "targets": {
+        "midsommar": "En enda topp per år, resten av året nästan ingenting. Norn hittar dagen men underskattar höjden.",
+        "lucia": "Decembertopp med en vecka av uppladdning.",
+        "melodifestivalen": "Finalen flyttar sig varje år, och Norn hittar ändå rätt lördag."
+      },
+      "default_target": "melodifestivalen",
+      "unit": "sidvisningar per dag",
+      "description": "Dagliga besök på tre artiklar sedan 2016. Veckorytm och en årlig topp.",
+      "source": "Wikimedia REST API, pageviews per article",
+      "source_url": "https://wikimedia.org/api/rest_v1/",
+      "license": "CC0"
     }
   ]
 }

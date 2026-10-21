@@ -218,7 +218,9 @@ def main() -> None:
     existing = {}
     ex_path = OUT / "examples.json"
     if ex_path.exists():
-        existing = {e["id"]: e for e in json.loads(ex_path.read_text())}
+        saved = json.loads(ex_path.read_text())
+        items = saved["examples"] if isinstance(saved, dict) else saved
+        existing = {e["id"]: e for e in items}
     for name in wanted:
         print(name)
         try:
