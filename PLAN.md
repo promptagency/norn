@@ -2,6 +2,25 @@
 
 Phased plan for Norn. Each phase ends in something runnable. Do not start a phase before the previous one's definition of done is met.
 
+## What's left
+
+Norn is live at `nornor.app` (2026-10-21) with all five phases built. What remains, as of 2026-10-21:
+
+Needs the owner:
+
+1. **Five messy real-world CSVs**, the last part of Phase 2's done criterion. At least one should be a till or webshop export with one row per sale, to check the rule that a day without rows counts as 0 when summing (`src/data/detect.ts`, marked as a shortcut).
+2. **A real person through Phase 4's done criterion**: from file to forecast, changing horizon and certainty, in under a minute without reading anything twice.
+3. **Review the Swedish strings added in Phases 2 to 5** in `docs/COPY.md`. Only the phone page's strings (`mobil.*`) have been approved as a set; the rest (`urd.*`, `verdandi.*`, `skuld.*`, `period.*`, `jamfort.*`, `narmast.*`, `event.*`, `enhet.*`, `error.file`, `error.notime`, `error.model`, `model.once`, `link.newtab`) were written to COPY.md's rules but not reviewed. Also decide whether the downloaded CSV may say "kvantil" in its column headers; it is a file, not the screen.
+4. **Design for the user's own events**: a date-range field and a comparison-line style in `design/DESIGN.md`, then the last Phase 4 item can be built.
+5. **The open questions below**: when to fall back to the 5M model, and the history cap.
+
+Engineering, not done yet:
+
+6. **Firefox and Safari.** The end-to-end suite runs in Chromium only; Skrubba's runs Chromium, Firefox and WebKit. Safari is the likeliest to differ (cross-origin isolation, WASM threads, the service worker).
+7. **CI.** Tests run only on a developer's machine; there is no GitHub Actions workflow. Copy Skrubba's `.github/workflows/test.yml` (type check and unit tests on every push, the full browser suite on release tags).
+8. **Not checked by hand:** an Excel upload in a real browser (unit tests cover the dates), printing Skuld, Verdandi in the dark theme, and tablets in portrait (744 to 834 px wide get the app).
+9. **Small:** `wrangler login` to refresh its permissions (it warns, nothing depends on it), and `model.ready` in COPY.md, which nothing shows; use it or remove it.
+
 ## Decisions so far
 
 Taken by the owner, 2026-10-20. Do not revisit without asking.
@@ -9,7 +28,7 @@ Taken by the owner, 2026-10-20. Do not revisit without asking.
 - Norn is an open source labs project under Prompt Agency, at `nornor.app`, MIT. Experiment, no support promise. Marketing for Prompt Agency as much as open source.
 - One tool, not several. Presets and examples cover different kinds of data; the core is the same.
 - Engine: amine40's Timestral ONNX exports and the `timestral.js` port from `amine-athmani/timestral-in-browser`. We do not publish our own exports to Hugging Face. Our own export from the spike stays in `scripts/` as a verification tool.
-- Norn is a less technical version of amine40's app for ordinary users. Clear example data from different sources is kept from amine40's idea. No links out of the app in the user flow.
+- Norn is a less technical version of amine40's app for ordinary users. Clear example data from different sources is kept from amine40's idea. No links out of the app in the user flow. The one exception: "Prompt Agency" in the header tag and the footer links to promptagency.se, in a new tab (owner, 2026-10-21).
 - Hand-built (Vite + React + TS), not Lovable, to keep GDPR simple: a static site with no backend.
 - Example data from Swedish open sources (SCB, elprisetjustnu.se, SMHI, Wikimedia), not synthetic. See `docs/DATA.md`.
 - Visual identity: typographic logo "norn" in Bricolage Grotesque 700, no symbol. Colours lin and indigo, dark theme in night indigo. Favicon is a plain "n". See `design/DESIGN.md`.
@@ -20,6 +39,7 @@ Taken by the owner, 2026-10-20. Do not revisit without asking.
 - Verdandi's grade (2026-10-21): Pålitlig when Norn's error is at least 20 percent below repeating the last season and at least 80 percent of outcomes fall inside the 90 band; Osäker when Norn does not beat repeating the last season; Ungefärlig otherwise. No upper limit on coverage: with 12 monthly points a perfectly honest band covers all of them about a quarter of the time. The baseline is the same hour or day last week for hourly and daily data, the same period last year otherwise. Daily data holds out a year, not three months, so yearly peaks are part of the test. Constants in `src/engine/backtest.ts`.
 - Skuld (2026-10-21): the answer is a total or an average over the horizon, made by adding up each step's levels. That range is cautious (the real total fell inside the summed nine-in-ten range 99 times in 100 across the examples), so the words say "i minst nio fall av tio". Total when the user chose Summera in Urd or every value is a whole number of zero or more; average otherwise. "Kopiera länk" only for examples.
 - Phones (2026-10-21): no app on phones. A phone gets one page that explains the idea and the technology simply, then asks the visitor, kindly but firmly, to open Norn on a computer. No way through to the app. Reasons: a 59 MB model on mobile data, memory on older phones, the user's files live on the computer, and the charts need the width. Detection by screen width and a touch-only pointer, not the browser's name, so tablets in landscape and small laptop windows still get the app; the model is never downloaded on the phone page. Every phone visitor gets the same page, with a button that copies the address they opened, to send to themselves for the computer. (Kopiera länk in Skuld only exists for the built-in examples and carries settings, never data, so the page says nothing about shared forecasts.)
+- Chart (2026-10-21): up to four values on the vertical axis (was three), each with a faint line in `kant` behind the bands (DESIGN.md had "no grid" before). Owner's design feedback: it was hard to see where the values are.
 - Domains (changed 2026-10-21): the canonical address is `nornor.app` (Cloudflare zone exists), with `www.nornor.app` 301-redirecting to it. `norn.promptagency.se` is not used; the owner has a separate marketing plan. The address lives in `src/config.ts` only.
 
 ## Phase 0 – Spike (done)
@@ -107,6 +127,6 @@ Done when: a user can go from file to forecast and change horizon and certainty 
 ## Open questions
 
 - **The covariate example.** Answered 2026-10-21 by the events: a midsommarafton marker moves Norn's guess for the peak day on the Midsommar page from 3,944 to 7,845 (actual 10,464) and lowers the year's error by 28 percent; lucia does the same for the Lucia page. Göteborg temperature (2 percent better for SE3) is not offered in the UI, since its future is not known without a weather forecast.
-- **Weak hardware.** When does Norn fall back to the 5M model without asking? Proposal: if the first 28M forecast takes over 3 s. Note: on a Mac in Chrome, single-threaded (no cross-origin isolation yet), the first 28M forecast already takes about 2.7 s. COOP/COEP headers in Phase 5 would allow threads; measure again before setting the threshold.
+- **Weak hardware.** When does Norn fall back to the 5M model without asking? Proposal: if the first 28M forecast takes over 3 s. Single-threaded on a Mac in Chrome, the first 28M forecast took about 2.7 s. Since Phase 5, cross-origin isolation lets it use several threads, and the whole example flow takes 4 to 10 s in the end-to-end tests including the model download, but a single forecast has not been timed on its own. Measure it, ideally on a slower laptop, before setting the threshold. Not built yet: the 5M chunks are deployed but never loaded.
 - **Build depends on amine40's Hugging Face repos.** `scripts/fetch-model.mjs` downloads the model at a pinned revision and sha256 on every clean build (Cloudflare included); the chunks are not in git. If amine40 deletes or renames the files, new deploys fail loudly (no silent swap), while the live site and local builds (`.cache/model/`) keep working. Accepted for now (owner, 2026-10-21), same as Skrubba. Options if it bites: a backup copy we control (for example R2) as a fallback in the fetch script, or committing the chunks (about 72 MB, check the licence terms for redistribution first).
 - **History cap.** amine40 caps history at 4,096 steps in the browser. Keep that, or offer more for hourly data?
