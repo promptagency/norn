@@ -192,7 +192,6 @@ Inte godkänt. Används inte i appen förrän ägaren har godkänt texterna och 
 | mobil.tech | Prognoserna görs av Timestral, en modell från Mistral AI som har lärt sig av mängder av tidsserier. Norn laddar ner modellen en gång och kör den i din webbläsare. Din fil skickas aldrig någonstans. |
 | mobil.desktop.heading | Öppna Norn på en dator |
 | mobil.desktop | Norn behöver en större skärm, och modellen är {mb} MB. Dina filer finns troligen på datorn också. Gå till {adress} där, så kan du börja direkt. Det finns exempel med riktiga siffror om du vill prova utan egna. |
-| mobil.shared | Någon har delat en prognos med dig. Öppna länken på en dator så ser du den. |
 | mobil.link | Kopiera länken |
 | mobil.link.done | Länken är kopierad |
 
