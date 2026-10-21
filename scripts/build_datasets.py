@@ -170,9 +170,9 @@ def build_el_smhi() -> None:
 # ---------------------------------------------------------------- Wikipedia sidvisningar
 
 WIKI_ARTICLES = {
-    "Midsommar": "En enda topp per år, resten av året nästan ingenting.",
+    "Midsommar": "En enda topp per år, resten av året nästan ingenting. Norn hittar dagen men underskattar höjden.",
     "Lucia": "Decembertopp med en vecka av uppladdning.",
-    "Melodifestivalen": "Topp i februari till mars, varje år lite olika.",
+    "Melodifestivalen": "Finalen flyttar sig varje år, och Norn hittar ändå rätt lördag.",
 }
 
 
@@ -199,7 +199,7 @@ def build_wiki() -> None:
         "file": "wikipedia_sv.csv",
         "time": "datum",
         "targets": {a.lower(): d for a, d in WIKI_ARTICLES.items()},
-        "default_target": "midsommar",
+        "default_target": "melodifestivalen",
         "unit": "sidvisningar per dag",
         "description": "Dagliga besök på tre artiklar sedan 2016. Veckorytm och en årlig topp.",
         "source": "Wikimedia REST API, pageviews per article",

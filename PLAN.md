@@ -13,6 +13,7 @@ Taken by the owner, 2026-10-20. Do not revisit without asking.
 - Hand-built (Vite + React + TS), not Lovable, to keep GDPR simple: a static site with no backend.
 - Example data from Swedish open sources (SCB, elprisetjustnu.se, SMHI, Wikimedia), not synthetic. See `docs/DATA.md`.
 - Visual identity: typographic logo "norn" in Bricolage Grotesque 700, no symbol. Colours lin and indigo, dark theme in night indigo. Favicon is a plain "n". See `design/DESIGN.md`.
+- Domains (2026-10-21): the canonical address is `norn.promptagency.se`. `nornor.app` is a short address that 301-redirects there (Cloudflare zone exists, redirect to be set up at launch, same setup as `skrubba.app`). The app never refers to `nornor.app`.
 
 ## Phase 0 – Spike (done)
 
@@ -90,6 +91,7 @@ Done when: a user can go from file to forecast and change horizon and certainty 
 - [ ] Playwright: full flow on each example, and a test that fails on any request to another origin after first load.
 - [ ] Footer: experiment, no support, data never leaves the computer, credits to Mistral, amine40 and the data sources.
 - [ ] Deploy to Cloudflare Pages at `norn.promptagency.se`.
+- [ ] `nornor.app` and `www.nornor.app`: AAAA `100::` proxied, Always Use HTTPS, one Single Redirect rule (301, keep path and query) to `https://norn.promptagency.se`.
 - [ ] README in Prompt Agency's voice, with what worked and what did not.
 
 ## Open questions
