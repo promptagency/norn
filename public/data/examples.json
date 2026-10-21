@@ -23,32 +23,29 @@
       "since": "1991"
     },
     {
-      "id": "elpris",
-      "title": "Elpris per timme, elområde 3",
+      "id": "elforbrukning",
+      "source_short": "eSett",
+      "title": "Elförbrukning per timme, elområde 3",
       "frequency": "timme",
-      "file": "elpris_se3_temp_goteborg.csv",
+      "file": "se3_elforbrukning.csv",
       "time": "tid",
       "targets": {
-        "elpris_kr_per_kwh": "Dygnsrytm, vinter mot sommar, och ibland negativa priser."
+        "elforbrukning_mwh": "Dygn, vecka och årstid på en gång, och Norn träffar inom några procent."
       },
-      "default_target": "elpris_kr_per_kwh",
-      "covariates": {
-        "temperatur_goteborg": "Temperaturen vet man ofta i förväg via väderprognosen."
-      },
-      "unit": "kr per kWh",
-      "description": "Spotpriset på el i SE3 sedan november 2022, med temperaturen i Göteborg som hjälpserie.",
-      "source": "elprisetjustnu.se (Nord Pool via entsoe) och SMHI station 71420 Göteborg A",
-      "source_url": "https://www.elprisetjustnu.se/elpris-api",
-      "license": "Elpris fritt utan garanti, temperatur CC BY 4.0 SMHI",
+      "default_target": "elforbrukning_mwh",
       "labels": {
-        "elpris_kr_per_kwh": "Elpris",
-        "temperatur_goteborg": "Temperatur i Göteborg"
+        "elforbrukning_mwh": "Elförbrukning"
       },
-      "source_short": "elprisetjustnu.se och SMHI",
+      "unit": "MWh per timme",
+      "description": "All el som används i elområde 3 varje timme sedan november 2022.",
+      "source": "eSett Open Data, förbrukning per elområde (EXP15)",
+      "source_url": "https://opendata.esett.com/consumption",
+      "license": "CC0",
       "since": "2022"
     },
     {
       "id": "wikipedia",
+      "source_short": "Wikimedia",
       "title": "Besök på svenska Wikipedia",
       "frequency": "dag",
       "file": "wikipedia_sv.csv",
@@ -56,15 +53,16 @@
       "targets": {
         "midsommar": "En enda topp per år, resten av året nästan ingenting. Norn hittar dagen men underskattar höjden.",
         "lucia": "Decembertopp med en vecka av uppladdning.",
-        "melodifestivalen": "Finalen flyttar sig varje år, och Norn hittar ändå rätt lördag."
+        "melodifestivalen": "Finalen flyttar sig varje år, och Norn hittar ändå rätt lördag.",
+        "påsk": "Påsken flyttar sig upp till fem veckor mellan åren. Välj 6 månader och slå på röda dagar i sista steget, så hittar Norn toppen."
       },
       "default_target": "melodifestivalen",
+      "card": "Finalen och påsken flyttar sig varje år. Välj påsk, 6 månader och röda dagar, så hittar Norn påsken också.",
       "unit": "sidvisningar per dag",
-      "description": "Dagliga besök på tre artiklar sedan 2016. Veckorytm och en årlig topp.",
+      "description": "Dagliga besök på fyra artiklar sedan 2016. Veckorytm och en årlig topp.",
       "source": "Wikimedia REST API, pageviews per article",
       "source_url": "https://wikimedia.org/api/rest_v1/",
       "license": "CC0",
-      "source_short": "Wikimedia",
       "since": "2016"
     }
   ]

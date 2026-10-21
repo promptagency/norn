@@ -29,7 +29,7 @@ Taken by the owner, 2026-10-20. Do not revisit without asking.
 - Engine: amine40's Timestral ONNX exports and the `timestral.js` port from `amine-athmani/timestral-in-browser`. We do not publish our own exports to Hugging Face. Our own export from the spike stays in `scripts/` as a verification tool.
 - Norn is a less technical version of amine40's app for ordinary users. Clear example data from different sources is kept from amine40's idea. No links out of the app in the user flow. The one exception: "Prompt Agency" in the header tag and the footer links to promptagency.se, in a new tab (owner, 2026-10-21).
 - Hand-built (Vite + React + TS), not Lovable, to keep GDPR simple: a static site with no backend.
-- Example data from Swedish open sources (SCB, elprisetjustnu.se, SMHI, Wikimedia), not synthetic. See `docs/DATA.md`.
+- Example data from Swedish open sources (SCB, eSett, Wikimedia), not synthetic. See `docs/DATA.md`. On 2026-10-21 the SE3 spot price (elprisetjustnu.se, with SMHI temperature) was replaced by SE3 consumption from eSett, which shows the model far better, and Påsk was added to the Wikipedia articles to show the events feature (owner's decision).
 - Visual identity: typographic logo "norn" in Bricolage Grotesque 700, no symbol. Colours lin and indigo, dark theme in night indigo. Favicon is a plain "n". See `design/DESIGN.md`.
 - Model hosting (2026-10-21): own origin, same as Skrubba. The model files are split into chunks under 25 MiB in `public/model/` and joined in the worker. CSP `connect-src 'self'`. No Hugging Face request at runtime.
 - Analytics (2026-10-21): the same setup as Skrubba. Self-hosted Plausible, anonymous page views only, proxied through a Cloudflare Pages Function on our own origin so `connect-src` stays `'self'`. No events carrying anything from the user's data.
@@ -54,7 +54,7 @@ Results in `docs/fas0-resultat.md` (Swedish). Short version: fp16 weights are th
 
 ## Phase 0b – Example data (done)
 
-- [x] `scripts/build_datasets.py` fetches SCB retail turnover (four trades, monthly since 1991), SE3 spot price per hour since November 2022 with Göteborg temperature from SMHI, and writes `public/data/` plus `examples.json`.
+- [x] `scripts/build_datasets.py` fetches SCB retail turnover (four trades, monthly since 1991), SE3 electricity consumption per hour since November 2022 from eSett (the spot price until 2026-10-21), and writes `public/data/` plus `examples.json`.
 - [x] Backtest with Timestral-28M on the real data. Recorded in `docs/DATA.md`.
 - [x] Wikipedia page views (`python scripts/build_datasets.py wiki`), built on the owner's machine 2026-10-21. Backtest and peak check in `docs/DATA.md`. Default series melodifestivalen (owner's decision).
 

@@ -13,6 +13,8 @@ export interface Example {
   /** Nicer names for columns, used in place of the file's. */
   labels?: Record<string, string>;
   source_short: string;
+  /** The example card's sentence when the default target's own would not cover the example. */
+  card?: string;
   since: string;
 }
 

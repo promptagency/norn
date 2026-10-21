@@ -2,3 +2,4 @@ timestral @ git+https://github.com/mistralai/timestral.git
 onnx>=1.17
 onnxruntime>=1.20
 onnxscript
+requests

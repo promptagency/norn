@@ -43,7 +43,7 @@ export function Start({ fel, onFil, onText, onExempel }: Props) {
                 key={ex.id}
                 overrad={t("start.example.since", { enhet: unit(ex.frequency), ar: ex.since })}
                 titel={ex.title}
-                text={ex.targets[ex.default_target]}
+                text={ex.card ?? ex.targets[ex.default_target]}
                 kalla={ex.source_short}
                 onClick={() => onExempel(ex)}
               />

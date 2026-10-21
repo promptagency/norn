@@ -6,13 +6,12 @@ statically and never calls the sources at runtime.
 
 Sources
   SCB            detaljhandelns omsättningsindex per bransch, månad   (CC0)
-  elprisetjustnu dagspris per timme SE3, speglar Nord Pool            (fri, utan garanti)
-  SMHI           lufttemperatur per timme, Göteborg A                 (CC BY 4.0)
+  eSett          elförbrukning per timme, elområde SE3                 (CC0)
   Wikimedia      sidvisningar per dag, sv.wikipedia                   (CC0)
 
 Usage
   python build_datasets.py                 # all
-  python build_datasets.py scb el smhi     # a subset
+  python build_datasets.py scb el          # a subset
 """
 
 import csv
@@ -21,6 +20,7 @@ import json
 import sys
 import time
 from pathlib import Path
+from urllib.parse import quote
 
 import requests
 
@@ -86,87 +86,44 @@ def build_scb() -> None:
     })
 
 
-# ---------------------------------------------------------------- elpris SE3 + SMHI temperatur
+# ---------------------------------------------------------------- elförbrukning SE3 (eSett)
+# Replaced the SE3 spot price on 2026-10-21: consumption has a clear daily, weekly and yearly rhythm that
+# Norn forecasts within a few percent, while the price is driven by wind and gas (docs/DATA.md).
 
 EL_START = dt.date(2022, 11, 1)
+SE3 = "10Y1001A1001A46L"  # eSett's code for metering balance area SE3
 
 
 def build_el(end: dt.date | None = None) -> None:
     end = end or dt.date.today()
-    rows: dict[str, float] = {}
-    d = EL_START
-    sess = requests.Session()
-    while d <= end:
-        url = f"https://www.elprisetjustnu.se/api/v1/prices/{d.year}/{d.month:02d}-{d.day:02d}_SE3.json"
-        r = sess.get(url, headers=UA, timeout=30)
-        if r.status_code == 200:
-            for item in r.json():
-                ts = dt.datetime.fromisoformat(item["time_start"])
-                key = ts.strftime("%Y-%m-%d %H:00")  # kvartsvärden sedan okt 2025 slås ihop till timme
-                rows.setdefault(key, [])
-                rows[key].append(item["SEK_per_kWh"])
-        elif r.status_code != 404:
-            print("  varning", d, r.status_code)
-        d += dt.timedelta(days=1)
-        time.sleep(0.05)
-    hourly = {k: round(sum(v) / len(v), 5) for k, v in rows.items()}
-    print(f"  elpris: {len(hourly)} timmar")
-    return hourly
-
-
-def build_smhi() -> dict[str, float]:
-    url = ("https://opendata-download-metobs.smhi.se/api/version/1.0/parameter/1/"
-           "station/71420/period/corrected-archive/data.csv")
-    r = requests.get(url, headers=UA, timeout=120)
-    r.raise_for_status()
-    lines = r.text.splitlines()
-    start = next(i for i, l in enumerate(lines) if l.startswith("Datum")) + 1
-    temps: dict[str, float] = {}
-    for line in lines[start:]:
-        parts = line.split(";")
-        if len(parts) < 3 or parts[0] < "2022-11-01":
-            continue
-        # SMHI rapporterar i UTC, elpriset i svensk tid. Vi flyttar temperaturen till svensk tid.
-        utc = dt.datetime.fromisoformat(f"{parts[0]} {parts[1]}").replace(tzinfo=dt.timezone.utc)
-        local = utc.astimezone(dt.timezone(dt.timedelta(hours=1)))  # CET, enkel och stabil
-        temps[local.strftime("%Y-%m-%d %H:00")] = float(parts[2])
-    # senaste tre månaderna ligger i en separat fil
-    r = requests.get(url.replace("corrected-archive", "latest-months"), headers=UA, timeout=60)
-    if r.ok:
-        lines = r.text.splitlines()
-        start = next(i for i, l in enumerate(lines) if l.startswith("Datum")) + 1
-        for line in lines[start:]:
-            parts = line.split(";")
-            if len(parts) >= 3 and parts[2]:
-                utc = dt.datetime.fromisoformat(f"{parts[0]} {parts[1]}").replace(tzinfo=dt.timezone.utc)
-                local = utc.astimezone(dt.timezone(dt.timedelta(hours=1)))
-                temps.setdefault(local.strftime("%Y-%m-%d %H:00"), float(parts[2]))
-    print(f"  smhi: {len(temps)} timmar")
-    return temps
-
-
-def build_el_smhi() -> None:
-    el = build_el()
-    temps = build_smhi()
-    hours = sorted(el)
-    rows = [[h, el[h], temps.get(h, "")] for h in hours]
-    write_csv("elpris_se3_temp_goteborg.csv", ["tid", "elpris_kr_per_kwh", "temperatur_goteborg"], rows)
+    hours: dict[str, list[float]] = {}
+    for year in range(EL_START.year, end.year + 1):
+        start = max(EL_START, dt.date(year, 1, 1))
+        stop = min(end, dt.date(year + 1, 1, 1))
+        url = (f"https://api.opendata.esett.com/EXP15/Aggregate?mba={SE3}&resolution=hour"
+               f"&start={start}T00:00:00.000Z&end={stop}T00:00:00.000Z")
+        r = requests.get(url, headers=UA, timeout=180)
+        r.raise_for_status()
+        for item in r.json():
+            # Swedish wall-clock time, like the other examples. The repeated autumn hour is averaged.
+            hours.setdefault(item["timestamp"][:16].replace("T", " "), []).append(-item["total"])
+    rows = [[h, round(sum(v) / len(v), 1)] for h, v in sorted(hours.items())]
+    write_csv("se3_elforbrukning.csv", ["tid", "elforbrukning_mwh"], rows)
     EXAMPLES.append({
-        "id": "elpris",
-        "source_short": "elprisetjustnu.se och SMHI",
-        "title": "Elpris per timme, elområde 3",
+        "id": "elforbrukning",
+        "source_short": "eSett",
+        "title": "Elförbrukning per timme, elområde 3",
         "frequency": "timme",
-        "file": "elpris_se3_temp_goteborg.csv",
+        "file": "se3_elforbrukning.csv",
         "time": "tid",
-        "targets": {"elpris_kr_per_kwh": "Dygnsrytm, vinter mot sommar, och ibland negativa priser."},
-        "default_target": "elpris_kr_per_kwh",
-        "covariates": {"temperatur_goteborg": "Temperaturen vet man ofta i förväg via väderprognosen."},
-        "labels": {"elpris_kr_per_kwh": "Elpris", "temperatur_goteborg": "Temperatur i Göteborg"},
-        "unit": "kr per kWh",
-        "description": "Spotpriset på el i SE3 sedan november 2022, med temperaturen i Göteborg som hjälpserie.",
-        "source": "elprisetjustnu.se (Nord Pool via entsoe) och SMHI station 71420 Göteborg A",
-        "source_url": "https://www.elprisetjustnu.se/elpris-api",
-        "license": "Elpris fritt utan garanti, temperatur CC BY 4.0 SMHI",
+        "targets": {"elforbrukning_mwh": "Dygn, vecka och årstid på en gång, och Norn träffar inom några procent."},
+        "default_target": "elforbrukning_mwh",
+        "labels": {"elforbrukning_mwh": "Elförbrukning"},
+        "unit": "MWh per timme",
+        "description": "All el som används i elområde 3 varje timme sedan november 2022.",
+        "source": "eSett Open Data, förbrukning per elområde (EXP15)",
+        "source_url": "https://opendata.esett.com/consumption",
+        "license": "CC0",
     })
 
 
@@ -176,6 +133,7 @@ WIKI_ARTICLES = {
     "Midsommar": "En enda topp per år, resten av året nästan ingenting. Norn hittar dagen men underskattar höjden.",
     "Lucia": "Decembertopp med en vecka av uppladdning.",
     "Melodifestivalen": "Finalen flyttar sig varje år, och Norn hittar ändå rätt lördag.",
+    "Påsk": "Påsken flyttar sig upp till fem veckor mellan åren. Välj 6 månader och slå på röda dagar i sista steget, så hittar Norn toppen.",
 }
 
 
@@ -184,7 +142,7 @@ def build_wiki() -> None:
     series: dict[str, dict[str, int]] = {}
     for art in WIKI_ARTICLES:
         url = (f"https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/sv.wikipedia/"
-               f"all-access/user/{art}/daily/{start}/{end}")
+               f"all-access/user/{quote(art)}/daily/{start}/{end}")
         r = requests.get(url, headers=UA, timeout=60)
         if r.status_code == 429:
             print("  wikimedia: rate limit, försök igen senare eller från en annan adress")
@@ -204,8 +162,10 @@ def build_wiki() -> None:
         "time": "datum",
         "targets": {a.lower(): d for a, d in WIKI_ARTICLES.items()},
         "default_target": "melodifestivalen",
+        # The card's sentence, since it covers all four articles and not only the default.
+        "card": "Finalen och påsken flyttar sig varje år. Välj påsk, 6 månader och röda dagar, så hittar Norn påsken också.",
         "unit": "sidvisningar per dag",
-        "description": "Dagliga besök på tre artiklar sedan 2016. Veckorytm och en årlig topp.",
+        "description": "Dagliga besök på fyra artiklar sedan 2016. Veckorytm och en årlig topp.",
         "source": "Wikimedia REST API, pageviews per article",
         "source_url": "https://wikimedia.org/api/rest_v1/",
         "license": "CC0",
@@ -214,7 +174,7 @@ def build_wiki() -> None:
 
 # ---------------------------------------------------------------- main
 
-BUILDERS = {"scb": build_scb, "el": build_el_smhi, "wiki": build_wiki}
+BUILDERS = {"scb": build_scb, "el": build_el, "wiki": build_wiki}
 
 
 def main() -> None:
@@ -233,7 +193,7 @@ def main() -> None:
             print(f"  misslyckades: {e}")
     for e in EXAMPLES:
         existing[e["id"]] = e
-    order = ["detaljhandel", "elpris", "wikipedia"]
+    order = ["detaljhandel", "elforbrukning", "wikipedia"]
     out = [existing[k] for k in order if k in existing]
     for e in out:  # the year the data starts, for the example cards
         with open(OUT / e["file"], newline="") as f:

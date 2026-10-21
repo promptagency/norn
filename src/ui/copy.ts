@@ -121,7 +121,7 @@ export const COPY = {
   "csv.high": "högst i nio fall av tio",
   "csv.level": "kvantil {procent} %",
   "footer.experiment": "Norn är ett experiment från Prompt Agency. Ingen support, ingen garanti. Din data lämnar aldrig datorn.",
-  "footer.credits": "Prognoserna görs av Timestral från Mistral AI, i webbläsaren tack vare amine40:s ONNX-export. Exempeldata från SCB, SMHI, elprisetjustnu.se och Wikimedia.",
+  "footer.credits": "Prognoserna görs av Timestral från Mistral AI, i webbläsaren tack vare amine40:s ONNX-export. Exempeldata från SCB, eSett och Wikimedia.",
   "header.home": "Norn, till start",
   "header.tag": "Ett experiment från Prompt Agency",
   "link.newtab": "öppnas i en ny flik",

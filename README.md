@@ -49,7 +49,7 @@ What we learned building it, with the numbers in `docs/DATA.md` and `docs/fas0-r
 - **The browser matches the original.** Timestral runs in onnxruntime-web (WASM) and agrees with Mistral's Python package. With amine40's fp16 weights the forecasts are within 0.7 percent of the width of the nine-in-ten band; an fp32 export is within 0.05 percent. int8 weights moved the bands too much and were dropped.
 - **It is good at rhythm, cautious at peaks.** On Swedish Wikipedia page views Norn finds the right day for every yearly peak, even the Melodifestivalen final that moves every year, but guesses well below the height of short peaks like midsommar. The wide band holds the real value every time.
 - **Telling it about events helps a lot.** A plain midsommarafton marker moves Norn's guess for the peak day from 3,944 to 7,845 page views (it was 10,464) and cuts the error over the year by 28 percent.
-- **A related series can help less than you would think.** Göteborg's temperature improves the SE3 electricity price forecast by 2 percent. Norn does not offer it.
+- **Some series show off, some don't.** Electricity consumption in SE3 is forecast within about 3 percent, a week ahead. The spot price, an earlier example, was off by more than half: it is driven by wind and gas, not by its own history. Göteborg's temperature improved the price forecast by only 2 percent.
 - **Some series are just hard.** On toy shop turnover Norn beats "same month last year" by only 3 percent, and says so with the grade Ungefärlig.
 - **Totals are cautious.** The model gives a range per day, not for the sum of a month. Norn adds the daily ranges up, which is wider than needed (the real total landed inside it 99 times in 100 in our tests), so Skuld says "i minst nio fall av tio".
 
@@ -86,7 +86,7 @@ Norn works offline after the first forecast, through a service worker. If a depl
 
 - [Timestral](https://huggingface.co/mistralai/Timestral-28M) by Mistral AI, the time-series model.
 - [amine40](https://huggingface.co/amine40)'s ONNX exports (`Timestral-28M-ONNX`, `Timestral-5M-ONNX`) and the JavaScript port of the forecast function from [timestral-in-browser](https://github.com/amine-athmani/timestral-in-browser) (Apache 2.0), vendored unchanged in `src/engine/vendor/`.
-- Example data: SCB, retail turnover per trade (CC0); elprisetjustnu.se, SE3 spot price (free, no warranty); SMHI, air temperature Göteborg A (CC BY 4.0); Wikimedia, page views on Swedish Wikipedia (CC0).
+- Example data: SCB, retail turnover per trade (CC0); eSett, electricity consumption in SE3 (CC0); Wikimedia, page views on Swedish Wikipedia (CC0).
 - Bricolage Grotesque and Figtree, SIL Open Font License 1.1.
 
 ## License

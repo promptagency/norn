@@ -20,7 +20,7 @@ The three step names are always visible at the top, clickable backwards. The use
    └──────────────────────────────────────────────────────────────┘
 
    ┌───────────────┐ ┌───────────────┐ ┌───────────────┐
-   │ Detaljhandel  │ │ Elpris        │ │ Wikipedia     │            ← example cards
+   │ Detaljhandel  │ │ Elförbrukning │ │ Wikipedia     │            ← example cards
    │ per månad     │ │ per timme     │ │ per dag       │
    │ julhandeln …  │ │ dygnsrytm …   │ │ en topp …     │
    └───────────────┘ └───────────────┘ └───────────────┘

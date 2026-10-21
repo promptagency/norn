@@ -134,7 +134,7 @@ group("the examples reach Urd with the right description", () => {
   const { examples } = JSON.parse(readFileSync("public/data/examples.json", "utf8")) as { examples: Example[] };
   const expected: Record<string, string> = {
     detaljhandel: "Leksaksaffärer per månad, från januari 1991 till augusti 2026. 428 månader.",
-    elpris: "Elpris per timme, från 1 november 2022 till 20 oktober 2026. 34 800 timmar, 4 saknas.",
+    elforbrukning: "Elförbrukning per timme, från 1 november 2022 till 20 oktober 2026. 34 799 timmar, 5 saknas.",
     wikipedia: "Melodifestivalen per dag, från 1 januari 2016 till 20 oktober 2026. 3 946 dagar.",
   };
   it.each(examples.map((e) => [e.id, e] as const))("%s", (id, ex) => {
