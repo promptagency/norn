@@ -49,7 +49,10 @@ export function Verdandi({ series, forecaster, download, onNext }: Props) {
     const good = niva === "palitlig";
     if (percentFits(s)) {
       const procent = `${percent(s.relative)} procent`;
-      svar = emphasize(t(good ? "verdandi.good" : "verdandi.fair", { Period, procent: percent(s.relative), jamfort }), procent);
+      // Without clearly beating the naive guess, the sentence must not claim it did.
+      const plain = !(improvement(s) >= THRESHOLDS.betterThanNaive);
+      const key = good ? (plain ? "verdandi.good.plain" : "verdandi.good") : !(improvement(s) > 0) ? "verdandi.fair.plain" : "verdandi.fair";
+      svar = emphasize(t(key, { Period, procent: percent(s.relative), jamfort }), procent);
     } else {
       // Near zero or below it a percent explodes, so the miss is said in the data's own numbers.
       const fel = `${number.format(s.error)} per ${unit(series.frequency)}`;
@@ -120,7 +123,13 @@ export function Verdandi({ series, forecaster, download, onNext }: Props) {
               ]}
             />
             <p className="liten dampad">
-              {t("verdandi.rule", { battre: percent(THRESHOLDS.betterThanNaive), inom: percent(THRESHOLDS.inside90), jamfort })}
+              {t("verdandi.rule", {
+                battre: percent(THRESHOLDS.betterThanNaive),
+                inom: percent(THRESHOLDS.inside90),
+                nara: percent(THRESHOLDS.closeError),
+                langt: percent(THRESHOLDS.farError),
+                jamfort,
+              })}
             </p>
           </Fraga>
           <div>

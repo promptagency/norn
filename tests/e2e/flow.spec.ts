@@ -15,12 +15,13 @@ function watch(context: BrowserContext, page: Page) {
   };
 }
 
-async function throughSkuld(page: Page, card: string, grade: string) {
+async function throughSkuld(page: Page, card: string, grade: string, sentence?: string) {
   await page.goto("/");
   await page.locator(".n-exempelkort", { hasText: card }).click();
   await expect(page.locator(".n-svar")).toContainText(" från ");
   await page.getByRole("button", { name: "Ja", exact: true }).click();
   await expect(page.locator(".n-betyg")).toContainText(grade, { timeout: 120_000 });
+  if (sentence) await expect(page.locator(".n-svar")).toContainText(sentence);
   await page.getByRole("button", { name: "Visa vad som kommer" }).click();
   const svar = page.locator(".n-svar");
   await expect(svar).toContainText("troligen", { timeout: 60_000 });
@@ -33,16 +34,17 @@ async function throughSkuld(page: Page, card: string, grade: string) {
   await expect(page.getByRole("status").filter({ hasText: "Räkna med" })).toBeVisible();
 }
 
+// The grade and part of its sentence for each example's default series (rule in src/engine/backtest.ts).
 const EXAMPLES = [
-  ["Detaljhandel", "Ungefärlig"],
-  ["Elpris", "Pålitlig"],
-  ["Wikipedia", "Pålitlig"],
+  ["Detaljhandel", "Pålitlig", "hade träffat nästan lika bra"], // within 7 %, barely better than last year
+  ["Elpris", "Pålitlig", "betydligt bättre än att upprepa"],
+  ["Wikipedia", "Pålitlig", "betydligt bättre än att upprepa"],
 ] as const;
 
-for (const [card, grade] of EXAMPLES) {
+for (const [card, grade, sentence] of EXAMPLES) {
   test(`${card}: from Start to Skuld without a request to another origin`, async ({ context, page }) => {
     const w = watch(context, page);
-    await throughSkuld(page, card, grade);
+    await throughSkuld(page, card, grade, sentence);
     expect(w.foreign()).toEqual([]);
     expect(w.refused).toEqual([]);
     expect(w.requests.some((u) => u.includes("/model/"))).toBe(true); // the list really saw the worker

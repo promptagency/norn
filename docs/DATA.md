@@ -49,7 +49,7 @@ The Wikipedia rows compare with the same day a year earlier. Averages say little
 
 What this means for the UI:
 
-- Leksaksaffärer has the clearest season (December three times a normal month) and is the one where the model barely beats "same as last year". It is a good honest example of Ungefärlig, and a test case for the Verdandi grade.
+- Leksaksaffärer has the clearest season (December three times a normal month) and is the one where the model barely beats "same as last year". Under the revised grade (2026-10-21) it is Pålitlig on accuracy alone (within 7 percent), and Verdandi says that repeating last year would have done nearly as well. Midsommar is now the honest Ungefärlig: Norn hits the day but misses the height of the peak by far (42 percent off over the year).
 - Wikipedia shows the core message of Verdandi with real data: Norn finds the day of every peak, including Melodifestivalen's final, which moves from year to year, but the median is far too low for the short Midsommar and Lucia peaks. The 90 % band still holds the real value every time. Trust the bands more than the line. Melodifestivalen is the default series because it makes the best first impression; Midsommar and Lucia stay as choices in Urd and show the honest case.
 - Göteborg temperature as a known-future covariate lowers the SE3 price error by only 2 percent (0.293 → 0.286 kr/kWh). The price is driven more by wind and gas than by Göteborg's temperature. The covariate example works technically but proves little. Open question in `PLAN.md`.
 

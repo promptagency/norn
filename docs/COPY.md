@@ -59,6 +59,8 @@ Utkast. Ändras när skärmskisserna är godkända.
 | verdandi.fair | {Period} träffade Norn i snitt inom {procent} procent. Bättre än att gissa, men lita mer på banden än på linjen. |
 | verdandi.good.abs | {Period} missade Norn i snitt med {fel} per {enhet}, betydligt bättre än att upprepa {jamfort}. |
 | verdandi.fair.abs | {Period} missade Norn i snitt med {fel} per {enhet}. Bättre än att gissa, men lita mer på banden än på linjen. |
+| verdandi.good.plain | {Period} träffade Norn i snitt inom {procent} procent. Att upprepa {jamfort} hade träffat nästan lika bra, så mönstret är tydligt. |
+| verdandi.fair.plain | {Period} träffade Norn i snitt inom {procent} procent, ungefär som att upprepa {jamfort}. Lita mer på banden än på linjen. |
 | verdandi.poor | Norn såg inget tydligt mönster i den här datan. Prognosen blir bred. Fler datapunkter eller en jämnare serie hjälper. |
 | verdandi.bands | Det som faktiskt hände hamnade i det smala bandet {in50} procent av gångerna och i det breda {in90} procent. Banden lovar hälften och nio av tio. |
 | verdandi.chart | {namn} från {start} till {slut}. Den senare delen visar Norns gissning som band och det som faktiskt hände som en grå linje. |
@@ -71,7 +73,7 @@ Utkast. Ändras när skärmskisserna är godkända.
 | verdandi.d.share | {andel} %, väntat {vantat} % |
 | verdandi.d.period | Testperiod och modell |
 | verdandi.d.period.value | {start} till {slut}, {modell} |
-| verdandi.rule | Pålitlig betyder att Norn missade minst {battre} procent mindre än att upprepa {jamfort}, och att minst {inom} procent av det som hände hamnade i det breda bandet. Osäker betyder att Norn inte gjorde bättre än att upprepa {jamfort}. Ungefärlig är allt däremellan. |
+| verdandi.rule | Pålitlig betyder att minst {inom} procent av det som hände hamnade i det breda bandet, och att Norn antingen missade med högst {nara} procent eller missade minst {battre} procent mindre än att upprepa {jamfort}, med högst {langt} procent. Osäker betyder att Norn varken gjorde bättre än att upprepa {jamfort} eller missade med högst {nara} procent. Ungefärlig är allt däremellan. |
 | period.ar | det senaste året |
 | period.n | de senaste {antal} {enheter} |
 | jamfort.vecka | samma {enhet} förra veckan |

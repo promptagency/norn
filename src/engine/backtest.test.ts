@@ -22,15 +22,29 @@ it("scores the median against what happened and the naive guess, and counts valu
   expect(s).toEqual({ error: 11 / 3, naiveError: 4 / 3, relative: 11 / 46, inside50: 1 / 3, inside90: 1, count: 3, positive: true });
 });
 
-const scored = (error: number, naiveError: number, inside90: number): Score =>
-  ({ error, naiveError, relative: 0.1, inside50: 0.5, inside90, count: 12, positive: true });
+const scored = (error: number, naiveError: number, inside90: number, relative = 0.2, positive = true): Score =>
+  ({ error, naiveError, relative, inside50: 0.5, inside90, count: 12, positive });
 
-it("grades by how much Norn beats the naive guess and how often the wide band held", () => {
-  expect(grade(scored(0.78, 1, 0.83))).toBe("palitlig");
-  expect(grade(scored(0.78, 1, 0.75))).toBe("ungefarlig");
-  expect(grade(scored(0.97, 1, 0.83))).toBe("ungefarlig");
-  expect(grade(scored(1.04, 1, 0.97))).toBe("osaker");
+it("grades Pålitlig when the wide band held and Norn was close, or clearly beat the naive guess without missing far", () => {
+  expect(grade(scored(0.78, 1, 0.83))).toBe("palitlig"); // 22 % better, 20 % off
+  expect(grade(scored(0.97, 1, 0.83, 0.07))).toBe("palitlig"); // barely better, but within 7 % (Leksaksaffärer)
+  expect(grade(scored(1.05, 1, 0.9, 0.03))).toBe("palitlig"); // worse than the naive guess, but within 3 % (consumption)
+  expect(grade(scored(0.76, 1, 0.91, 0.58))).toBe("ungefarlig"); // 24 % better but 58 % off (the price)
+  expect(grade(scored(0.67, 1, 0.92, 0.33))).toBe("palitlig"); // 33 % off is not far (Lucia)
+  expect(grade(scored(0.54, 1, 0.93, 0.42))).toBe("ungefarlig"); // 42 % off is far (Midsommar)
+  expect(grade(scored(0.78, 1, 0.75))).toBe("ungefarlig"); // the wide band held too seldom
+});
+
+it("grades Osäker only when Norn neither beat the naive guess nor came close", () => {
+  expect(grade(scored(1.04, 1, 0.97, 0.2))).toBe("osaker");
+  expect(grade(scored(1.04, 1, 0.97, 0.05))).toBe("palitlig");
+  expect(grade(scored(1.04, 1, 0.7, 0.05))).toBe("ungefarlig");
   expect(grade(scored(0, 0, 1))).toBe("osaker"); // a constant series: nothing to beat, nothing learned
+});
+
+it("ignores the error limits where the values are not all above zero", () => {
+  expect(grade(scored(0.78, 1, 0.83, 2.5, false))).toBe("palitlig");
+  expect(grade(scored(1.05, 1, 0.9, 0.03, false))).toBe("osaker");
 });
 
 it("holds out a year of daily data, less when the series is short", () => {

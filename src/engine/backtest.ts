@@ -14,16 +14,31 @@ export const backtestSteps = (freq: Frequency, n: number) => Math.min(BACKTEST_S
 
 export type Grade = "palitlig" | "ungefarlig" | "osaker";
 
-/** Pålitlig needs both; Osäker is not beating the naive guess at all (owner's decision 2026-10-21). */
-export const THRESHOLDS = { betterThanNaive: 0.2, inside90: 0.8 };
+/**
+ * The grade's limits (owner's decisions 2026-10-21, revised the same day): the wide band must hold at least
+ * `inside90` of the outcomes; the error counts as close at most `closeError` and as far above `farError` of the
+ * value; Norn must beat the naive guess by `betterThanNaive` to earn Pålitlig on that alone.
+ */
+export const THRESHOLDS = { betterThanNaive: 0.2, inside90: 0.8, closeError: 0.1, farError: 0.35 };
 
 /** How much smaller Norn's error was than the naive guess's, 0.25 for a quarter smaller. */
 export const improvement = (s: Score) => (s.naiveError > 0 ? 1 - s.error / s.naiveError : -Infinity);
 
+/** The error is small enough to trust on its own, even where the naive guess is about as good. */
+export const isClose = (s: Score) => percentFits(s) && s.relative <= THRESHOLDS.closeError;
+
+/**
+ * Pålitlig: the wide band held, and the error is close, or Norn clearly beat the naive guess without missing far.
+ * Osäker: Norn did not beat the naive guess and was not close either. Ungefärlig: everything in between.
+ * The error limits apply only where the error reads as a percent (every value above zero); otherwise only the
+ * comparison with the naive guess counts.
+ */
 export function grade(s: Score): Grade {
   const better = improvement(s);
-  if (!(better > 0)) return "osaker";
-  return better >= THRESHOLDS.betterThanNaive && s.inside90 >= THRESHOLDS.inside90 ? "palitlig" : "ungefarlig";
+  const far = percentFits(s) && s.relative > THRESHOLDS.farError;
+  if (!(better > 0) && !isClose(s)) return "osaker";
+  const held = s.inside90 >= THRESHOLDS.inside90;
+  return held && (isClose(s) || (better >= THRESHOLDS.betterThanNaive && !far)) ? "palitlig" : "ungefarlig";
 }
 
 export interface Score {
