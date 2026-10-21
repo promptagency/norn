@@ -18,7 +18,7 @@ Engineering, not done yet:
 
 6. **Check by hand in real browsers**, which the automated tests cannot cover: one full run in real Safari on a Mac (CI uses Playwright's WebKit, not Safari), an Excel upload (unit tests cover the dates), printing Skuld, Verdandi in the dark theme, and a tablet in portrait (744 to 834 px wide gets the app).
 
-Done since launch (2026-10-21): CI in `.github/workflows/test.yml`, adapted from Skrubba's (type check and unit tests on every push, the Playwright suite on `v*` tags or by hand), and the end-to-end suite in Chromium, Firefox and WebKit, locally, against `nornor.app` and on CI (the phone tests skip Firefox, which Playwright cannot emulate as a phone), the unused `model.ready` string removed from COPY.md, and `wrangler login` refreshed.
+Done since launch (2026-10-21): CI in `.github/workflows/test.yml`, adapted from Skrubba's (type check and unit tests on every push, the Playwright suite on `v*` tags or by hand), and the end-to-end suite in Chromium, Firefox and WebKit, locally, against `nornor.app` and on CI (the phone tests skip Firefox, which Playwright cannot emulate as a phone), the unused `model.ready` string removed from COPY.md, and `wrangler login` refreshed. Monthly rebuild of the example data in `.github/workflows/data.yml`: committed to `main` when every test passes, otherwise kept on a branch with an issue (owner's decision 2026-10-21).
 
 ## Decisions so far
 

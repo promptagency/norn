@@ -26,6 +26,8 @@ Norn is a static site on Cloudflare Pages, project `norn`, built from `main` on 
 
 **After a deploy**, run the end-to-end suite against the live site: `NORN_URL=https://nornor.app npm run e2e`. On the first live run it found a race local runs had missed: example data fetched before the service worker took control was never cached, so offline use failed now and then. Example data is now fetched under its control, like the model.
 
+**The monthly data rebuild.** `.github/workflows/data.yml` runs on the 2nd of every month (and by hand under Actions → Data). It refetches the example data and runs every test with it. All green: it commits to `main` as github-actions[bot], which deploys like any push. A failure: the data goes to a branch `data/<year-month>` and an issue explains, and nothing goes live. A source that fails keeps its old file; Wikimedia in particular rate-limits cloud addresses, and the build log in the commit or issue says so.
+
 ## The offline cache
 
 Browsers fetch `/sw.js` fresh on every visit (`public/_headers` sets `Cache-Control: no-cache`; do not override it in Cloudflare). Each build bakes a content hash of every file into it, so any change gives a new `sw.js`, installed in the background and used from the next load. The previous build's files are kept one more cycle for tabs still open on it. The app shell is fetched from `/`, since Cloudflare redirects `/index.html` there and a cached redirect breaks return visits.

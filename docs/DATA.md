@@ -2,6 +2,8 @@
 
 Norn's examples are real Swedish open data, not synthetic. They are built by `scripts/build_datasets.py`, written to `public/data/` and shipped statically. The app never calls the sources at runtime.
 
+The data is rebuilt every month by `.github/workflows/data.yml` (owner's decision 2026-10-21), so Skuld always starts from recent days. If every test passes with the new data it is committed to `main` and deployed; if one fails, usually a grade that moved across a limit, the data waits on a branch `data/<year-month>` and an issue says what failed. The numbers in the tables below are from 2026-10-21 and are not updated by the rebuild.
+
 ```
 python scripts/build_datasets.py              # all
 python scripts/build_datasets.py scb el wiki  # a subset

@@ -1,0 +1,114 @@
+# Monthly rebuild of the example data (owner's decision 2026-10-21), so Skuld never "forecasts" weeks that have
+# already happened. scripts/build_datasets.py refetches SCB, eSett and Wikimedia, then the full test suite runs:
+#
+#   all green  the new data is committed to main, and Cloudflare Pages deploys it.
+#   a failure  usually a grade that flipped near a limit (tests/e2e/flow.spec.ts expects today's grades). The data
+#              is pushed to a branch data/<year-month> and an issue says what failed. Nothing goes live.
+#
+# A source that fails (Wikimedia rate-limits cloud addresses, docs/DATA.md) keeps its old file; the build log says so
+# in the commit or the issue. Start it by hand under Actions → Data → Run workflow.
+name: Data
+
+on:
+  schedule:
+    - cron: "0 5 2 * *" # 05:00 UTC on the 2nd of every month
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: data
+  cancel-in-progress: false
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .node-version
+          cache: npm
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Rebuild the example data
+        shell: bash
+        run: |
+          pip install --quiet requests
+          python scripts/build_datasets.py 2>&1 | tee build.log
+
+      - run: npm ci
+
+      - uses: actions/cache@v6
+        with:
+          path: .cache/model
+          key: model-${{ hashFiles('src/config.ts') }}
+
+      - uses: actions/cache@v6
+        id: browsers
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-3-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+
+      - name: Install the test browsers
+        if: steps.browsers.outputs.cache-hit != 'true'
+        run: npx playwright install --with-deps chromium firefox webkit
+
+      - name: Install the test browsers' system libraries
+        if: steps.browsers.outputs.cache-hit == 'true'
+        run: npx playwright install-deps chromium firefox webkit
+
+      - name: Test with the new data
+        id: test
+        continue-on-error: true
+        shell: bash
+        run: (npm run typecheck && npm test && npm run e2e) 2>&1 | tee test.log
+
+      - name: Commit the new data to main
+        if: steps.test.outcome == 'success'
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/data
+          git diff --cached --quiet && { echo "No new data."; exit 0; }
+          { echo "Data: monthly rebuild $(date -u +%Y-%m-%d)"; echo; echo "Every test passed with the new data."; echo; grep -E "rader|misslyckades|rate limit|examples.json" build.log; } > message.txt
+          git commit --quiet --file message.txt
+          git push origin HEAD:main
+
+      - name: Keep the data on a branch and open an issue
+        if: steps.test.outcome != 'success'
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          branch="data/$(date -u +%Y-%m)"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$branch"
+          git add public/data
+          git commit --quiet -m "Data: monthly rebuild $(date -u +%Y-%m-%d), tests failing" || true
+          git push --force origin "$branch"
+          {
+            echo "The monthly rebuild of the example data failed its tests, so nothing went live. The new data is on the branch \`$branch\`."
+            echo
+            echo "A failure here is usually a grade that moved across a limit (Elförbrukning, Melodifestivalen and Lucia sit close to them). Check the run, decide whether the new grade is right, and update \`tests/e2e/flow.spec.ts\` and \`docs/DATA.md\` on the branch before merging."
+            echo
+            echo "Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+            echo
+            echo '```'
+            grep -E "rader|misslyckades|rate limit|examples.json" build.log
+            echo '```'
+            echo
+            echo '```'
+            grep -E "✘|failed|Error:|Expected|Received|FAIL" test.log | head -40
+            echo '```'
+          } > issue.md
+          gh issue create --title "Monthly data rebuild failed its tests ($(date -u +%Y-%m))" --body-file issue.md

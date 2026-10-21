@@ -37,7 +37,8 @@ async function throughSkuld(page: Page, card: string, grade: string, sentence?: 
 // The grade and part of its sentence for each example's default series (rule in src/engine/backtest.ts).
 const EXAMPLES = [
   ["Detaljhandel", "Pålitlig", "hade träffat nästan lika bra"], // within 7 %, barely better than last year
-  ["Elförbrukning", "Ungefärlig", "träffade Norn i snitt inom 5 procent"], // the wide band held just under 80 % that week
+  // The wide band held just under 80 % in the week held out on 2026-10-21. A rebuild may flip it: that is the point.
+  ["Elförbrukning", "Ungefärlig", "träffade Norn i snitt inom"],
   ["Wikipedia", "Pålitlig", "betydligt bättre än att upprepa"],
 ] as const;
 
