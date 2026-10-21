@@ -34,6 +34,7 @@ Utkast. Ändras när skärmskisserna är godkända.
 | start.example.since | Per {enhet} sedan {ar} |
 | header.home | Norn, till start |
 | header.tag | Ett experiment från Prompt Agency |
+| link.newtab | öppnas i en ny flik |
 | step.label | Steg |
 | step.done | klart |
 | step.urd | Urd |

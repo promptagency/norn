@@ -301,6 +301,10 @@
 .n-sidhuvud__hem { display: flex; border-radius: var(--radius-sm); }
 .n-sidhuvud__logo { height: 30px; width: auto; display: block; }
 .n-sidhuvud__tagg { font-size: 14px; line-height: 20px; color: var(--text-dampad); }
+/* A link inside running text (Prompt Agency in the header tag and footer): the text's own colour, underlined. */
+.n-textlank { color: inherit; text-decoration: underline; text-underline-offset: 3px; border-radius: var(--radius-sm); }
+.n-textlank:hover { color: var(--text); }
+.n-textlank:focus-visible { outline: 2px solid var(--fokus); outline-offset: 2px; }
 .n-sidfot { background: var(--yta-sankt); }
 .n-sidfot__inre {
   max-width: 1080px;

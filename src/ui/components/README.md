@@ -277,6 +277,7 @@ Logotypen och, på stegskärmarna, stegen. Sidfoten med experiment och tack hör
 - Ge `logoSrc` den positiva logotypen i ljust tema och den negativa i mörkt.
 - På Start står Ett experiment från Prompt Agency till höger. På stegskärmarna står `Steg` där.
 - `Sidfot` visas på varje skärm och säger alltid att datan aldrig lämnar datorn. Skicka egna barn för att byta raden med tack och källor.
+- Prompt Agency är en länk till promptagency.se i både taggen och sidfoten. Den öppnas i en ny flik, så att användarens data inte försvinner.
 
 ## Exempel
 

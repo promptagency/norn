@@ -2,6 +2,8 @@
 
 export const PRODUCT_NAME = "Norn";
 export const PRODUCT_URL = "https://nornor.app";
+/** Linked wherever the interface names Prompt Agency (header tag and footer). */
+export const AGENCY_URL = "https://promptagency.se";
 
 // amine40's fp16 ONNX exports, pinned by revision and checksum. scripts/fetch-model.mjs fetches them at
 // build time and splits them into chunks in public/model/; the browser only ever asks our own origin.

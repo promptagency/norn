@@ -51,7 +51,7 @@ Ordinary people with numbers over time and no background in statistics: a shop o
 - Every number shown to the user has passed through `src/engine/`. The UI never computes a forecast statistic itself.
 - Time is always shown in the user's unit (dagar, veckor, månader, timmar). The word "steg" never appears in the UI.
 - Uncertainty is shown as two bands (50 and 90 percent) and described in words ("i nio fall av tio"). The words kvantil, konfidensintervall, MASE and kovariat never appear in the UI outside "Visa detaljer".
-- No links out of the app in the user flow. Credits to Mistral, amine40 and data sources live in the footer and in `README.md`.
+- No links out of the app in the user flow. Credits to Mistral, amine40 and data sources live in the footer and in `README.md`. The one exception: "Prompt Agency" in the header tag and the footer links to promptagency.se, in a new tab (owner, 2026-10-21).
 - Commit small, one feature per commit, with the test that proves it.
 
 ## Out of scope for v1

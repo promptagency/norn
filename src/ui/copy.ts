@@ -122,6 +122,7 @@ export const COPY = {
   "footer.credits": "Prognoserna görs av Timestral från Mistral AI, i webbläsaren tack vare amine40:s ONNX-export. Exempeldata från SCB, SMHI, elprisetjustnu.se och Wikimedia.",
   "header.home": "Norn, till start",
   "header.tag": "Ett experiment från Prompt Agency",
+  "link.newtab": "öppnas i en ny flik",
   "mobil.heading": "Se vad som väntar i dina egna siffror",
   "mobil.lead": "Du har siffror över tid, kanske försäljning per dag eller elräkningen per månad. Norn visar vad som troligen kommer och hur säker du kan vara.",
   "mobil.steps": "Tre steg, som de tre nornorna",
