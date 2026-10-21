@@ -62,13 +62,13 @@ Done when: a Vitest run forecasts every example dataset with the worker's code a
 
 Follow `docs/UX.md`.
 
-- [ ] Start: one sentence, file drop zone, example cards from `examples.json`.
-- [ ] CSV and pasted text: separator, decimal comma, Swedish and ISO dates, sorting, gaps.
-- [ ] Guess time column, value column and frequency. Write the one-sentence description of the data.
-- [ ] "Stämmer det?" with Ja and "Nej, ändra kolumner".
-- [ ] Clear errors with a suggestion: too few points, irregular time, unreadable column.
+- [x] Start: one sentence, file drop zone, example cards from `examples.json` (which gains `source_short`, `since` and `labels`).
+- [x] CSV, pasted text and Excel (SheetJS 0.20.3, owner's decision 2026-10-21, loaded only for Excel files): separator, decimal comma, Swedish and ISO dates, sorting, gaps. The repeated hour when clocks go back is averaged.
+- [x] Guess time column, value column and frequency. Write the one-sentence description of the data.
+- [x] "Stämmer det?" with Ja and "Nej, ändra kolumner". The link shows only when there is more than one possible time column; the value columns are always shown when there is a choice. Ja leads to an empty Verdandi until Phase 3.
+- [x] Clear errors with a suggestion: too few points, irregular time, unreadable column, no time column, unreadable file. Errors that another column choice could fix stay in Urd; the rest go to the drop zone on Start.
 
-Done when: every example and five messy real-world CSVs (owner supplies) reach Urd with the right description.
+Done when: every example and five messy real-world CSVs (owner supplies) reach Urd with the right description. The examples do (Vitest, and checked in Chrome on a production build); the five CSVs are still to come from the owner.
 
 ## Phase 3 – Verdandi
 

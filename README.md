@@ -28,7 +28,7 @@ src/dev/               komponentgalleri med riktig data
 
 ```bash
 npm install
-npm run dev        # komponentgalleriet på http://localhost:5173
+npm run dev        # appen på http://localhost:5173, komponentgalleriet på /?galleri
 npm test
 npm run build:ds   # bygger designsystemets komponentpaket till dist-ds/
 ```

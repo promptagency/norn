@@ -7,6 +7,8 @@ export type Frequency = "timme" | "dag" | "vecka" | "månad" | "kvartal" | "år"
 
 export interface Columns {
   time: number;
+  /** Every column that could be the time, the guess first. */
+  times: number[];
   /** Columns where nearly every cell is a number, in file order. */
   numeric: number[];
 }
@@ -41,12 +43,13 @@ const MONTHS: Partial<Record<Frequency, number>> = { månad: 1, kvartal: 3, år:
 const share = <T,>(xs: T[], ok: (x: T) => boolean) => (xs.length ? xs.filter(ok).length / xs.length : 0);
 const filled = (col: string[]) => col.filter((c) => c !== "");
 
-/** Guesses the time column (the first where nearly every cell is a time) and the number columns. */
-export function detectColumns(table: Table): Result<Columns> {
+/** Guesses the time column (the first where nearly every cell is a time, unless `chosen`) and the number columns. */
+export function detectColumns(table: Table, chosen?: number): Result<Columns> {
   const cols = table.headers.map((_, i) => table.rows.map((r) => r[i]));
   const isYears = (i: number) => /^(år|ar|year)$/i.test(table.headers[i]);
-  const time = cols.findIndex((c, i) => share(filled(c), (s) => parseTime(s, isYears(i)) !== null) >= NUMERIC_SHARE);
-  if (time < 0) return { ok: false, error: { key: "error.notime" } };
+  const times = cols.flatMap((c, i) => (share(filled(c), (s) => parseTime(s, isYears(i)) !== null) >= NUMERIC_SHARE ? [i] : []));
+  const time = chosen !== undefined && times.includes(chosen) ? chosen : times[0];
+  if (time === undefined) return { ok: false, error: { key: "error.notime" } };
   const numeric = cols.flatMap((c, i) =>
     i !== time && share(filled(c), (s) => !Number.isNaN(parseNumber(s))) >= NUMERIC_SHARE && filled(c).length ? [i] : [],
   );
@@ -54,7 +57,7 @@ export function detectColumns(table: Table): Result<Columns> {
     const other = table.headers.find((_, i) => i !== time);
     return { ok: false, error: other ? { key: "error.column", values: { namn: other } } : { key: "error.short" } };
   }
-  return { ok: true, value: { time, numeric } };
+  return { ok: true, value: { time, times, numeric } };
 }
 
 function frequencyOf(kind: TimeKind, times: Time[]): Frequency | null {

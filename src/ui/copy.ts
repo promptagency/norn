@@ -10,6 +10,7 @@ export const COPY = {
   "start.drop.hint": "CSV eller Excel med en kolumn för tid och en med siffror. Du kan också klistra in direkt från ett kalkylark.",
   "start.drop.over": "Släpp filen så läser Norn in den",
   "start.examples": "Eller prova med riktiga siffror",
+  "start.example.since": "Per {enhet} sedan {ar}",
   "step.label": "Steg",
   "step.urd": "Urd",
   "step.verdandi": "Verdandi",

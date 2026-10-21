@@ -1,6 +1,6 @@
 # ARCHITECTURE.md
 
-Planned structure. `src/config.ts`, `src/engine/` (except `backtest.ts`, `grade.ts`, `holidays.ts`), `src/ui/components/`, `src/ui/copy.ts` and `src/dev/` exist; the rest comes in later phases (`PLAN.md`). Keep this file in step with the code.
+Planned structure. Everything exists except `backtest.ts`, `grade.ts`, `holidays.ts` and the Verdandi and Skuld screens; the rest comes in later phases (`PLAN.md`). Keep this file in step with the code.
 
 ## Modules
 
@@ -28,12 +28,15 @@ src/
     describe.ts          the one-sentence description shown in Urd
     examples.ts          reads public/data/examples.json
   ui/
-    App.tsx              the four screens and step navigation
+    App.tsx              the screens and step navigation; holds the user's data in React state only
+    Start.tsx, Urd.tsx   one file per screen
+    historik.ts          history for the chart: means per day or week for long series, time labels
+    app.css              page layout, tokens only
     copy.ts              every Swedish string, from docs/COPY.md
     components/          the component library (README.md, types.ts, chart.ts, components.css, one .tsx each)
                          Prognosgraf is the chart, own SVG, following design/DESIGN.md's chart rules
   dev/
-    Galleri.tsx          every component with real SE3 data, light and dark (npm run dev until App exists)
+    Galleri.tsx          every component with real SE3 data, light and dark (npm run dev, then /?galleri; dev server only)
 public/
   data/                  example datasets and examples.json (built by scripts/build_datasets.py)
   model/                 model chunks, written by scripts/fetch-model.mjs before dev, build and test (gitignored)

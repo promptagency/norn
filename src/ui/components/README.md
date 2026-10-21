@@ -6,7 +6,7 @@ The component library. The app builds every screen from these, and the Norn desi
 - Props are documented in `types.ts`. Chart geometry is in `chart.ts`, pure and unit tested.
 - Styles are in `components.css`, prefixed `n-`, and use only variables from `design/tokens.css`.
 - Swedish strings come from `../copy.ts`, which mirrors `docs/COPY.md`.
-- `npm run dev` shows every component with real data in a gallery (`src/dev/Galleri.tsx`), with a theme switch.
+- `npm run dev` and `/?galleri` show every component with real data in a gallery (`src/dev/Galleri.tsx`), with a theme switch.
 
 The guidelines below are the same as in the design system (Swedish, like the UI).
 
