@@ -62,7 +62,7 @@ A sceptical visitor learns little from the SE3 spot price: it is driven by wind,
 | SE3 consumption | one week each | about 3 % | about 20 % | about 88 % |
 | SE3 spot price (the old example) | one week each | about 58 % | about 24 % | about 91 % |
 
-Under the revised grade, consumption is Pålitlig in 9 of the 12 weeks; the latest week, the one Verdandi shows, is Ungefärlig (5 % off, but the wide band held just under 80 % of the hours). Röda dagar did not help consumption over Christmas week 2025 (average error 492 MWh per hour without, 547 with): the model already knows Christmas from earlier years.
+Under the revised grade, consumption is Pålitlig in 9 of the 12 weeks with a band limit of 80 %, and in 10 of 12 with 75 % (owner's decision 2026-10-22). The latest week, the one Verdandi shows, was Ungefärlig at 80 % (5 % off, but the wide band held just under 80 % of the hours) and is Pålitlig at 75 %. Röda dagar did not help consumption over Christmas week 2025 (average error 492 MWh per hour without, 547 with): the model already knows Christmas from earlier years.
 
 Påsk is the clearest case for the events feature. Easter moves by up to five weeks; forecast a year ahead from 20 October 2025, Norn's own peak lands five days late (9 April 2026). With röda dagar switched on, its guess for the real peak day (påskafton, 4 April, 2,368 views) goes from 650 to 2,828, and the average error over the year halves (56 to 29 views per day). Without events it is Ungefärlig (71 % off, which is mostly the peak).
 

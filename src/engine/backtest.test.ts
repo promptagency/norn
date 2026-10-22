@@ -32,7 +32,8 @@ it("grades Pålitlig when the wide band held and Norn was close, or clearly beat
   expect(grade(scored(0.76, 1, 0.91, 0.58))).toBe("ungefarlig"); // 24 % better but 58 % off (the price)
   expect(grade(scored(0.67, 1, 0.92, 0.33))).toBe("palitlig"); // 33 % off is not far (Lucia)
   expect(grade(scored(0.54, 1, 0.93, 0.42))).toBe("ungefarlig"); // 42 % off is far (Midsommar)
-  expect(grade(scored(0.78, 1, 0.75))).toBe("ungefarlig"); // the wide band held too seldom
+  expect(grade(scored(0.78, 1, 0.75))).toBe("palitlig"); // 75 % is enough
+  expect(grade(scored(0.78, 1, 0.74))).toBe("ungefarlig"); // the wide band held too seldom
 });
 
 it("grades Osäker only when Norn neither beat the naive guess nor came close", () => {

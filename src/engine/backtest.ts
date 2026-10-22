@@ -19,7 +19,7 @@ export type Grade = "palitlig" | "ungefarlig" | "osaker";
  * `inside90` of the outcomes; the error counts as close at most `closeError` and as far above `farError` of the
  * value; Norn must beat the naive guess by `betterThanNaive` to earn Pålitlig on that alone.
  */
-export const THRESHOLDS = { betterThanNaive: 0.2, inside90: 0.8, closeError: 0.1, farError: 0.35 };
+export const THRESHOLDS = { betterThanNaive: 0.2, inside90: 0.75, closeError: 0.1, farError: 0.35 };
 
 /** How much smaller Norn's error was than the naive guess's, 0.25 for a quarter smaller. */
 export const improvement = (s: Score) => (s.naiveError > 0 ? 1 - s.error / s.naiveError : -Infinity);
