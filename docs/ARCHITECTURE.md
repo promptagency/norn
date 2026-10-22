@@ -51,7 +51,7 @@ scripts/                 Python: export spike, verification, dataset and token b
 
 - The ONNX graph from amine40 holds one decoding pass of Timestral including its normalisation and rescaling. Inputs `x`, `obs` (rows × T, T a multiple of 32), `group_ids`, `role_ids` (0 target, 1 past-only covariate, 2 known-future covariate), `known_future`, `known_future_mask` (rows × H, H a multiple of 32 up to 1024). Outputs `quantiles` (rows × H × 21, levels 0.01 to 0.99) and `last_scale`.
 - Outside the graph, in the vendored `timestral.js`: forward-filling and left-padding rows, decoding beyond 1,024 steps by feeding back the median, averaging with the mirrored series, clipping at zero for non-negative series. Do not reimplement any of this; wrap it.
-- History is capped at 4,096 steps in the browser (attention cost grows with the square of its length). Open question in `PLAN.md`.
+- History is capped at 8,192 steps (`MAX_HISTORY` in `src/engine/run.ts`, decision in `PLAN.md`), passed to the vendored code, whose own default is 4,096.
 - Models: Timestral-28M (59 MB, default) and 5M (13 MB, fallback on slow hardware). fp16 weights, fp32 compute. int8 is rejected: it moves the quantiles too much.
 - Norn shows three of the 21 quantiles as bands: 0.05 to 0.95 (nine of ten) and 0.25 to 0.75 (half), plus the median. The download carries all 21.
 
@@ -78,6 +78,15 @@ scripts/                 Python: export spike, verification, dataset and token b
   | One thread, Chrome's CPU slowed 4x | 3.1–3.4 s | 0.68–0.78 s |
   | Creating the session from the downloaded model (4x slower) | 0.6 s (2.2 s) | 0.7 s (2.5 s) |
 
-  Time barely depends on the request: history is capped at 4,096 points and every horizon up to 1,024 steps is one pass. Norn always uses 28M (no 5M fallback, decision in `PLAN.md`). Earlier figures for reference: the spike in Node on a slow two-core container, 28M 0.5 to 1.1 s; Phase 1 in Chrome before cross-origin isolation, about 2.7 s for the first forecast.
+  Those runs used the then cap of 4,096 points. The cap's cost, one 168-hour forecast on consumption:
+
+  | History cap | Threads | One thread |
+  |---|---|---|
+  | 4,096 | 0.27 s | 0.86 s |
+  | 8,192 (now) | 0.57 s | 1.7 s |
+  | 16,384 | 1.2 s | 3.9 s |
+  | 32,768 (model maximum) | 2.8 s | 9.7 s |
+
+  Time barely depends on the horizon: history is capped and every horizon up to 1,024 steps is one pass. Norn always uses 28M (no 5M fallback, decision in `PLAN.md`). Earlier figures for reference: the spike in Node on a slow two-core container, 28M 0.5 to 1.1 s; Phase 1 in Chrome before cross-origin isolation, about 2.7 s for the first forecast.
 - Model loading shows byte-level progress. The model loads once and stays in the worker.
 - Backtest and forecast run in the same worker, one after the other, so Verdandi and Skuld feel instant once Urd is confirmed.
