@@ -4,21 +4,31 @@ Phased plan for Norn. Each phase ends in something runnable. Do not start a phas
 
 ## What's left
 
-Norn is live at `nornor.app` (2026-10-21) with all five phases built. What remains, as of 2026-10-21:
+Norn is live at `nornor.app` (2026-10-21) with all five phases built. What remains, as of 2026-10-22:
 
 Needs the owner:
 
 1. **Five messy real-world CSVs**, the last part of Phase 2's done criterion. At least one should be a till or webshop export with one row per sale, to check the rule that a day without rows counts as 0 when summing (`src/data/detect.ts`, marked as a shortcut).
 2. **A real person through Phase 4's done criterion**: from file to forecast, changing horizon and certainty, in under a minute without reading anything twice.
-3. **Review the Swedish strings added in Phases 2 to 5** in `docs/COPY.md`. Only the phone page's strings (`mobil.*`) have been approved as a set; the rest (`urd.*`, `verdandi.*`, `skuld.*`, `period.*`, `jamfort.*`, `narmast.*`, `event.*`, `enhet.*`, `error.file`, `error.notime`, `error.model`, `model.once`, `link.newtab`) were written to COPY.md's rules but not reviewed. Also decide whether the downloaded CSV may say "kvantil" in its column headers; it is a file, not the screen.
-4. **Design for the user's own events**: a date-range field and a comparison-line style in `design/DESIGN.md`, then the last Phase 4 item can be built.
-5. **The open questions below**: when to fall back to the 5M model, and the history cap.
+3. **Review the Swedish strings added in Phases 2 to 5** in `docs/COPY.md`. Only the phone page's strings (`mobil.*`) have been approved as a set; the rest (`urd.*`, `verdandi.*` including `good.plain`, `fair.plain` and the rewritten `rule`, `skuld.*`, `period.*`, `jamfort.*`, `narmast.*`, `event.*`, `enhet.*`, `graf.*`, `error.file`, `error.notime`, `error.model`, `model.once`, `link.newtab`) and the example texts in `public/data/examples.json` (the Elförbrukning card, the Wikipedia card's `card`, Påsk's sentence) were written to COPY.md's rules but not reviewed. Also decide whether the downloaded CSV may say "kvantil" in its column headers; it is a file, not the screen.
+4. **Whether Elförbrukning should open on Pålitlig.** Its latest held-out week is Ungefärlig (5 percent off, but the wide band held just under 80 percent of the hours), though it was Pålitlig in 9 of 12 test weeks. Options: leave it (honest, and the monthly rebuild may change it), or lower the band threshold, for example to 75 percent.
+5. **Design for the user's own events**: a date-range field and a comparison-line style in `design/DESIGN.md`, then the last Phase 4 item can be built.
+6. **The open questions below**: when to fall back to the 5M model, and the history cap.
 
 Engineering, not done yet:
 
-6. **Check by hand in real browsers**, which the automated tests cannot cover: one full run in real Safari on a Mac (CI uses Playwright's WebKit, not Safari), an Excel upload (unit tests cover the dates), printing Skuld, Verdandi in the dark theme, and a tablet in portrait (744 to 834 px wide gets the app).
+7. **Check by hand in real browsers**, which the automated tests cannot cover: one full run in real Safari on a Mac (CI uses Playwright's WebKit, not Safari), an Excel upload (unit tests cover the dates), printing Skuld, Verdandi in the dark theme, the hover card with a finger on a touch screen, and a tablet in portrait (744 to 834 px wide gets the app).
+8. **The first scheduled data rebuild** runs on 2 November 2026. Check that it committed, or read its issue. It ran once by hand on 2026-10-21 and passed.
 
-Done since launch (2026-10-21): CI in `.github/workflows/test.yml`, adapted from Skrubba's (type check and unit tests on every push, the Playwright suite on `v*` tags or by hand), and the end-to-end suite in Chromium, Firefox and WebKit, locally, against `nornor.app` and on CI (the phone tests skip Firefox, which Playwright cannot emulate as a phone), the unused `model.ready` string removed from COPY.md, and `wrangler login` refreshed. Monthly rebuild of the example data in `.github/workflows/data.yml`: committed to `main` when every test passes, otherwise kept on a branch with an issue (owner's decision 2026-10-21).
+Done since launch (2026-10-21 and 22):
+
+- CI in `.github/workflows/test.yml`, adapted from Skrubba's, and the end-to-end suite in Chromium, Firefox and WebKit, locally, against `nornor.app` and on CI.
+- Verdandi's grade on accuracy as well as on beating the naive guess (rule B with 35 percent, decision above).
+- SE3 consumption from eSett (CC0) replaced the spot price as the electricity example, and Påsk joined the Wikipedia articles to show the events feature (`docs/DATA.md`).
+- The charts: up to four axis values with faint lines, the unit above the vertical axis, and the values under the pointer (guide line, dots, card; pointer, touch and arrow keys). The examples' sentences carry their unit.
+- "Prompt Agency" links to promptagency.se in the header tag and footer.
+- Monthly rebuild of the example data in `.github/workflows/data.yml`: committed to `main` when every test passes, otherwise kept on a branch with an issue.
+- The unused `model.ready` string removed, and `wrangler login` refreshed.
 
 ## Decisions so far
 
