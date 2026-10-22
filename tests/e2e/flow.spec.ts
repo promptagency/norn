@@ -91,3 +91,18 @@ test("the chart says its unit and shows the values under the pointer", async ({ 
   await page.keyboard.press("End");
   await expect(card).toContainText("Troligast");
 });
+
+test.describe("on a touch screen", () => {
+  test.use({ hasTouch: true });
+  // Playwright cannot emulate touch in Firefox.
+  test.skip(({ browserName }) => browserName === "firefox", "Firefox has no touch emulation in Playwright");
+
+  test("a tap shows the values and they stay after the finger lifts", async ({ page }) => {
+    await page.goto("/?exempel=elforbrukning&horisont=1");
+    await expect(page.locator(".n-svar")).toContainText("troligen", { timeout: 120_000 });
+    const box = (await page.locator("svg.n-graf").boundingBox())!;
+    await page.touchscreen.tap(box.x + box.width * 0.7, box.y + box.height / 2);
+    await page.waitForTimeout(300);
+    await expect(page.locator(".n-graf-kort")).toContainText("Troligast");
+  });
+});

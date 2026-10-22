@@ -55,7 +55,8 @@ export function Prognosgraf({
           tabIndex: 0,
           onPointerMove: move,
           onPointerDown: move,
-          onPointerLeave: () => setHover(null),
+          // A finger "leaves" as it lifts; keep the card until a tap elsewhere takes the focus away.
+          onPointerLeave: (e: PointerEvent<SVGSVGElement>) => e.pointerType !== "touch" && setHover(null),
           onKeyDown: keys,
           onBlur: () => setHover(null),
         })}

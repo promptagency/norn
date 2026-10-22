@@ -16,7 +16,7 @@ Needs the owner:
 
 Engineering, not done yet:
 
-6. **Check by hand in real browsers**, which the automated tests cannot cover: one full run in real Safari on a Mac (CI uses Playwright's WebKit, not Safari), an Excel upload (unit tests cover the dates), printing Skuld, Verdandi in the dark theme, the hover card with a finger on a touch screen, and a tablet in portrait (744 to 834 px wide gets the app).
+6. **One full run in real Safari on a Mac**, by the owner: Playwright's WebKit is not Safari, and driving Safari needs "Allow Remote Automation" switched on in its Develop menu. The other hand checks were run in installed Google Chrome against `nornor.app` on 2026-10-22: an Excel upload (reaches Verdandi, Pålitlig), Verdandi in the dark theme, Skuld printed (now one A4 page), the hover card by touch (it vanished as the finger lifted; fixed, with a test), and a tablet in portrait at 820 px (gets the app, two example cards per row).
 7. **The first scheduled data rebuild** runs on 2 November 2026. Check that it committed, or read its issue. It ran once by hand on 2026-10-21 and passed.
 
 Done since launch (2026-10-21 and 22):

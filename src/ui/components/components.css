@@ -215,6 +215,8 @@
 .n-graf__enhet { font-weight: 600; }
 /* The hover indicator (design/DESIGN.md): a guide line, a dot on each line, and a card with the values. */
 .n-graf-ram { position: relative; }
+/* Sideways drags move the indicator; up and down still scroll the page. */
+.n-graf[tabindex] { touch-action: pan-y; }
 .n-graf__guide { stroke: var(--kant-kontroll); stroke-width: 1; }
 .n-graf__punkt { fill: var(--prognos-historik); stroke: var(--yta); stroke-width: 2; }
 .n-graf-kort {
