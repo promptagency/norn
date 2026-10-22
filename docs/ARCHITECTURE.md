@@ -69,6 +69,15 @@ scripts/                 Python: export spike, verification, dataset and token b
 
 ## Performance
 
-- Measured in the spike (Node, onnxruntime-web WASM, slow two-core container): 28M about 0.5 to 1.1 s for 2,000 steps of context and 96 ahead, 5M about 0.1 to 0.3 s. A laptop should be two to four times faster. In Chrome on a Mac, single-threaded (Phase 1 check): 28M about 2.7 s for the first forecast, 2 s after. Threads need cross-origin isolation (COOP/COEP headers), not set yet.
+- Measured 2026-10-22 in installed Chrome on an Apple M1 Pro, with production's headers and the real engine code, median of three runs per request (Verdandi's backtests and Skuld's forecasts on the examples):
+
+  | One forecast or backtest | 28M | 5M |
+  |---|---|---|
+  | Threads (production, cross-origin isolated) | 0.21–0.24 s | 0.06–0.08 s |
+  | One thread | 0.72–0.82 s | 0.16–0.19 s |
+  | One thread, Chrome's CPU slowed 4x | 3.1–3.4 s | 0.68–0.78 s |
+  | Creating the session from the downloaded model (4x slower) | 0.6 s (2.2 s) | 0.7 s (2.5 s) |
+
+  Time barely depends on the request: history is capped at 4,096 points and every horizon up to 1,024 steps is one pass. Norn always uses 28M (no 5M fallback, decision in `PLAN.md`). Earlier figures for reference: the spike in Node on a slow two-core container, 28M 0.5 to 1.1 s; Phase 1 in Chrome before cross-origin isolation, about 2.7 s for the first forecast.
 - Model loading shows byte-level progress. The model loads once and stays in the worker.
 - Backtest and forecast run in the same worker, one after the other, so Verdandi and Skuld feel instant once Urd is confirmed.
