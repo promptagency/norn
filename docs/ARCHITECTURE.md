@@ -52,7 +52,7 @@ scripts/                 Python: export spike, verification, dataset and token b
 - The ONNX graph from amine40 holds one decoding pass of Timestral including its normalisation and rescaling. Inputs `x`, `obs` (rows × T, T a multiple of 32), `group_ids`, `role_ids` (0 target, 1 past-only covariate, 2 known-future covariate), `known_future`, `known_future_mask` (rows × H, H a multiple of 32 up to 1024). Outputs `quantiles` (rows × H × 21, levels 0.01 to 0.99) and `last_scale`.
 - Outside the graph, in the vendored `timestral.js`: forward-filling and left-padding rows, decoding beyond 1,024 steps by feeding back the median, averaging with the mirrored series, clipping at zero for non-negative series. Do not reimplement any of this; wrap it.
 - History is capped at 8,192 steps (`MAX_HISTORY` in `src/engine/run.ts`, decision in `PLAN.md`), passed to the vendored code, whose own default is 4,096.
-- Models: Timestral-28M (59 MB, default) and 5M (13 MB, fallback on slow hardware). fp16 weights, fp32 compute. int8 is rejected: it moves the quantiles too much.
+- Model: Timestral-28M (59 MB). 5M (13 MB) was measured as a fallback for slow hardware and dropped (`PLAN.md`, 2026-10-22). fp16 weights, fp32 compute. int8 is rejected: it moves the quantiles too much.
 - Norn shows three of the 21 quantiles as bands: 0.05 to 0.95 (nine of ten) and 0.25 to 0.75 (half), plus the median. The download carries all 21.
 
 ## Verification

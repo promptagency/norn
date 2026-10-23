@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { cacheKey, inOfflineCache, MANIFEST_KEY, networkPath, precacheList, staleKeys, unredirected } from "./core.ts";
+import { cacheKey, MANIFEST_KEY, networkPath, precacheList, staleKeys, unredirected } from "./core.ts";
 
 const manifest = {
   "/index.html": "aaa",
@@ -13,14 +13,6 @@ const manifest = {
 describe("cacheKey", () => {
   it("adds the content revision so a changed file never hits an old entry", () => {
     expect(cacheKey("/runtime/ort.mjs", "abc")).toBe("/runtime/ort.mjs?__rev=abc");
-  });
-});
-
-describe("inOfflineCache", () => {
-  it("leaves out the 5M model, which the app never loads", () => {
-    expect(inOfflineCache("/model/83c332168e8a/timestral-5m.onnx.0")).toBe(false);
-    expect(inOfflineCache("/model/9ca259c817e9/timestral-28m.onnx.0")).toBe(true);
-    expect(inOfflineCache("/index.html")).toBe(true);
   });
 });
 

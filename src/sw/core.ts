@@ -5,12 +5,6 @@ export type SwManifest = Record<string, string>;
 
 export const cacheKey = (path: string, rev: string) => `${path}?__rev=${rev}`;
 
-/**
- * Files the offline cache leaves alone: the 5M model, which the app does not
- * load (it is kept for the fallback still open in PLAN.md).
- */
-export const inOfflineCache = (path: string) => !path.includes("/timestral-5m.onnx.");
-
 /** Message the page sends a new build that is still waiting, to make it take over. */
 export const SKIP_WAITING = "skip-waiting";
 

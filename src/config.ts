@@ -15,13 +15,6 @@ export const MODELS = {
     bytes: 59254097,
     sha256: "5c232e3d6aacf51a1f6eb2b18ee355c4ef35bf52fd716839954acae6de6e2cfa",
   },
-  "5M": {
-    hubId: "amine40/Timestral-5M-ONNX",
-    revision: "83c332168e8ab5d78d11ac74850202a59dcc7d31",
-    file: "timestral-5m.onnx",
-    bytes: 13274175,
-    sha256: "13773030cc3d61a980542ebca834ebf4dd576ddc530e771119b12394514f59c9",
-  },
 } as const;
 
 export type ModelSize = keyof typeof MODELS;
