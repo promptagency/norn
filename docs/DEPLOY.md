@@ -35,17 +35,18 @@ Versions follow [Semantic Versioning](https://semver.org/): a bug fix bumps the 
 
 1. While working on `dev`, note each user-visible change under `## [Unreleased]` in `CHANGELOG.md`.
 2. To release, with `dev` green on GitHub and checked on its preview, rename that section to `## [X.Y.Z] - YYYY-MM-DD`, add a new empty `## [Unreleased]` above it, and update the compare links at the bottom.
-3. Set the version, commit and tag on `dev`, then move `main` to it:
+3. Set the version, commit and tag on `dev`, wait for the tests on that commit, then move `main` to it:
 
    ```sh
    npm version X.Y.Z --no-git-tag-version   # package.json and package-lock.json
    git commit -am "Release X.Y.Z"
    git tag -a vX.Y.Z -m "Norn X.Y.Z"
    git push --follow-tags origin dev
+   gh run watch "$(gh run list --branch dev --limit 1 --json databaseId --jq '.[0].databaseId')"
    git push origin dev:main                 # fast-forward: this deploys
    ```
 
-Pushing the tag runs the full browser suite on GitHub once more (`.github/workflows/test.yml`), against the same commit `main` now deploys. Once it has passed, the workflow creates the GitHub release page, titled "Norn X.Y.Z", with that version's section from `CHANGELOG.md` as the notes (`scripts/release-notes.ts`). A version with failing tests gets no page; fix it on `dev` and release the next patch version. The page is only a label: the site was already deployed when `main` was pushed.
+`main`'s ruleset refuses the last push until `checks` and `browser` have passed on the release commit (about six minutes), which is why the run on `dev` is waited for first. Pushing the tag runs the full browser suite on GitHub once more (`.github/workflows/test.yml`), against the same commit `main` now deploys. Once it has passed, the workflow creates the GitHub release page, titled "Norn X.Y.Z", with that version's section from `CHANGELOG.md` as the notes (`scripts/release-notes.ts`). A version with failing tests gets no page; fix it on `dev` and release the next patch version. The page is only a label: the site was already deployed when `main` was pushed. Then run the end-to-end suite against the live site (below).
 
 The footer shows the version from `package.json`, built into the app. A unit test (`scripts/changelog.test.ts`) fails if `CHANGELOG.md` has no entry for that version.
 
