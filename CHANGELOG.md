@@ -6,7 +6,7 @@ Notable changes to Norn. The format follows [Keep a Changelog](https://keepachan
 
 ### Fixed
 
-- **Big files are read.** A file with more than about 65,000 rows (Safari) or 125,000 (Chrome, Firefox), such as a till export with one row per sale, was refused as unreadable.
+- **Big files are read.** A very large file, such as a till export with one row per sale, was refused as unreadable: from about 65,000 rows in Safari, and at 200,000 in a test with Chrome's engine.
 - **The bands show when the last rows have no value yet.** A file ending in dates without numbers, such as today's row not filled in, lost both bands in the forecast chart. Such rows are now left out, and the forecast starts after the last real value.
 - **A new horizon never shows the old number.** While the forecast for a new horizon was on its way, the sentence put the old total next to the new period for a moment. It now waits for the new numbers.
 - **A link with an odd horizon opens.** A shared link whose horizon was not one of the buttons, such as `horisont=-1`, showed an empty page.

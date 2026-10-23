@@ -99,7 +99,7 @@ group("detect and build", () => {
   });
 
   it("reads a till export with 200,000 rows", () => {
-    // Too many for spreading into Math.max: V8 fails near 125,000 arguments, Safari at 65,536.
+    // Too many for spreading into Math.max: Safari allows 65,536 arguments, and V8 overflows at this size.
     const rows = days(1000).flatMap((d) => Array.from({ length: 200 }, (_, k) => `${d} ${String(8 + (k % 10)).padStart(2, "0")}:00,1`));
     const table = parseText(`tid,belopp\n${rows.join("\n")}`);
     const cols = detectColumns(table);
