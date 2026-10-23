@@ -1,7 +1,8 @@
 # Monthly rebuild of the example data (owner's decision 2026-10-21), so Skuld never "forecasts" weeks that have
 # already happened. scripts/build_datasets.py refetches SCB, eSett and Wikimedia, then the full test suite runs:
 #
-#   all green  the new data is committed to dev and goes live with the next release (docs/DEPLOY.md, "Branches").
+#   all green  the new data is committed to dev, where the Tests workflow is started on it, and goes live with the
+#              next release (docs/DEPLOY.md, "Branches").
 #   a failure  usually a grade that flipped near a limit (tests/e2e/flow.spec.ts expects today's grades). The data
 #              is pushed to a branch data/<year-month> and an issue says what failed. Nothing goes live.
 #
@@ -17,6 +18,7 @@ on:
 permissions:
   contents: write
   issues: write
+  actions: write # start the Tests workflow on the new commit
 
 concurrency:
   group: data
@@ -76,6 +78,8 @@ jobs:
       - name: Commit the new data to dev
         if: steps.test.outcome == 'success'
         shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -84,6 +88,9 @@ jobs:
           { echo "Data: monthly rebuild $(date -u +%Y-%m-%d)"; echo; echo "Every test passed with the new data."; echo; grep -E "rader|misslyckades|rate limit|examples.json" build.log; } > message.txt
           git commit --quiet --file message.txt
           git push origin HEAD:dev
+          # A push with this workflow's token starts no other workflow, but a manual start does: the commit needs
+          # its own checks and browser results before main's ruleset lets it be released (docs/DEPLOY.md).
+          gh workflow run test.yml --ref dev
 
       - name: Keep the data on a branch and open an issue
         if: steps.test.outcome != 'success'
