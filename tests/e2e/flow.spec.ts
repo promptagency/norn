@@ -92,6 +92,13 @@ test("the chart says its unit and shows the values under the pointer", async ({ 
   await expect(card).toContainText("Troligast");
 });
 
+test("a link with a horizon that is not a button opens the default one", async ({ page }) => {
+  for (const horisont of ["-1", "1.5", "99", "x"]) {
+    await page.goto(`/?exempel=wikipedia&horisont=${horisont}`);
+    await expect(page.locator(".n-svar")).toContainText("troligen", { timeout: 120_000 });
+  }
+});
+
 test.describe("on a touch screen", () => {
   test.use({ hasTouch: true });
   // Playwright cannot emulate touch in Firefox.

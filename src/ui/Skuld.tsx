@@ -47,7 +47,11 @@ const label = (h: Horizon) => `${h.n} ${t(`enhet.${h.unit}${h.n === 1 ? "" : ".f
 export function Skuld({ series, forecaster, download, initial = {}, link, units }: Props) {
   const n = series.values.length;
   const options = useMemo(() => horizons(series.frequency, series.times[n - 1]), [series, n]);
-  const [h, setH] = useState(Math.min(initial.horisont ?? DEFAULT_HORIZON, options.length - 1));
+  // The horizon may come from a link, so anything but a valid button index falls back to the default.
+  const [h, setH] = useState(() => {
+    const i = initial.horisont ?? DEFAULT_HORIZON;
+    return Number.isInteger(i) && i >= 0 ? Math.min(i, options.length - 1) : DEFAULT_HORIZON;
+  });
   const [niva, setNiva] = useState<Sakerhetsniva>(initial.sakerhet ?? "median");
   const [on, setOn] = useState<EventId[]>(initial.handelser ?? []);
   const [copied, setCopied] = useState(false);
@@ -79,7 +83,8 @@ export function Skuld({ series, forecaster, download, initial = {}, link, units 
     return () => { live = false; };
   }, [forecaster, series, future, steps, activeKey, key]);
 
-  const ready = result && result !== "fel" ? result : null;
+  // Only the forecast for the current settings: an older one would put its numbers next to the new period.
+  const ready = result && result !== "fel" && result.key === key ? result : null;
   const shown = ready ? (ready.events ?? ready.base) : null;
   const how = summing(series);
   // "18 300 sidvisningar", "8 500 MWh per timme": the unit once, after the main amount, where it is known.
@@ -98,8 +103,7 @@ export function Skuld({ series, forecaster, download, initial = {}, link, units 
   }
 
   let effect: string | null = null;
-  // Only for the forecast that matches the switches, not one still on its way.
-  if (ready?.events && ready.key === key && sum) {
+  if (ready?.events && sum) {
     const utan = summarize(ready.base, how).median;
     effect = Math.abs(sum.median - utan) < 0.01 * Math.abs(utan)
       ? COPY["skuld.events.none"]
