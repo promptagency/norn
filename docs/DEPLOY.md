@@ -25,6 +25,8 @@ Two branches, since 2026-10-23 (owner's decision, as in Skrubba and VemSaVad):
 - **`dev`** is where all work happens. Every push runs the type check, the unit tests and the full browser suite on GitHub, and Cloudflare builds a preview at `https://dev.norn-3ke.pages.dev`, where `NORN_URL=https://dev.norn-3ke.pages.dev npm run e2e` checks the real thing before it goes live. Previews count no visits (`src/ui/analytics.ts` only counts on `nornor.app`). The monthly data rebuild commits here too.
 - **`main`** is production: Cloudflare deploys every push to `nornor.app`. Nothing is committed on `main` directly. It only moves by being fast-forwarded to `dev` at a release, so `main` is always a released, tagged state and `git log main` is the release history.
 
+A ruleset on GitHub ("main is production", since the repo went public on 2026-10-23) enforces it: `main` cannot be deleted or force-pushed, and a push to it is refused unless the commit has passed `checks` and `browser`, which every push to `dev` runs. So release only a commit that is green on `dev`.
+
 A hotfix takes the same path: commit on `dev`, release.
 
 ## Releasing a version
