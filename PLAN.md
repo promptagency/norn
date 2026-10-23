@@ -4,7 +4,7 @@ Phased plan for Norn. Each phase ends in something runnable. Do not start a phas
 
 ## What's left
 
-Norn is live at `nornor.app` (2026-10-21) with all five phases built. Version 0.1.0 since 2026-10-23. What remains, as of 2026-10-23:
+Norn is live at `nornor.app` (2026-10-21) with all five phases built. Version 0.1.1 since 2026-10-23. What remains, as of 2026-10-23:
 
 Needs the owner:
 
@@ -16,7 +16,14 @@ Needs the owner:
 Engineering, not done yet:
 
 5. **One full run in real Safari on a Mac**, by the owner: Playwright's WebKit is not Safari, and driving Safari needs "Allow Remote Automation" switched on in its Develop menu. The other hand checks were run in installed Google Chrome against `nornor.app` on 2026-10-22: an Excel upload (reaches Verdandi, Pålitlig), Verdandi in the dark theme, Skuld printed (now one A4 page), the hover card by touch (it vanished as the finger lifted; fixed, with a test), and a tablet in portrait at 820 px (gets the app, two example cards per row).
-6. **The first scheduled data rebuild** runs on 2 November 2026. Check that it committed to `dev`, or read its issue. It ran once by hand on 2026-10-21 and passed. The new data goes live only with a release (0.1.1), so release after checking it on `https://dev.norn-3ke.pages.dev`.
+6. **The first scheduled data rebuild** runs on 2 November 2026. Check that it committed to `dev` and that the Tests run it starts on its commit passed (new in 0.1.1, not yet run for real), or read its issue. It ran once by hand on 2026-10-21 and passed. The new data goes live only with a release (0.1.2), so release after checking it on `https://dev.norn-3ke.pages.dev`.
+
+From the audit on 2026-10-23, not fixed yet:
+
+7. **A privacy test with the user's own file.** The no-other-origin and nothing-stored tests in `tests/e2e/flow.spec.ts` only open the examples. One more test should drop a CSV and an `.xlsx` through to Skuld with the same checks.
+8. **Remove the 5M model.** No fallback (decision above), yet every clean build fetches it and every deploy ships 13 MB of it: its entry in `src/config.ts`, `inOfflineCache` in `src/sw/core.ts` and its use in `scripts/swManifest.ts`.
+9. **Speed, small:** Skuld recomputes the forecast without events on every event toggle (`src/ui/Skuld.tsx`), and Urd rebuilds the whole series on every redraw (`src/ui/Urd.tsx`, a `useMemo`).
+10. **A Firefox failure against `nornor.app` right after the 0.1.1 deploy** ("Detaljhandel: from Start to Skuld"); the rerun passed in all three browsers and the cause is unknown. Watch for it after the next release.
 
 Done since launch (2026-10-21 to 23):
 
@@ -29,6 +36,7 @@ Done since launch (2026-10-21 to 23):
 - Hand checks in installed Chrome (touch hover fixed, Skuld prints on one page), no 5M fallback, and the history cap raised to 8,192 (2026-10-22, decisions above).
 - `dev` and `main` as in Skrubba (2026-10-23): all work on `dev` with a preview at `dev.norn-3ke.pages.dev`, releases tagged with `CHANGELOG.md` and a GitHub release page, the version in the footer. 0.1.0 released, and the design system bundle uploaded with the footer's version line. The repo is public, and a ruleset protects `main` (`docs/DEPLOY.md`).
 - The unused `model.ready` string removed, and `wrangler login` refreshed.
+- 0.1.1 (2026-10-23), from the audit: files of more than about 65,000 rows are read, last rows without a value are left out (they removed the chart's bands), Skuld never shows the old horizon's number with the new period, a link with an odd horizon opens, and the data rebuild starts the tests on its commit so it can be released.
 
 ## Decisions so far
 
