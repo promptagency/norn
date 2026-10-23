@@ -98,6 +98,28 @@ group("detect and build", () => {
     expect(snitt.ok && snitt.value.values.slice(12, 16)).toEqual([75, 60, null, 60]);
   });
 
+  it("reads a till export with 200,000 rows", () => {
+    // Too many for spreading into Math.max: V8 fails near 125,000 arguments, Safari at 65,536.
+    const rows = days(1000).flatMap((d) => Array.from({ length: 200 }, (_, k) => `${d} ${String(8 + (k % 10)).padStart(2, "0")}:00,1`));
+    const table = parseText(`tid,belopp\n${rows.join("\n")}`);
+    const cols = detectColumns(table);
+    if (!cols.ok) throw new Error(cols.error.key);
+    const r = buildSeries(table, cols.value, 1, "summa");
+    expect(r.ok && r.value.values.length).toBe(1000);
+    expect(r.ok && r.value.values[0]).toBe(200);
+  });
+
+  it("leaves out the last rows when they have a date but no value yet", () => {
+    const rows = days(100).map((d, i) => `${d};${i < 98 ? i : ""};${i}`);
+    const r = series(`Datum;Försäljning;Besök\n${rows.join("\n")}`);
+    if (!r.ok) throw new Error(r.error.key);
+    expect(r.value).toMatchObject({ missing: 0 });
+    expect(r.value.values).toHaveLength(98);
+    expect(r.value.times).toHaveLength(98);
+    expect(r.value.others["Besök"]).toHaveLength(98);
+    expect(r.value.values.at(-1)).toBe(97);
+  });
+
   it("leaves regular hourly data alone", () => {
     const hours = Array.from({ length: 100 }, (_, i) => new Date(day("2024-01-01T00:00") + i * 3_600_000).toISOString().slice(0, 16));
     const r = series(`tid,pris\n${hours.map((h, i) => `${h},${i}`).join("\n")}`);

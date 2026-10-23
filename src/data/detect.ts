@@ -123,7 +123,7 @@ export function buildSeries(table: Table, columns: Columns, value: number, combi
 
   const from = times[0];
   const slots = times.map((t) => step(freq, from, t));
-  const length = Math.max(...slots.map((s) => s ?? 0)) + 1;
+  const length = slots.reduce((m: number, s) => Math.max(m, s ?? 0), 0) + 1;
   const offGrid = slots.filter((s) => s === null).length;
   const repeats = parsed.length - new Set(slots).size;
   if (!combine && (offGrid + repeats > Math.max(1, TOLERATED * parsed.length) || length > 2 * parsed.length)) return unclear;
@@ -142,10 +142,13 @@ export function buildSeries(table: Table, columns: Columns, value: number, combi
   // shortcut: when summing, a day without rows counts as 0 (a closed shop), so a day missing from the export
   // also reads as 0; ask the user instead if real files turn out to have holes.
   const put = (vs: number[]) => (combine === "summa" ? sum(vs) : vs.length ? sum(vs) / vs.length : null);
-  const [values, ...rest] = grids.map((g) => g.map(put));
+  const [all, ...others] = grids.map((g) => g.map(put));
 
-  if (filled(table.rows.map((r) => r[value])).length && values.every((v) => v === null))
+  if (filled(table.rows.map((r) => r[value])).length && all.every((v) => v === null))
     return { ok: false, error: { key: "error.column", values: { namn: name } } };
+  // Last rows with a date but no value yet (today, not filled in) are not history: the forecast starts after them.
+  const end = all.findLastIndex((v) => v !== null) + 1;
+  const values = all.slice(0, end), rest = others.map((o) => o.slice(0, end));
   const observed = values.filter((v) => v !== null).length;
   if (observed < MIN_VALUES) return { ok: false, error: { key: "error.short" } };
 
@@ -154,9 +157,9 @@ export function buildSeries(table: Table, columns: Columns, value: number, combi
     value: {
       name,
       frequency: freq,
-      times: Array.from({ length }, (_, k) => timeAt(freq, from, k)),
+      times: Array.from({ length: end }, (_, k) => timeAt(freq, from, k)),
       values,
-      missing: length - observed,
+      missing: end - observed,
       others: Object.fromEntries(cols.slice(1).map((c, j) => [table.headers[c], rest[j]])),
       combined: combine,
     },

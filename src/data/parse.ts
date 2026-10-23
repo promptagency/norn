@@ -88,7 +88,8 @@ export async function parseExcel(bytes: ArrayBuffer): Promise<Table> {
 }
 
 function toTable(data: string[][]): Table {
-  const width = Math.max(0, ...data.map((r) => r.length));
+  // A loop, not Math.max(...): spreading a till export's rows overflows the stack (Safari at 65,536).
+  const width = data.reduce((w, r) => Math.max(w, r.length), 0);
   const rows = data.map((r) => Array.from({ length: width }, (_, i) => (r[i] ?? "").trim()));
   if (!rows.length) return { headers: [], rows: [] };
   // A first row with no time and no number in it is a row of names.
