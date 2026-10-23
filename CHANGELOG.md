@@ -4,6 +4,8 @@ Notable changes to Norn. The format follows [Keep a Changelog](https://keepachan
 
 ## [Unreleased]
 
+## [0.1.2] - 2026-10-23
+
 ### Fixed
 
 - **The forecast page no longer jumps when you change horizon.** Since 0.1.1 the chart disappeared while the new forecast was computed and came back when it was ready, moving everything below it. The chart now shows the last forecast until the new one is in; only the sentence waits.
@@ -28,6 +30,7 @@ The first tagged version. Norn has been live at nornor.app since 2026-10-21; thi
 - **Works offline** after the first forecast.
 - **The version in the footer.**
 
-[Unreleased]: https://github.com/promptagency/norn/compare/v0.1.1...HEAD
+[Unreleased]: https://github.com/promptagency/norn/compare/v0.1.2...HEAD
+[0.1.2]: https://github.com/promptagency/norn/compare/v0.1.1...v0.1.2
 [0.1.1]: https://github.com/promptagency/norn/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/promptagency/norn/releases/tag/v0.1.0

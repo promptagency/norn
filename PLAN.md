@@ -4,7 +4,7 @@ Phased plan for Norn. Each phase ends in something runnable. Do not start a phas
 
 ## What's left
 
-Norn is live at `nornor.app` (2026-10-21) with all five phases built. Version 0.1.1 since 2026-10-23. What remains, as of 2026-10-23:
+Norn is live at `nornor.app` (2026-10-21) with all five phases built. Version 0.1.2 since 2026-10-23. What remains, as of 2026-10-23:
 
 Needs the owner:
 
@@ -16,7 +16,7 @@ Needs the owner:
 Engineering, not done yet:
 
 5. **One full run in real Safari on a Mac**, by the owner: Playwright's WebKit is not Safari, and driving Safari needs "Allow Remote Automation" switched on in its Develop menu. The other hand checks were run in installed Google Chrome against `nornor.app` on 2026-10-22: an Excel upload (reaches Verdandi, Pålitlig), Verdandi in the dark theme, Skuld printed (now one A4 page), the hover card by touch (it vanished as the finger lifted; fixed, with a test), and a tablet in portrait at 820 px (gets the app, two example cards per row).
-6. **The first scheduled data rebuild** runs on 2 November 2026. Check that it committed to `dev` and that the Tests run it starts on its commit passed (new in 0.1.1, not yet run for real), or read its issue. It ran once by hand on 2026-10-21 and passed. The new data goes live only with a release (0.1.2), so release after checking it on `https://dev.norn-3ke.pages.dev`.
+6. **The first scheduled data rebuild** runs on 2 November 2026. Check that it committed to `dev` and that the Tests run it starts on its commit passed (new in 0.1.1, not yet run for real), or read its issue. It ran once by hand on 2026-10-21 and passed. The new data goes live only with a release (0.1.3), so release after checking it on `https://dev.norn-3ke.pages.dev`.
 
 From the audit on 2026-10-23, not fixed yet:
 
