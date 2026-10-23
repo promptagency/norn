@@ -4,7 +4,7 @@ Phased plan for Norn. Each phase ends in something runnable. Do not start a phas
 
 ## What's left
 
-Norn is live at `nornor.app` (2026-10-21) with all five phases built. What remains, as of 2026-10-22:
+Norn is live at `nornor.app` (2026-10-21) with all five phases built. Version 0.1.0 since 2026-10-23. What remains, as of 2026-10-23:
 
 Needs the owner:
 
@@ -16,16 +16,18 @@ Needs the owner:
 Engineering, not done yet:
 
 5. **One full run in real Safari on a Mac**, by the owner: Playwright's WebKit is not Safari, and driving Safari needs "Allow Remote Automation" switched on in its Develop menu. The other hand checks were run in installed Google Chrome against `nornor.app` on 2026-10-22: an Excel upload (reaches Verdandi, Pålitlig), Verdandi in the dark theme, Skuld printed (now one A4 page), the hover card by touch (it vanished as the finger lifted; fixed, with a test), and a tablet in portrait at 820 px (gets the app, two example cards per row).
-6. **The first scheduled data rebuild** runs on 2 November 2026. Check that it committed, or read its issue. It ran once by hand on 2026-10-21 and passed.
+6. **The first scheduled data rebuild** runs on 2 November 2026. Check that it committed to `dev`, or read its issue. It ran once by hand on 2026-10-21 and passed. The new data goes live only with a release (0.1.1), so release after checking it on `https://dev.norn-3ke.pages.dev`.
 
-Done since launch (2026-10-21 and 22):
+Done since launch (2026-10-21 to 23):
 
 - CI in `.github/workflows/test.yml`, adapted from Skrubba's, and the end-to-end suite in Chromium, Firefox and WebKit, locally, against `nornor.app` and on CI.
 - Verdandi's grade on accuracy as well as on beating the naive guess (rule B with 35 percent, decision above), and the band limit lowered to 75 percent so Elförbrukning opens on Pålitlig (2026-10-22).
 - SE3 consumption from eSett (CC0) replaced the spot price as the electricity example, and Påsk joined the Wikipedia articles to show the events feature (`docs/DATA.md`).
 - The charts: up to four axis values with faint lines, the unit above the vertical axis, and the values under the pointer (guide line, dots, card; pointer, touch and arrow keys). The examples' sentences carry their unit.
 - "Prompt Agency" links to promptagency.se in the header tag and footer.
-- Monthly rebuild of the example data in `.github/workflows/data.yml`: committed to `main` when every test passes, otherwise kept on a branch with an issue.
+- Monthly rebuild of the example data in `.github/workflows/data.yml`: committed to `dev` when every test passes, otherwise kept on a branch with an issue.
+- Hand checks in installed Chrome (touch hover fixed, Skuld prints on one page), no 5M fallback, and the history cap raised to 8,192 (2026-10-22, decisions above).
+- `dev` and `main` as in Skrubba (2026-10-23): all work on `dev` with a preview at `dev.norn-3ke.pages.dev`, releases tagged with `CHANGELOG.md` and a GitHub release page, the version in the footer. 0.1.0 released, and the design system bundle uploaded with the footer's version line. The repo is public, and a ruleset protects `main` (`docs/DEPLOY.md`).
 - The unused `model.ready` string removed, and `wrangler login` refreshed.
 
 ## Decisions so far
