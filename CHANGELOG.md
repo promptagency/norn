@@ -4,6 +4,8 @@ Notable changes to Norn. The format follows [Keep a Changelog](https://keepachan
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-10-23
+
 ### Fixed
 
 - **Big files are read.** A very large file, such as a till export with one row per sale, was refused as unreadable: from about 65,000 rows in Safari, and at 200,000 in a test with Chrome's engine.
@@ -22,5 +24,6 @@ The first tagged version. Norn has been live at nornor.app since 2026-10-21; thi
 - **Works offline** after the first forecast.
 - **The version in the footer.**
 
-[Unreleased]: https://github.com/promptagency/norn/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/promptagency/norn/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/promptagency/norn/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/promptagency/norn/releases/tag/v0.1.0
