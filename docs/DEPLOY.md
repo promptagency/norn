@@ -4,7 +4,7 @@ Adapted from Skrubba's `docs/DEPLOY.md`; the same setup, the same lessons.
 
 ## Hosting
 
-Norn is a static site on Cloudflare Pages, project `norn`, built from `main` on GitHub (`promptagency/norn`). Every push to `main` deploys; other branches get preview URLs.
+Norn is a static site on Cloudflare Pages, project `norn`, built from `main` on GitHub (`promptagency/norn`). Every push to `main` deploys; other branches get preview URLs, `dev` at `https://dev.norn-3ke.pages.dev`.
 
 | Setting | Value |
 |---|---|
@@ -18,6 +18,37 @@ Norn is a static site on Cloudflare Pages, project `norn`, built from `main` on 
 
 `www.nornor.app` redirects to `https://nornor.app` with a 301 that keeps path and query: an AAAA record `100::`, proxied, Always Use HTTPS, and one Single Redirect rule in the `nornor.app` zone.
 
+## Branches
+
+Two branches, since 2026-10-23 (owner's decision, as in Skrubba and VemSaVad):
+
+- **`dev`** is where all work happens. Every push runs the type check, the unit tests and the full browser suite on GitHub, and Cloudflare builds a preview at `https://dev.norn-3ke.pages.dev`, where `NORN_URL=https://dev.norn-3ke.pages.dev npm run e2e` checks the real thing before it goes live. Previews count no visits (`src/ui/analytics.ts` only counts on `nornor.app`). The monthly data rebuild commits here too.
+- **`main`** is production: Cloudflare deploys every push to `nornor.app`. Nothing is committed on `main` directly. It only moves by being fast-forwarded to `dev` at a release, so `main` is always a released, tagged state and `git log main` is the release history.
+
+A hotfix takes the same path: commit on `dev`, release.
+
+## Releasing a version
+
+Versions follow [Semantic Versioning](https://semver.org/): a bug fix bumps the last number (0.1.1), a new feature the middle one (0.2.0), and a change that breaks something users rely on, such as the downloaded CSV's columns or a shared link, the first.
+
+1. While working on `dev`, note each user-visible change under `## [Unreleased]` in `CHANGELOG.md`.
+2. To release, with `dev` green on GitHub and checked on its preview, rename that section to `## [X.Y.Z] - YYYY-MM-DD`, add a new empty `## [Unreleased]` above it, and update the compare links at the bottom.
+3. Set the version, commit and tag on `dev`, then move `main` to it:
+
+   ```sh
+   npm version X.Y.Z --no-git-tag-version   # package.json and package-lock.json
+   git commit -am "Release X.Y.Z"
+   git tag -a vX.Y.Z -m "Norn X.Y.Z"
+   git push --follow-tags origin dev
+   git push origin dev:main                 # fast-forward: this deploys
+   ```
+
+Pushing the tag runs the full browser suite on GitHub once more (`.github/workflows/test.yml`), against the same commit `main` now deploys. Once it has passed, the workflow creates the GitHub release page, titled "Norn X.Y.Z", with that version's section from `CHANGELOG.md` as the notes (`scripts/release-notes.ts`). A version with failing tests gets no page; fix it on `dev` and release the next patch version. The page is only a label: the site was already deployed when `main` was pushed.
+
+The footer shows the version from `package.json`, built into the app. A unit test (`scripts/changelog.test.ts`) fails if `CHANGELOG.md` has no entry for that version.
+
+## Problems and checks
+
 **If a push does not go live.** Skrubba's launch saw deploys fail at the last step with "Failed to publish your Function. Got error: Unknown internal error occurred". It is on Cloudflare's side; retrying the same deployment fixed it every time (Workers & Pages → norn → Deployments → the failed one → Retry deployment).
 
 **Visit counting.** `functions/api/event.ts` passes the page's anonymous page view on to Plausible (`plausible.app.promptagency.se`, site `nornor.app`, which must exist in Plausible). Automated browsers are never counted.
@@ -26,7 +57,7 @@ Norn is a static site on Cloudflare Pages, project `norn`, built from `main` on 
 
 **After a deploy**, run the end-to-end suite against the live site: `NORN_URL=https://nornor.app npm run e2e`. On the first live run it found a race local runs had missed: example data fetched before the service worker took control was never cached, so offline use failed now and then. Example data is now fetched under its control, like the model.
 
-**The monthly data rebuild.** `.github/workflows/data.yml` runs on the 2nd of every month (and by hand under Actions → Data). It refetches the example data and runs every test with it. All green: it commits to `main` as github-actions[bot], which deploys like any push. A failure: the data goes to a branch `data/<year-month>` and an issue explains, and nothing goes live. A source that fails keeps its old file; Wikimedia in particular rate-limits cloud addresses, and the build log in the commit or issue says so.
+**The monthly data rebuild.** `.github/workflows/data.yml` runs on the 2nd of every month (and by hand under Actions → Data). It refetches the example data and runs every test with it. All green: it commits to `dev` as github-actions[bot], and the new data goes live with the next release. A failure: the data goes to a branch `data/<year-month>` and an issue explains, and nothing goes live. A source that fails keeps its old file; Wikimedia in particular rate-limits cloud addresses, and the build log in the commit or issue says so.
 
 ## The offline cache
 

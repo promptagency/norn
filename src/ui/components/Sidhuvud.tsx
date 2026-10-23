@@ -1,5 +1,6 @@
 import { AGENCY_URL } from "../../config.ts";
-import { COPY } from "../copy.ts";
+import { version } from "../../../package.json";
+import { COPY, t } from "../copy.ts";
 import type { SidfotProps, SidhuvudProps } from "./types.ts";
 
 const AGENCY = "Prompt Agency";
@@ -37,6 +38,7 @@ export function Sidfot({ children }: SidfotProps) {
       <div className="n-sidfot__inre">
         <p>{withAgencyLink(COPY["footer.experiment"])}</p>
         <p>{children ?? COPY["footer.credits"]}</p>
+        <p>{t("footer.version", { version })}</p>
       </div>
     </footer>
   );

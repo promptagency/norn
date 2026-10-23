@@ -1,7 +1,7 @@
 # Monthly rebuild of the example data (owner's decision 2026-10-21), so Skuld never "forecasts" weeks that have
 # already happened. scripts/build_datasets.py refetches SCB, eSett and Wikimedia, then the full test suite runs:
 #
-#   all green  the new data is committed to main, and Cloudflare Pages deploys it.
+#   all green  the new data is committed to dev and goes live with the next release (docs/DEPLOY.md, "Branches").
 #   a failure  usually a grade that flipped near a limit (tests/e2e/flow.spec.ts expects today's grades). The data
 #              is pushed to a branch data/<year-month> and an issue says what failed. Nothing goes live.
 #
@@ -28,6 +28,8 @@ jobs:
     timeout-minutes: 45
     steps:
       - uses: actions/checkout@v7
+        with:
+          ref: dev
 
       - uses: actions/setup-node@v7
         with:
@@ -71,7 +73,7 @@ jobs:
         shell: bash
         run: (npm run typecheck && npm test && npm run e2e) 2>&1 | tee test.log
 
-      - name: Commit the new data to main
+      - name: Commit the new data to dev
         if: steps.test.outcome == 'success'
         shell: bash
         run: |
@@ -81,7 +83,7 @@ jobs:
           git diff --cached --quiet && { echo "No new data."; exit 0; }
           { echo "Data: monthly rebuild $(date -u +%Y-%m-%d)"; echo; echo "Every test passed with the new data."; echo; grep -E "rader|misslyckades|rate limit|examples.json" build.log; } > message.txt
           git commit --quiet --file message.txt
-          git push origin HEAD:main
+          git push origin HEAD:dev
 
       - name: Keep the data on a branch and open an issue
         if: steps.test.outcome != 'success'
@@ -97,9 +99,9 @@ jobs:
           git commit --quiet -m "Data: monthly rebuild $(date -u +%Y-%m-%d), tests failing" || true
           git push --force origin "$branch"
           {
-            echo "The monthly rebuild of the example data failed its tests, so nothing went live. The new data is on the branch \`$branch\`."
+            echo "The monthly rebuild of the example data failed its tests, so it was not committed to \`dev\`. The new data is on the branch \`$branch\`."
             echo
-            echo "A failure here is usually a grade that moved across a limit (Elförbrukning, Melodifestivalen and Lucia sit close to them). Check the run, decide whether the new grade is right, and update \`tests/e2e/flow.spec.ts\` and \`docs/DATA.md\` on the branch before merging."
+            echo "A failure here is usually a grade that moved across a limit (Elförbrukning, Melodifestivalen and Lucia sit close to them). Check the run, decide whether the new grade is right, and update \`tests/e2e/flow.spec.ts\` and \`docs/DATA.md\` on the branch before merging it into \`dev\`."
             echo
             echo "Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
             echo
