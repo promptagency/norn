@@ -41,6 +41,8 @@ async function throughSkuld(page: Page, card: string | OwnFile, grade?: string, 
   const buttons = page.getByRole("group", { name: "Hur långt fram" }).getByRole("button");
   await buttons.nth((await buttons.count()) - 1).click();
   await expect(svar).not.toHaveText(first, { timeout: 60_000 });
+  // The sentence says "räknar" first; wait for the new horizon's answer before going on.
+  await expect(svar).toContainText("troligen", { timeout: 60_000 });
   await page.getByText("Hur säker vill du vara?", { exact: true }).first().click();
   await page.getByLabel("Räcker i 9 fall av 10").check();
   await expect(page.getByRole("status").filter({ hasText: "Räkna med" })).toBeVisible();

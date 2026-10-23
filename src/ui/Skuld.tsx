@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { axisUnit, columnName, formatPoint, summing, textUnit, unit, type Units } from "../data/describe.ts";
 import { futureTimes, type DataSeries } from "../data/detect.ts";
+import type { Time } from "../data/parse.ts";
 import { DEFAULT_HORIZON, horizons, type Horizon } from "../data/horizon.ts";
 import { EVENTS, eventOn, eventSeries, summarize, type EventId, type Forecast, type Forecaster } from "../engine/index.ts";
 import { Forklaring, Fraga, Knapp, Kort, Prognosgraf, Sakerhetsval, Svar, Valgrupp, Valknapp } from "./components/index.ts";
@@ -67,7 +68,7 @@ export function Skuld({ series, forecaster, download, initial = {}, link, units 
   const active = available.filter((id) => on.includes(id));
   const activeKey = active.join();
 
-  const [result, setResult] = useState<{ key: string; base: Forecast; events?: Forecast } | "fel" | null>(null);
+  const [result, setResult] = useState<{ key: string; base: Forecast; events?: Forecast; future: Time[] } | "fel" | null>(null);
   const key = `${steps}|${activeKey}`;
   useEffect(() => {
     let live = true;
@@ -77,15 +78,18 @@ export function Skuld({ series, forecaster, download, initial = {}, link, units 
       forecaster.forecast(series.values, steps),
       known.length ? forecaster.forecast(series.values, steps, { known }) : undefined,
     ]).then(
-      ([base, events]) => live && setResult({ key, base, events }),
+      ([base, events]) => live && setResult({ key, base, events, future }),
       () => live && setResult("fel"),
     );
     return () => { live = false; };
   }, [forecaster, series, future, steps, activeKey, key]);
 
-  // Only the forecast for the current settings: an older one would put its numbers next to the new period.
-  const ready = result && result !== "fel" && result.key === key ? result : null;
+  // The sentence and the download only use the forecast for the current settings: an older one would put its
+  // numbers next to the new period. The chart keeps the last one, with its own dates, so the page does not jump.
+  const last = result && result !== "fel" ? result : null;
+  const ready = last?.key === key ? last : null;
   const shown = ready ? (ready.events ?? ready.base) : null;
+  const drawn = last ? (last.events ?? last.base) : null;
   const how = summing(series);
   // "18 300 sidvisningar", "8 500 MWh per timme": the unit once, after the main amount, where it is known.
   const tu = textUnit(series, how, units);
@@ -114,7 +118,7 @@ export function Skuld({ series, forecaster, download, initial = {}, link, units 
         });
   }
 
-  const shownFrom = Math.max(0, n - steps);
+  const drawnTimes = last ? [...series.times.slice(Math.max(0, n - last.future.length)), ...last.future] : [];
   const nan = (v: number | null) => v ?? NaN;
   const settings = { horisont: h, sakerhet: niva, handelser: on };
   const fall = niva === "median" ? "" : COPY[`skuld.fall.${niva}`];
@@ -145,22 +149,22 @@ export function Skuld({ series, forecaster, download, initial = {}, link, units 
         ))}
       </Valgrupp>
 
-      {shown && (
+      {last && drawn && (
         <Kort figur>
           <Prognosgraf
-            historik={series.values.slice(shownFrom).map(nan)}
+            historik={series.values.slice(Math.max(0, n - last.future.length)).map(nan)}
             prognos={{
-              median: shown.median,
-              band50: { lo: shown.band50.low, hi: shown.band50.high },
-              band90: { lo: shown.band90.low, hi: shown.band90.high },
+              median: drawn.median,
+              band50: { lo: drawn.band50.low, hi: drawn.band50.high },
+              band90: { lo: drawn.band90.low, hi: drawn.band90.high },
             }}
-            xEtiketter={timeLabels([...series.times.slice(shownFrom), ...future])}
+            xEtiketter={timeLabels(drawnTimes)}
             formatY={number.format}
             foreText={COPY["chart.past"]}
             tonadHistorik
             hojd={340}
             enhet={axisUnit(series, units)}
-            tidtext={(i) => formatPoint(series.frequency, [...series.times.slice(shownFrom), ...future][i])}
+            tidtext={(i) => formatPoint(series.frequency, drawnTimes[i])}
             beskrivning={t("skuld.chart", { namn: columnName(series.name), period })}
           />
           <Forklaring poster={["median", "band50", "band90"]} />

@@ -4,6 +4,10 @@ Notable changes to Norn. The format follows [Keep a Changelog](https://keepachan
 
 ## [Unreleased]
 
+### Fixed
+
+- **The forecast page no longer jumps when you change horizon.** Since 0.1.1 the chart disappeared while the new forecast was computed and came back when it was ready, moving everything below it. The chart now shows the last forecast until the new one is in; only the sentence waits.
+
 ## [0.1.1] - 2026-10-23
 
 ### Fixed
