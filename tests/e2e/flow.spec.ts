@@ -1,26 +1,38 @@
 // The whole flow on every example, with every request listed: Norn may only ever talk to its own origin.
 import { expect, test, type BrowserContext, type Page } from "@playwright/test";
+import * as XLSX from "xlsx";
 
 /** Every URL the page, its worker and its service worker ask for, plus any CSP refusal in the console. */
 function watch(context: BrowserContext, page: Page) {
   const origin = new URL(test.info().project.use.baseURL!).origin;
   const requests: string[] = [];
+  const bodies: string[] = [];
   const refused: string[] = [];
-  context.on("request", (r) => requests.push(r.url()));
+  context.on("request", (r) => {
+    requests.push(r.url());
+    bodies.push(r.postData() ?? "");
+  });
   page.on("console", (m) => /Content Security Policy|Refused to/.test(m.text()) && refused.push(m.text()));
   return {
     foreign: () => requests.filter((u) => !u.startsWith(`${origin}/`) && !u.startsWith("data:") && !u.startsWith(`blob:${origin}/`)),
     refused,
     requests,
+    bodies,
   };
 }
 
-async function throughSkuld(page: Page, card: string, grade: string, sentence?: string) {
+type OwnFile = { name: string; mimeType: string; buffer: Buffer };
+
+/** Through all three steps with an example card, or with the user's own file dropped on Start. */
+async function throughSkuld(page: Page, card: string | OwnFile, grade?: string, sentence?: string) {
   await page.goto("/");
-  await page.locator(".n-exempelkort", { hasText: card }).click();
+  if (typeof card === "string") await page.locator(".n-exempelkort", { hasText: card }).click();
+  else await page.locator(".n-slappyta__input").setInputFiles(card);
   await expect(page.locator(".n-svar")).toContainText(" från ");
   await page.getByRole("button", { name: "Ja", exact: true }).click();
-  await expect(page.locator(".n-betyg")).toContainText(grade, { timeout: 120_000 });
+  // An own file's grade depends on its numbers; any grade shows that the backtest ran.
+  if (grade) await expect(page.locator(".n-betyg")).toContainText(grade, { timeout: 120_000 });
+  else await expect(page.locator(".n-betyg")).toBeVisible({ timeout: 120_000 });
   if (sentence) await expect(page.locator(".n-svar")).toContainText(sentence);
   await page.getByRole("button", { name: "Visa vad som kommer" }).click();
   const svar = page.locator(".n-svar");
@@ -59,9 +71,9 @@ test("works offline after the first forecast", async ({ context, page }) => {
   await throughSkuld(page, "Wikipedia", "Pålitlig");
 });
 
-test("never stores the user's data in the browser", async ({ page }) => {
-  await throughSkuld(page, "Wikipedia", "Pålitlig");
-  const stored = await page.evaluate(async () => ({
+/** Everything the page has stored in the browser. */
+const storedIn = (page: Page) =>
+  page.evaluate(async () => ({
     local: localStorage.length,
     session: sessionStorage.length,
     cookies: document.cookie,
@@ -69,9 +81,50 @@ test("never stores the user's data in the browser", async ({ page }) => {
     // The service worker's cache holds app files, the model and example data, never anything typed or dropped.
     cached: (await Promise.all((await caches.keys()).map(async (k) => (await (await caches.open(k)).keys()).map((r) => new URL(r.url).pathname)))).flat(),
   }));
+
+function expectNothingStored(stored: Awaited<ReturnType<typeof storedIn>>) {
   expect(stored).toMatchObject({ local: 0, session: 0, cookies: "", databases: 0 });
   for (const path of stored.cached) expect(path).toMatch(/^\/(index\.html|assets\/|model\/|data\/|__sw-manifest)/);
+}
+
+test("never stores the user's data in the browser", async ({ page }) => {
+  await throughSkuld(page, "Wikipedia", "Pålitlig");
+  expectNothingStored(await storedIn(page));
 });
+
+// The promise is about the user's own file, so one goes all the way through, as CSV and as Excel. The column name
+// is a marker that must never appear in a request, its address or its body.
+const MARKER = "Kassa7f3q";
+const DAY = 86_400_000;
+const days = Array.from({ length: 400 }, (_, i) => new Date(Date.UTC(2025, 0, 1) + i * DAY));
+const sales = days.map((d, i) => 1000 + 300 * Math.sin(i / 3) + (d.getUTCDay() === 6 ? 500 : 0));
+
+function ownCsv(): OwnFile {
+  const rows = days.map((d, i) => `${d.toISOString().slice(0, 10)};${sales[i].toFixed(1).replace(".", ",")}`);
+  return { name: "min-forsaljning.csv", mimeType: "text/csv", buffer: Buffer.from(`Datum;${MARKER}\n${rows.join("\n")}`) };
+}
+
+function ownExcel(): OwnFile {
+  // SheetJS writes a Date by the local clock, so local midnight is a plain date in Excel, as a typed one would be.
+  const local = (d: Date) => new Date(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate());
+  const sheet = XLSX.utils.aoa_to_sheet([["Datum", MARKER], ...days.map((d, i) => [local(d), Math.round(sales[i])])]);
+  const book = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(book, sheet, "Blad1");
+  const buffer = XLSX.write(book, { type: "buffer", bookType: "xlsx" }) as Buffer;
+  return { name: "min-forsaljning.xlsx", mimeType: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", buffer };
+}
+
+for (const [kind, file] of [["CSV", ownCsv], ["Excel", ownExcel]] as const) {
+  test(`an own ${kind} file goes from Start to Skuld without leaving the device or being stored`, async ({ context, page }) => {
+    const w = watch(context, page);
+    await throughSkuld(page, file());
+    expect(w.foreign()).toEqual([]);
+    expect(w.refused).toEqual([]);
+    expect(w.requests.filter((u) => u.includes(MARKER))).toEqual([]);
+    expect(w.bodies.filter((b) => b.includes(MARKER))).toEqual([]);
+    expectNothingStored(await storedIn(page));
+  });
+}
 
 test("the chart says its unit and shows the values under the pointer", async ({ page }) => {
   await page.goto("/?exempel=wikipedia&horisont=1");
