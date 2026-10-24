@@ -15,7 +15,8 @@
     "predev": "npm run fetch-model",
     "prebuild": "npm run fetch-model",
     "pretest": "npm run fetch-model",
-    "e2e": "playwright test"
+    "e2e": "playwright test",
+    "e2e:safari": "node scripts/safari.mjs"
   },
   "dependencies": {
     "onnxruntime-web": "1.30.0",
