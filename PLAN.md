@@ -15,12 +15,11 @@ Needs the owner:
 
 Engineering, not done yet:
 
-5. **One full run in real Safari on a Mac**, by the owner: Playwright's WebKit is not Safari, and driving Safari needs "Allow Remote Automation" switched on in its Develop menu. The other hand checks were run in installed Google Chrome against `nornor.app` on 2026-10-22: an Excel upload (reaches Verdandi, Pålitlig), Verdandi in the dark theme, Skuld printed (now one A4 page), the hover card by touch (it vanished as the finger lifted; fixed, with a test), and a tablet in portrait at 820 px (gets the app, two example cards per row).
-6. **The first scheduled data rebuild** runs on 2 November 2026. Check that it committed to `dev` and that the Tests run it starts on its commit passed (new in 0.1.1, not yet run for real), or read its issue. It ran once by hand on 2026-10-21 and passed. The new data goes live only with a release (0.1.5), so release after checking it on `https://dev.norn-3ke.pages.dev`.
+5. **The first scheduled data rebuild** runs on 2 November 2026. Check that it committed to `dev` and that the Tests run it starts on its commit passed (new in 0.1.1, not yet run for real), or read its issue. It ran once by hand on 2026-10-21 and passed. The new data goes live only with a release (0.1.5), so release after checking it on `https://dev.norn-3ke.pages.dev`.
 
 To watch:
 
-7. **The live run right after a release, in Firefox.** After the 0.1.1 and 0.1.2 deploys, "Detaljhandel: from Start to Skuld" failed against `nornor.app` with Verdandi still on "Norn räknar" after two minutes. Most likely a slow model download from the cold edge, not a hang: the service worker passed a model chunk on only once all 25 MB were saved, so no progress showed (reproduced with a throttled local server, 2026-10-24). Fixed in 0.1.3, whose first live run passed (33 tests, 1.2 minutes), but the model files were unchanged, so the edge may have been warm. Closed when a slow first run after a deploy shows "laddar ner … MB" or passes; a failure on "räknar" means the cause is elsewhere.
+6. **The live run right after a release, in Firefox.** After the 0.1.1 and 0.1.2 deploys, "Detaljhandel: from Start to Skuld" failed against `nornor.app` with Verdandi still on "Norn räknar" after two minutes. Most likely a slow model download from the cold edge, not a hang: the service worker passed a model chunk on only once all 25 MB were saved, so no progress showed (reproduced with a throttled local server, 2026-10-24). Fixed in 0.1.3, whose first live run passed (33 tests, 1.2 minutes), but the model files were unchanged, so the edge may have been warm. Closed when a slow first run after a deploy shows "laddar ner … MB" or passes; a failure on "räknar" means the cause is elsewhere.
 
 Done since launch (2026-10-21 to 24):
 
@@ -35,7 +34,8 @@ Done since launch (2026-10-21 to 24):
 - The unused `model.ready` string removed, and `wrangler login` refreshed.
 - 0.1.1 (2026-10-23), from the audit: files of more than about 65,000 rows are read, last rows without a value are left out (they removed the chart's bands), Skuld never shows the old horizon's number with the new period, a link with an odd horizon opens, and the data rebuild starts the tests on its commit so it can be released.
 - 0.1.2 (2026-10-23), from the audit: a privacy test with the user's own CSV and Excel file through to Skuld (no request to another origin, the column name in no request, nothing stored), and the unused 5M model removed from the build; Skuld keeps the last chart while a new horizon is computed, so the page does not jump.
-- 0.1.3 (2026-10-24): the model download shows its progress from the first byte (item 7).
+- 0.1.3 (2026-10-24): the model download shows its progress from the first byte (item 6).
+- Real Safari 26.4 on a Mac against `nornor.app` 0.1.4 (2026-10-24), driven through safaridriver: all three examples from Start to Skuld (Pålitlig each, horizon and certainty changed, chart drawn, no page request to another origin) and an own CSV to Skuld with nothing stored. The other hand checks ran in installed Chrome on 2026-10-22: an Excel upload, Verdandi in the dark theme, Skuld printed on one A4 page, the hover card by touch, and a tablet in portrait at 820 px.
 - 0.1.4 (2026-10-24), from the audit: Skuld keeps the forecast without events per horizon, so an event switched on asks the model once, not twice; Urd builds the series only when the file or a choice changes.
 
 ## Decisions so far
