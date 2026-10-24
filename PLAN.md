@@ -15,11 +15,11 @@ Needs the owner:
 
 Engineering, not done yet:
 
-5. **The first scheduled data rebuild** runs on 2 November 2026. Check that it committed to `dev` and that the Tests run it starts on its commit passed (new in 0.1.1, not yet run for real), or read its issue. It ran once by hand on 2026-10-21 and passed. The new data goes live only with a release (0.1.5), so release after checking it on `https://dev.norn-3ke.pages.dev`.
+5. **The first scheduled data rebuild** runs on 2 November 2026. Check that it committed to `dev` and that the Tests run it starts on its commit passed (new in 0.1.1, not yet run for real), or read its issue. It ran once by hand on 2026-10-21 and passed. The new data goes live only with a release (0.1.5), so release after checking it on `https://dev.norn-3ke.pages.dev`. `dev` already holds `npm run e2e:safari` (no app change), which goes out with it; after that release run it and the live suite.
 
 To watch:
 
-6. **The live run right after a release, in Firefox.** After the 0.1.1 and 0.1.2 deploys, "Detaljhandel: from Start to Skuld" failed against `nornor.app` with Verdandi still on "Norn räknar" after two minutes. Most likely a slow model download from the cold edge, not a hang: the service worker passed a model chunk on only once all 25 MB were saved, so no progress showed (reproduced with a throttled local server, 2026-10-24). Fixed in 0.1.3, whose first live run passed (33 tests, 1.2 minutes), but the model files were unchanged, so the edge may have been warm. Closed when a slow first run after a deploy shows "laddar ner … MB" or passes; a failure on "räknar" means the cause is elsewhere.
+6. **The live run right after a release, in Firefox.** After the 0.1.1 and 0.1.2 deploys, "Detaljhandel: from Start to Skuld" failed against `nornor.app` with Verdandi still on "Norn räknar" after two minutes. Most likely a slow model download from the cold edge, not a hang: the service worker passed a model chunk on only once all 25 MB were saved, so no progress showed (reproduced with a throttled local server, 2026-10-24). Fixed in 0.1.3. The first live runs after 0.1.3 and 0.1.4 passed (1.2 and 1.3 minutes), but the model files were unchanged, so the edge may have been warm. Closed when a slow first run after a deploy shows "laddar ner … MB" or passes; a failure on "räknar" means the cause is elsewhere.
 
 Done since launch (2026-10-21 to 24):
 
