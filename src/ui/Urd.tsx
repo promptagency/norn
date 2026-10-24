@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { axisUnit, describe, columnName, unit, type Units } from "../data/describe.ts";
 import { buildSeries, detectColumns, type Columns, type Combine, type DataSeries } from "../data/detect.ts";
 import type { Table } from "../data/parse.ts";
@@ -24,7 +24,7 @@ const number = new Intl.NumberFormat("sv-SE", { maximumSignificantDigits: 4 });
 
 export function Urd({ table, columns, value, combine, units, onColumns, onCombine, onJa }: Props) {
   const [andra, setAndra] = useState(false);
-  const result = buildSeries(table, columns, value, combine);
+  const result = useMemo(() => buildSeries(table, columns, value, combine), [table, columns, value, combine]);
   const valjTid = (time: number) => {
     const c = detectColumns(table, time);
     if (c.ok) onColumns(c.value, c.value.numeric.includes(value) ? value : c.value.numeric[0]);
