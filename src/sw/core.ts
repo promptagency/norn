@@ -46,3 +46,17 @@ export async function unredirected(res: Response): Promise<Response> {
   if (!res.redirected) return res;
   return new Response(await res.blob(), { status: res.status, statusText: res.statusText, headers: res.headers });
 }
+
+/**
+ * A file from the cache, or from the network and then cached. The response goes back while the copy is still
+ * being saved, so the page sees a model chunk arrive byte by byte: waiting for the save showed no download
+ * progress for a whole 25 MB chunk, and on a slow line Verdandi said "räknar" all through the download.
+ */
+export async function cacheFirst(cache: Cache, path: string, rev: string, waitUntil: (p: Promise<unknown>) => void, get = fetch): Promise<Response> {
+  const key = cacheKey(path, rev);
+  const hit = await cache.match(key);
+  if (hit) return hit;
+  const res = await unredirected(await get(networkPath(path)));
+  if (res.ok) waitUntil(cache.put(key, res.clone()));
+  return res;
+}

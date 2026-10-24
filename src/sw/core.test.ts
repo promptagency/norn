@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { cacheKey, MANIFEST_KEY, networkPath, precacheList, staleKeys, unredirected } from "./core.ts";
+import { cacheFirst, cacheKey, MANIFEST_KEY, networkPath, precacheList, staleKeys, unredirected } from "./core.ts";
 
 const manifest = {
   "/index.html": "aaa",
@@ -73,5 +73,29 @@ describe("unredirected", () => {
   it("returns any other response as it is", async () => {
     const res = new Response("x");
     expect(await unredirected(res)).toBe(res);
+  });
+});
+
+describe("cacheFirst", () => {
+  it("answers while the file is still arriving, and caches it once it is all there", async () => {
+    let send!: ReadableStreamDefaultController<Uint8Array>;
+    const body = new ReadableStream<Uint8Array>({ start: (c) => void (send = c) });
+    const saved: Promise<unknown>[] = [];
+    const stored = new Map<string, Response>();
+    const cache = {
+      match: async (key: string) => stored.get(key),
+      put: async (key: string, res: Response) => void stored.set(key, new Response(await res.arrayBuffer())),
+    } as unknown as Cache;
+
+    const res = await cacheFirst(cache, "/model/x.onnx.0", "r1", (p) => saved.push(p), async () => new Response(body));
+    send.enqueue(new Uint8Array([1, 2]));
+    const reader = res.body!.getReader();
+    expect((await reader.read()).value).toEqual(new Uint8Array([1, 2])); // the first bytes, before the end
+    expect(stored.size).toBe(0);
+
+    send.close();
+    await reader.read();
+    await Promise.all(saved);
+    expect(new Uint8Array(await stored.get("/model/x.onnx.0?__rev=r1")!.arrayBuffer())).toEqual(new Uint8Array([1, 2]));
   });
 });

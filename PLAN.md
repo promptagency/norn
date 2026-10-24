@@ -21,7 +21,7 @@ Engineering, not done yet:
 From the audit on 2026-10-23, not fixed yet:
 
 7. **Speed, small:** Skuld recomputes the forecast without events on every event toggle (`src/ui/Skuld.tsx`), and Urd rebuilds the whole series on every redraw (`src/ui/Urd.tsx`, a `useMemo`).
-8. **A Firefox failure against `nornor.app` right after the 0.1.1 deploy** ("Detaljhandel: from Start to Skuld"); the rerun passed in all three browsers and the cause is unknown. Watch for it after the next release.
+8. **A Firefox failure against `nornor.app` right after the 0.1.1 and 0.1.2 deploys** ("Detaljhandel: from Start to Skuld", Verdandi still on "Norn räknar" after two minutes). Most likely a slow model download from the cold edge, not a hang: the service worker passed a model chunk on only once all 25 MB were saved, so no progress showed (seen with a throttled local server, 2026-10-24). Fixed on `dev`; the full live suite passed twice on the warm site. Not proven on a cold edge: watch the live run after the next release.
 
 Done since launch (2026-10-21 to 23):
 

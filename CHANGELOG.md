@@ -4,6 +4,10 @@ Notable changes to Norn. The format follows [Keep a Changelog](https://keepachan
 
 ## [Unreleased]
 
+### Fixed
+
+- **The model download shows its progress from the start.** On a slow line Norn said "räknar" while it was still downloading the model, since each 25 MB piece had to arrive in full before any progress showed.
+
 ## [0.1.2] - 2026-10-23
 
 ### Fixed

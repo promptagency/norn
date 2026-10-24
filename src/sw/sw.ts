@@ -5,7 +5,7 @@
 // them, so nothing is downloaded twice. It never stores the user's data. Entries are keyed by content revision, so a deploy
 // never mixes old and new files, and the previous build's files are kept one
 // more cycle for tabs that still run it.
-import { cacheKey, MANIFEST_KEY, networkPath, precacheList, SKIP_WAITING, type SwManifest, staleKeys, unredirected } from "./core.ts";
+import { cacheFirst, cacheKey, MANIFEST_KEY, networkPath, precacheList, SKIP_WAITING, type SwManifest, staleKeys, unredirected } from "./core.ts";
 
 declare const self: ServiceWorkerGlobalScope;
 declare const __SW_MANIFEST__: SwManifest;
@@ -61,18 +61,8 @@ self.addEventListener("fetch", (event) => {
   // One screen: every navigation gets the app shell.
   const path = req.mode === "navigate" ? "/index.html" : url.pathname;
   const rev = MANIFEST[path];
-  event.respondWith(rev ? cacheFirst(path, rev) : previousBuild(req, path));
+  event.respondWith(rev ? caches.open(CACHE).then((cache) => cacheFirst(cache, path, rev, (p) => event.waitUntil(p))) : previousBuild(req, path));
 });
-
-async function cacheFirst(path: string, rev: string): Promise<Response> {
-  const cache = await caches.open(CACHE);
-  const key = cacheKey(path, rev);
-  const hit = await cache.match(key);
-  if (hit) return hit;
-  const res = await unredirected(await fetch(networkPath(path)));
-  if (res.ok) await cache.put(key, res.clone());
-  return res;
-}
 
 // Not in this build: a tab still running the previous build asking for one of
 // its files. Every path except index.html is content-addressed, so whatever
