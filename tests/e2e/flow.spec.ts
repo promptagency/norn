@@ -154,6 +154,31 @@ test("a link with a horizon that is not a button opens the default one", async (
   }
 });
 
+test("an event switched on asks the model only for the forecast with events", async ({ page }) => {
+  // Counts the forecasts the page asks its worker for; the one without events is kept per horizon.
+  await page.addInitScript(() => {
+    const w = window as unknown as { forecasts: number };
+    w.forecasts = 0;
+    const post = Worker.prototype.postMessage;
+    Worker.prototype.postMessage = function (this: Worker, msg: { type?: string }, ...rest: never[]) {
+      if (msg?.type === "forecast") w.forecasts++;
+      return post.call(this, msg, ...rest);
+    };
+  });
+  const forecasts = () => page.evaluate(() => (window as unknown as { forecasts: number }).forecasts);
+  await page.goto("/?exempel=wikipedia&horisont=3");
+  await expect(page.locator(".n-svar")).toContainText("troligen", { timeout: 120_000 });
+  const before = await forecasts();
+  await page.getByText("Vet du något om framtiden?", { exact: true }).first().click();
+  const lucia = page.getByRole("button", { name: "Lucia" });
+  await lucia.click();
+  await expect(page.getByRole("status").filter({ hasText: /Med lucia|ändrar inte/ })).toBeVisible({ timeout: 60_000 });
+  expect(await forecasts()).toBe(before + 1);
+  await lucia.click();
+  await expect(page.locator(".n-svar")).toContainText("troligen");
+  expect(await forecasts()).toBe(before + 1);
+});
+
 test.describe("on a touch screen", () => {
   test.use({ hasTouch: true });
   // Playwright cannot emulate touch in Firefox.

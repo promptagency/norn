@@ -70,19 +70,31 @@ export function Skuld({ series, forecaster, download, initial = {}, link, units 
 
   const [result, setResult] = useState<{ key: string; base: Forecast; events?: Forecast; future: Time[] } | "fel" | null>(null);
   const key = `${steps}|${activeKey}`;
+  // The forecast without events, once per horizon: switching an event on or off only needs the one with events.
+  const baseFor = useMemo(() => {
+    const done = new Map<number, Promise<Forecast>>();
+    return (s: number) => {
+      let p = done.get(s);
+      if (!p) {
+        done.set(s, (p = forecaster.forecast(series.values, s)));
+        p.catch(() => done.delete(s));
+      }
+      return p;
+    };
+  }, [forecaster, series]);
   useEffect(() => {
     let live = true;
     const times = [...series.times, ...future];
     const known = activeKey ? activeKey.split(",").map((id) => eventSeries(id as EventId, times)) : [];
     Promise.all([
-      forecaster.forecast(series.values, steps),
+      baseFor(steps),
       known.length ? forecaster.forecast(series.values, steps, { known }) : undefined,
     ]).then(
       ([base, events]) => live && setResult({ key, base, events, future }),
       () => live && setResult("fel"),
     );
     return () => { live = false; };
-  }, [forecaster, series, future, steps, activeKey, key]);
+  }, [forecaster, baseFor, series, future, steps, activeKey, key]);
 
   // The sentence and the download only use the forecast for the current settings: an older one would put its
   // numbers next to the new period. The chart keeps the last one, with its own dates, so the page does not jump.

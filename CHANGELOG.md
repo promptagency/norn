@@ -4,6 +4,10 @@ Notable changes to Norn. The format follows [Keep a Changelog](https://keepachan
 
 ## [Unreleased]
 
+### Changed
+
+- **An event answers faster.** Switching an event on or off in Skuld no longer computes the forecast without events again; Norn keeps it for each horizon.
+
 ## [0.1.3] - 2026-10-24
 
 ### Fixed
