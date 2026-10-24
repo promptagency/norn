@@ -21,9 +21,12 @@ Engineering, not done yet:
 From the audit on 2026-10-23, not fixed yet:
 
 7. **Speed, small:** Skuld recomputes the forecast without events on every event toggle (`src/ui/Skuld.tsx`), and Urd rebuilds the whole series on every redraw (`src/ui/Urd.tsx`, a `useMemo`).
-8. **A Firefox failure against `nornor.app` right after the 0.1.1 and 0.1.2 deploys** ("Detaljhandel: from Start to Skuld", Verdandi still on "Norn räknar" after two minutes). Most likely a slow model download from the cold edge, not a hang: the service worker passed a model chunk on only once all 25 MB were saved, so no progress showed (seen with a throttled local server, 2026-10-24). Fixed in 0.1.3; the full live suite passed twice on the warm site. Not proven on a cold edge: watch the live run after the next release.
 
-Done since launch (2026-10-21 to 23):
+To watch:
+
+8. **The live run right after a release, in Firefox.** After the 0.1.1 and 0.1.2 deploys, "Detaljhandel: from Start to Skuld" failed against `nornor.app` with Verdandi still on "Norn räknar" after two minutes. Most likely a slow model download from the cold edge, not a hang: the service worker passed a model chunk on only once all 25 MB were saved, so no progress showed (reproduced with a throttled local server, 2026-10-24). Fixed in 0.1.3, whose first live run passed (33 tests, 1.2 minutes), but the model files were unchanged, so the edge may have been warm. Closed when a slow first run after a deploy shows "laddar ner … MB" or passes; a failure on "räknar" means the cause is elsewhere.
+
+Done since launch (2026-10-21 to 24):
 
 - CI in `.github/workflows/test.yml`, adapted from Skrubba's, and the end-to-end suite in Chromium, Firefox and WebKit, locally, against `nornor.app` and on CI.
 - Verdandi's grade on accuracy as well as on beating the naive guess (rule B with 35 percent, decision above), and the band limit lowered to 75 percent so Elförbrukning opens on Pålitlig (2026-10-22).
@@ -35,7 +38,8 @@ Done since launch (2026-10-21 to 23):
 - `dev` and `main` as in Skrubba (2026-10-23): all work on `dev` with a preview at `dev.norn-3ke.pages.dev`, releases tagged with `CHANGELOG.md` and a GitHub release page, the version in the footer. 0.1.0 released, and the design system bundle uploaded with the footer's version line. The repo is public, and a ruleset protects `main` (`docs/DEPLOY.md`).
 - The unused `model.ready` string removed, and `wrangler login` refreshed.
 - 0.1.1 (2026-10-23), from the audit: files of more than about 65,000 rows are read, last rows without a value are left out (they removed the chart's bands), Skuld never shows the old horizon's number with the new period, a link with an odd horizon opens, and the data rebuild starts the tests on its commit so it can be released.
-- On `dev`, from the audit: a privacy test with the user's own CSV and Excel file through to Skuld (no request to another origin, the column name in no request, nothing stored), and the unused 5M model removed from the build (2026-10-23).
+- 0.1.2 (2026-10-23), from the audit: a privacy test with the user's own CSV and Excel file through to Skuld (no request to another origin, the column name in no request, nothing stored), and the unused 5M model removed from the build; Skuld keeps the last chart while a new horizon is computed, so the page does not jump.
+- 0.1.3 (2026-10-24): the model download shows its progress from the first byte (item 8).
 
 ## Decisions so far
 
