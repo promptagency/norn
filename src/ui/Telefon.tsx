@@ -61,7 +61,7 @@ export function Telefon() {
               const text = COPY[key];
               return (
                 <li key={key}>
-                  <span className="telefon__nummer" aria-hidden="true">{i + 1}</span>
+                  <span className="nummer" aria-hidden="true">{i + 1}</span>
                   <p>{emphasize(text, text.slice(0, text.indexOf(".") + 1))}</p>
                 </li>
               );

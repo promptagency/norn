@@ -101,7 +101,7 @@ export function Galleri() {
               formatY={kr}
               yIntervall={[-0.2, 3.2]}
               foreText="Det Norn fick se"
-              efterText="Det Norn fick gissa på"
+              efterText="Gömt för Norn, med facit"
               beskrivning="Elpriset 7 till 20 oktober. Andra veckan visar Norns prognos som band och utfallet som en grå linje."
             />
             <Forklaring poster={["utfall", "median-backtest", "band50", "band90"]} />

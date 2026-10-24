@@ -154,6 +154,31 @@ test("a link with a horizon that is not a button opens the default one", async (
   }
 });
 
+test("Skuld reminds of the test, which runs once, and links back to it", async ({ page }) => {
+  await page.addInitScript(() => {
+    const w = window as unknown as { backtests: number };
+    w.backtests = 0;
+    const post = Worker.prototype.postMessage;
+    Worker.prototype.postMessage = function (this: Worker, msg: { type?: string }, ...rest: never[]) {
+      if (msg?.type === "backtest") w.backtests++;
+      return post.call(this, msg, ...rest);
+    };
+  });
+  const backtests = () => page.evaluate(() => (window as unknown as { backtests: number }).backtests);
+  const reminder = page.locator(".provet-rad");
+  // A link opens Skuld first, so Skuld runs the test itself.
+  await page.goto("/?exempel=wikipedia&horisont=1");
+  await expect(reminder).toContainText("I provet på det senaste året träffade Norn i snitt inom", { timeout: 120_000 });
+  await expect(reminder.locator(".n-betyg")).toContainText("Pålitlig");
+  await reminder.getByRole("button", { name: "Se provet" }).click();
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Kan du lita på prognosen?");
+  await expect(page.getByRole("list", { name: "Så gick provet till" })).toContainText("Norn gömmer det senaste året i din fil.");
+  await expect(page.locator(".n-betyg")).toContainText("Pålitlig");
+  await page.getByRole("button", { name: "Visa vad som kommer" }).click();
+  await expect(reminder).toBeVisible();
+  expect(await backtests()).toBe(1);
+});
+
 test("an event switched on asks the model only for the forecast with events", async ({ page }) => {
   // Counts the forecasts the page asks its worker for; the one without events is kept per horizon.
   await page.addInitScript(() => {

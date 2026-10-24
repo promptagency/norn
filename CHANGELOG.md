@@ -6,6 +6,7 @@ Notable changes to Norn. The format follows [Keep a Changelog](https://keepachan
 
 ### Changed
 
+- **Verdandi says plainly that it is a test.** It asks "Kan du lita på prognosen?" and shows in three steps how Norn hid part of your data, guessed on it and was compared with what happened. Skuld reminds you of the result under the forecast, with a link back.
 - **Start says what Norn is before you begin.** A clearer heading, "Gör en prognos av dina egna siffror", and three lines on what you get, beside the drop zone.
 
 ## [0.1.4] - 2026-10-24

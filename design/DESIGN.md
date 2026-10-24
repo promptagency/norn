@@ -138,6 +138,10 @@ The approved screen sketches (Start, Urd, Verdandi, Skuld, with real Timestral o
 
 Approved by the owner on 2026-10-24 (mockups in the brainstorm, not on the canvas). Two columns beside each other, stacked when the window is too narrow for two of 380 px: on the left the heading in `rubrik-xl`, the lead in `ingress` and what Norn gives as a list of three, each marked with a check in `--indigo`; on the right the `Slappyta`. The example cards follow under both, as before. The Norns are not named on Start; they are the step names once the user is under way.
 
+## The test, in Verdandi and Skuld
+
+Approved by the owner on 2026-10-25. Verdandi's lead is in `ingress`, followed by the test's three steps in a row (stacked when narrow), each with the phone page's indigo number marker. In Skuld one row under the answer holds `Betyg`, the test's sentence in `brod` and a `Knapp lank` "Se provet". The step bar's hints are "Din data", "Provet" and "Prognosen".
+
 ## The phone page
 
 Phones get one page instead of the app (decision in `PLAN.md`), approved on the design canvas "Norn skärmskisser" (artboard Telefon) on 2026-10-21. One column, 16 px side margin, light and dark from the tokens like every other screen.

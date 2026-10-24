@@ -42,20 +42,24 @@ Utkast. Ändras när skärmskisserna är godkända.
 | step.urd | Urd |
 | step.verdandi | Verdandi |
 | step.skuld | Skuld |
-| step.urd.hint | Det som varit |
-| step.verdandi.hint | Det som är |
-| step.skuld.hint | Det som kommer |
+| step.urd.hint | Din data |
+| step.verdandi.hint | Provet |
+| step.skuld.hint | Prognosen |
 | urd.confirm | Stämmer det? |
 | urd.yes | Ja |
 | urd.change | Nej, ändra kolumner |
 | urd.pick | Vilken kolumn vill du förutse? |
-| verdandi.heading | Hur bra läser Norn din data? |
+| verdandi.heading | Kan du lita på prognosen? |
 | verdandi.grade.good | Pålitlig |
 | verdandi.grade.fair | Ungefärlig |
 | verdandi.grade.poor | Osäker |
 | verdandi.details | Visa detaljer |
 | verdandi.next | Visa vad som kommer |
-| verdandi.lead | Norn gissade på {period} utan att få se facit, och jämförde sedan med det som faktiskt hände. |
+| verdandi.lead | Norn tog reda på det med ett prov på dina egna siffror. |
+| verdandi.how | Så gick provet till |
+| verdandi.how.hide | Norn gömmer {period} i din fil. |
+| verdandi.how.guess | Norn gissar på det, utan facit. |
+| verdandi.how.compare | Gissningen jämförs med det som hände. |
 | verdandi.wait | Norn räknar. Det tar några sekunder. |
 | verdandi.good | {Period} träffade Norn i snitt inom {procent} procent, betydligt bättre än att upprepa {jamfort}. |
 | verdandi.fair | {Period} träffade Norn i snitt inom {procent} procent. Bättre än att gissa, men lita mer på banden än på linjen. |
@@ -91,7 +95,7 @@ Utkast. Ändras när skärmskisserna är godkända.
 | model.once | Det sker bara första gången. |
 | error.model | Norn kunde inte göra prognosen. Ladda om sidan och försök igen. |
 | chart.seen | Det Norn fick se |
-| chart.guessed | Det Norn fick gissa på |
+| chart.guessed | Gömt för Norn, med facit |
 | chart.past | Senaste perioden |
 | chart.now | Nu |
 | legend.history | Det som varit |
@@ -105,6 +109,10 @@ Utkast. Ändras när skärmskisserna är godkända.
 | graf.klockslag | {datum} kl. {tid} |
 | graf.vecka | veckan från {datum} |
 | skuld.heading | Det som kommer |
+| skuld.prov.percent | I provet på {period} träffade Norn i snitt inom {procent} procent. |
+| skuld.prov.abs | I provet på {period} missade Norn i snitt med {fel} per {enhet}. |
+| skuld.prov.poor | I provet på {period} såg Norn inget tydligt mönster. |
+| skuld.prov.link | Se provet |
 | skuld.horizon | Hur långt fram |
 | skuld.events | Vet du något om framtiden? |
 | skuld.events.none | Den här händelsen ändrar inte prognosen. Norn ser ingen sådan effekt i din historik. |

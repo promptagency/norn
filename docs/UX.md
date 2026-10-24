@@ -37,7 +37,7 @@ The three step names are always visible at the top, clickable backwards. The use
 - For the retail example, the four trades are buttons here.
 - Errors are handled here, always with a suggestion, never only an error: irregular timestamps, too short a series (under 64 points), a column that cannot be read.
 
-## 2. Verdandi, how well Norn reads your data
+## 2. Verdandi, the test: how well Norn guesses on your own data
 
 Runs automatically after **Ja**. A backtest on the last period, its length set by frequency:
 
@@ -50,6 +50,7 @@ Runs automatically after **Ja**. A backtest on the last period, its length set b
 | Quarter, year | the last 4 periods |
 
 - The chart shows the end of the history with the model's forecast laid over what actually happened. The bands appear here for the first time, so the user learns what they mean on data where the answer is known.
+- It must be unmistakable that this is a test with a known answer, not a forecast (owner, 2026-10-25): the heading asks "Kan du lita på prognosen?", one lead sentence says Norn found out with a test on the user's own numbers, and three numbered steps say how (Norn hides the period, guesses without the answer, and the guess is compared with what happened). The chart's halves are "Det Norn fick se" and "Gömt för Norn, med facit".
 - Above the chart, a grade in three levels with one sentence:
   - **Pålitlig.** "Norn träffade i snitt inom 6 procent de senaste tre månaderna, betydligt bättre än att upprepa förra året."
   - **Ungefärlig.** "Norn träffade inom 18 procent. Bättre än att gissa, men lita mer på intervallet än på linjen."
@@ -61,6 +62,7 @@ Runs automatically after **Ja**. A backtest on the last period, its length set b
 
 - The chart fills the screen. History muted, forecast with the median and two bands. The bands dominate. The chart ends at the end of the horizon.
 - Above the chart, the answer in one sentence: "De närmaste 30 dagarna landar troligen på 412 000 kr, mellan 371 000 och 458 000 i nio fall av tio." Sums for amounts like sales, averages for levels like price or temperature.
+- Under the answer, one line reminds of the test: the grade, "I provet på det senaste året träffade Norn i snitt inom 7 procent." and a link "Se provet" back to Verdandi (owner, 2026-10-25). A link that opens Skuld directly runs the test there, once.
 - Horizon: three or four buttons in the user's unit. For daily data "2 veckor, 1 månad, 3 månader, 6 månader". Never "steg".
 - Under the chart, two collapsed questions:
   - **Vet du något om framtiden?** Opens a list of Swedish events that can be switched on (röda dagar, midsommar, julhandel, industrisemester) plus the user's own ("Kampanj 3 till 9 november", "Stängt 24 till 26 december"). Each change re-runs the forecast and shows the difference as a second line. If an event does not change the forecast, say so in words, so the tool does not look broken.

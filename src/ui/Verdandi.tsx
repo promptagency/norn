@@ -2,12 +2,13 @@ import { useEffect, useState, type ReactNode } from "react";
 import { DEFAULT_MODEL } from "../config.ts";
 import { axisUnit, columnName, comparedWith, formatPoint, formatTime, periodWords, unit, type Units } from "../data/describe.ts";
 import type { DataSeries } from "../data/detect.ts";
-import { backtestSteps, grade, improvement, percentFits, score, SEASON, THRESHOLDS, type Backtest, type Forecaster } from "../engine/index.ts";
+import { backtestSteps, improvement, percentFits, THRESHOLDS, type Backtest, type Forecaster } from "../engine/index.ts";
 import { Betyg, Forklaring, Fraga, Knapp, Kort, Nyckeltal, Prognosgraf, Svar } from "./components/index.ts";
 import { COPY, t } from "./copy.ts";
 import { emphasize } from "./emphasize.tsx";
 import { loadingText } from "./model.ts";
 import { timeLabels } from "./historik.ts";
+import { backtestOf, graded } from "./provet.ts";
 
 interface Props {
   series: DataSeries;
@@ -32,17 +33,17 @@ export function Verdandi({ series, forecaster, download, units, onNext }: Props)
 
   useEffect(() => {
     let live = true;
-    forecaster.backtest(series.values, steps).then(
+    backtestOf(forecaster, series).then(
       (bt) => live && setResult(bt),
       () => live && setResult("fel"),
     );
     return () => { live = false; };
-  }, [forecaster, series, steps]);
+  }, [forecaster, series]);
 
   const period = periodWords(series.frequency, steps);
   const jamfort = comparedWith(series.frequency);
-  const s = result && result !== "fel" ? score(series.values.slice(0, cut), result, SEASON[series.frequency]) : null;
-  const niva = s && grade(s);
+  const g = result && result !== "fel" ? graded(series, result) : null;
+  const s = g?.s, niva = g?.niva;
 
   let svar: ReactNode;
   if (result === "fel" || (result && !s)) svar = COPY["error.model"];
@@ -72,7 +73,15 @@ export function Verdandi({ series, forecaster, download, units, onNext }: Props)
     <main className="sida sida--steg">
       <div className="intro">
         <h1 className="rubrik-l">{COPY["verdandi.heading"]}</h1>
-        <p className="dampad">{t("verdandi.lead", { period })}</p>
+        <p className="ingress">{COPY["verdandi.lead"]}</p>
+        <ol className="provet" aria-label={COPY["verdandi.how"]}>
+          {[t("verdandi.how.hide", { period }), COPY["verdandi.how.guess"], COPY["verdandi.how.compare"]].map((text, i) => (
+            <li key={i}>
+              <span className="nummer" aria-hidden="true">{i + 1}</span>
+              {text}
+            </li>
+          ))}
+        </ol>
         <div className="betyg-rad">
           {niva && <Betyg niva={niva} />}
           <Svar>{svar}</Svar>

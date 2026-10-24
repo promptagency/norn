@@ -140,6 +140,7 @@ export function App() {
           initial={screen.initial}
           units={screen.urd.units}
           link={screen.urd.exempel ? (s) => exampleLink(screen.urd, s) : undefined}
+          onProvet={() => setScreen({ ...screen, name: "verdandi" })}
         />
       )}
       <Sidfot />

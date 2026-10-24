@@ -1,16 +1,17 @@
 import { useEffect, useMemo, useState, type ReactNode } from "react";
-import { axisUnit, columnName, formatPoint, summing, textUnit, unit, type Units } from "../data/describe.ts";
+import { axisUnit, columnName, formatPoint, periodWords, summing, textUnit, unit, type Units } from "../data/describe.ts";
 import { futureTimes, type DataSeries } from "../data/detect.ts";
 import type { Time } from "../data/parse.ts";
 import { DEFAULT_HORIZON, horizons, type Horizon } from "../data/horizon.ts";
-import { EVENTS, eventOn, eventSeries, summarize, type EventId, type Forecast, type Forecaster } from "../engine/index.ts";
-import { Forklaring, Fraga, Knapp, Kort, Prognosgraf, Sakerhetsval, Svar, Valgrupp, Valknapp } from "./components/index.ts";
+import { EVENTS, eventOn, eventSeries, percentFits, summarize, type Backtest, type EventId, type Forecast, type Forecaster } from "../engine/index.ts";
+import { Betyg, Forklaring, Fraga, Knapp, Kort, Prognosgraf, Sakerhetsval, Svar, Valgrupp, Valknapp } from "./components/index.ts";
 import type { Sakerhetsniva } from "./components/index.ts";
 import { COPY, t, type CopyKey } from "./copy.ts";
 import { emphasize } from "./emphasize.tsx";
 import { loadingText } from "./model.ts";
 import { forecastCsv } from "./csv.ts";
 import { timeLabels } from "./historik.ts";
+import { backtestOf, graded } from "./provet.ts";
 
 export interface SkuldSettings {
   horisont: number;
@@ -27,6 +28,8 @@ interface Props {
   link?: (settings: SkuldSettings) => string;
   /** Known for the examples; puts the unit on the axis and after the amounts. */
   units?: Units;
+  /** Back to Verdandi, from the reminder of the test. */
+  onProvet: () => void;
 }
 
 const number = new Intl.NumberFormat("sv-SE", { maximumSignificantDigits: 3 });
@@ -45,7 +48,7 @@ const ahead = (h: Horizon) =>
   h.n === 1 ? t(`narmast.${h.unit}` as CopyKey) : t("narmast.n", { antal: h.n, enheter: t(`enhet.${h.unit}.bestamd` as CopyKey) });
 const label = (h: Horizon) => `${h.n} ${t(`enhet.${h.unit}${h.n === 1 ? "" : ".flera"}` as CopyKey)}`;
 
-export function Skuld({ series, forecaster, download, initial = {}, link, units }: Props) {
+export function Skuld({ series, forecaster, download, initial = {}, link, units, onProvet }: Props) {
   const n = series.values.length;
   const options = useMemo(() => horizons(series.frequency, series.times[n - 1]), [series, n]);
   // The horizon may come from a link, so anything but a valid button index falls back to the default.
@@ -109,6 +112,25 @@ export function Skuld({ series, forecaster, download, initial = {}, link, units 
   const period = ahead(options[h]);
   const sum = shown && summarize(shown, how);
 
+  // The test from Verdandi, run here too when a link opened Skuld first.
+  const [test, setTest] = useState<Backtest | null>(null);
+  useEffect(() => {
+    let live = true;
+    backtestOf(forecaster, series).then((bt) => live && setTest(bt), () => {});
+    return () => { live = false; };
+  }, [forecaster, series]);
+  const g = test && graded(series, test);
+  let prov: string | null = null;
+  if (g) {
+    const tested = periodWords(series.frequency, test.actual.length);
+    if (g.niva === "osaker") prov = t("skuld.prov.poor", { period: tested });
+    else if (percentFits(g.s)) prov = t("skuld.prov.percent", { period: tested, procent: Math.round(100 * g.s.relative) });
+    else {
+      const fel = units?.amount ? `${number.format(g.s.error)} ${units.amount}` : number.format(g.s.error);
+      prov = t("skuld.prov.abs", { period: tested, fel, enhet: unit(series.frequency) });
+    }
+  }
+
   let svar: ReactNode;
   if (result === "fel") svar = COPY["error.model"];
   else if (!sum) svar = download ? loadingText(download) : COPY["skuld.wait"];
@@ -153,6 +175,13 @@ export function Skuld({ series, forecaster, download, initial = {}, link, units 
       <div className="intro">
         <h1 className="rubrik-l">{COPY["skuld.heading"]}</h1>
         <Svar>{svar}</Svar>
+        {g && prov && (
+          <div className="provet-rad">
+            <Betyg niva={g.niva} />
+            <span>{prov}</span>
+            <Knapp variant="lank" onClick={onProvet}>{COPY["skuld.prov.link"]}</Knapp>
+          </div>
+        )}
       </div>
 
       <Valgrupp etikett={COPY["skuld.horizon"]}>
