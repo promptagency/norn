@@ -10,7 +10,7 @@ Needs the owner:
 
 1. **Five messy real-world CSVs**, the last part of Phase 2's done criterion. At least one should be a till or webshop export with one row per sale, to check the rule that a day without rows counts as 0 when summing (`src/data/detect.ts`, marked as a shortcut).
 2. **A real person through Phase 4's done criterion**: from file to forecast, changing horizon and certainty, in under a minute without reading anything twice.
-3. **Review the Swedish strings added in Phases 2 to 5** in `docs/COPY.md`. Only the phone page's strings (`mobil.*`) have been approved as a set; the rest (`urd.*`, `verdandi.*` including `good.plain`, `fair.plain` and the rewritten `rule`, `skuld.*`, `period.*`, `jamfort.*`, `narmast.*`, `event.*`, `enhet.*`, `graf.*`, `error.file`, `error.notime`, `error.model`, `model.once`, `link.newtab`, `footer.version`) and the example texts in `public/data/examples.json` (the Elförbrukning card, the Wikipedia card's `card`, Påsk's sentence) were written to COPY.md's rules but not reviewed. Also decide whether the downloaded CSV may say "kvantil" in its column headers; it is a file, not the screen.
+3. **Review the Swedish strings added in Phases 2 to 5** in `docs/COPY.md`. Only the phone page's strings (`mobil.*`) have been approved as a set; the rest (`urd.*`, `verdandi.*` including `good.plain`, `fair.plain` and the rewritten `rule`, `skuld.*`, `period.*`, `jamfort.*`, `narmast.*`, `event.*`, `enhet.*`, `graf.*`, `error.file`, `error.notime`, `error.model`, `model.once`, `link.newtab`, `footer.version`, and from 2026-10-24 `start.heading`, `start.lead` and `start.gets.*`) and the example texts in `public/data/examples.json` (the Elförbrukning card, the Wikipedia card's `card`, Påsk's sentence) were written to COPY.md's rules but not reviewed. Also decide whether the downloaded CSV may say "kvantil" in its column headers; it is a file, not the screen.
 4. **Design for the user's own events**: a date-range field and a comparison-line style in `design/DESIGN.md`, then the last Phase 4 item can be built.
 
 Engineering, not done yet:
@@ -42,6 +42,7 @@ Done since launch (2026-10-21 to 24):
 
 Taken by the owner, 2026-10-20. Do not revisit without asking.
 
+- **Start explains Norn before the drop zone (2026-10-24).** The heading says what it is ("Gör en prognos av dina egna siffror", also the tab title and the phone page heading), then a lead and three things Norn gives, in a column beside the drop zone (`design/DESIGN.md`, "Start on a computer"). The Norns stay as step names and are not used to explain Norn on Start.
 - Norn is an open source labs project under Prompt Agency, at `nornor.app`, MIT. Experiment, no support promise. Marketing for Prompt Agency as much as open source.
 - One tool, not several. Presets and examples cover different kinds of data; the core is the same.
 - Engine: amine40's Timestral ONNX exports and the `timestral.js` port from `amine-athmani/timestral-in-browser`. We do not publish our own exports to Hugging Face. Our own export from the spike stays in `scripts/` as a verification tool.

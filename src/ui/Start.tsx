@@ -29,11 +29,18 @@ export function Start({ fel, onFil, onText, onExempel }: Props) {
 
   return (
     <main className="sida">
-      <div className="intro">
-        <h1 className="rubrik-xl">{COPY["start.heading"]}</h1>
-        <p className="ingress">{COPY["start.lead"]} {COPY["start.privacy"]}</p>
+      <div className="start">
+        <div className="intro">
+          <h1 className="rubrik-xl">{COPY["start.heading"]}</h1>
+          <p className="ingress">{COPY["start.lead"]}</p>
+          <ul className="start__ger">
+            <li>{COPY["start.gets.forecast"]}</li>
+            <li>{COPY["start.gets.trust"]}</li>
+            <li>{COPY["start.gets.private"]}</li>
+          </ul>
+        </div>
+        <Slappyta onFiler={(files) => onFil(files[0])} fel={fel} />
       </div>
-      <Slappyta onFiler={(files) => onFil(files[0])} fel={fel} />
       {exempel.length > 0 && (
         <section className="avsnitt">
           <h2 className="rubrik-s">{COPY["start.examples"]}</h2>

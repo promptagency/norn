@@ -13,3 +13,4 @@ playwright-report
 dist-ds
 .cache/
 public/model/
+.superpowers/

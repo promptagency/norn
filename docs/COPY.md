@@ -24,9 +24,11 @@ Utkast. Ändras när skärmskisserna är godkända.
 | Nyckel | Text |
 |---|---|
 | app.name | Norn |
-| app.title | Norn. Se vad som väntar i dina egna siffror. |
-| start.lead | Ladda upp en fil med siffror över tid, så visar Norn vad som väntar. |
-| start.privacy | Inget lämnar din dator. |
+| app.title | Norn. Gör en prognos av dina egna siffror. |
+| start.lead | Har du siffror över tid, som försäljning per dag eller elräkningen per månad? Lägg in dem här så visar Norn |
+| start.gets.forecast | vad som troligen kommer under de närmaste dagarna, veckorna eller månaderna |
+| start.gets.trust | hur mycket du kan lita på det, prövat mot din egen historik |
+| start.gets.private | allt i din webbläsare, så filen skickas aldrig någonstans |
 | start.drop | Släpp en fil här, eller välj en fil på datorn |
 | start.drop.hint | CSV eller Excel med en kolumn för tid och en med siffror. Du kan också klistra in direkt från ett kalkylark. |
 | start.drop.over | Släpp filen så läser Norn in den |
@@ -151,7 +153,7 @@ Utkast. Ändras när skärmskisserna är godkända.
 | error.short | Serien är för kort. Norn behöver minst 64 värden för att se ett mönster. |
 | error.irregular | Tiderna i filen kommer inte med jämna mellanrum. Välj en kolumn med datum eller tid i ordning. |
 | error.column | Norn kan inte läsa kolumnen {namn} som tal. Kontrollera att den bara innehåller siffror. |
-| start.heading | Se vad som väntar i dina egna siffror |
+| start.heading | Gör en prognos av dina egna siffror |
 | urd.heading | Det här är din data |
 | urd.describe | {namn} per {enhet}, från {start} till {slut}. |
 | urd.count | {antal} {enheter}. |
@@ -179,7 +181,7 @@ Utkast. Ändras när skärmskisserna är godkända.
 | enhet.år.flera | år |
 | error.file | Norn kan inte läsa filen. Spara den som CSV eller Excel och försök igen, eller klistra in siffrorna direkt. |
 | error.notime | Norn hittar ingen kolumn med datum eller tid. Filen behöver en kolumn för tid och en med siffror. |
-| mobil.heading | Se vad som väntar i dina egna siffror |
+| mobil.heading | Gör en prognos av dina egna siffror |
 | mobil.lead | Du har siffror över tid, kanske försäljning per dag eller elräkningen per månad. Norn visar vad som troligen kommer och hur säker du kan vara. |
 | mobil.steps | Tre steg, som de tre nornorna |
 | mobil.urd | Urd, det som varit. Norn läser din fil och berättar med en mening vad den ser. |

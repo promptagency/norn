@@ -4,6 +4,10 @@ Notable changes to Norn. The format follows [Keep a Changelog](https://keepachan
 
 ## [Unreleased]
 
+### Changed
+
+- **Start says what Norn is before you begin.** A clearer heading, "Gör en prognos av dina egna siffror", and three lines on what you get, beside the drop zone.
+
 ## [0.1.4] - 2026-10-24
 
 ### Changed

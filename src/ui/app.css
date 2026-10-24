@@ -8,6 +8,11 @@ body { margin: 0; background: var(--grund); color: var(--text); font-family: var
 .sida--steg { padding-top: var(--space-12); gap: var(--space-8); }
 .sida :is(h1, h2, p) { margin: 0; }
 .intro { display: flex; flex-direction: column; gap: var(--space-3); max-width: 820px; }
+/* Start: what Norn gives beside the drop zone, stacked when the window is narrow. */
+.start { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: var(--space-8) var(--space-12); align-items: center; }
+.start__ger { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: var(--space-2); }
+.start__ger li { display: flex; gap: var(--space-3); }
+.start__ger li::before { content: "✓" / ""; color: var(--indigo); font-weight: 600; }
 .avsnitt { display: flex; flex-direction: column; gap: var(--space-3); }
 .rutnat { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--space-4); }
 .bekrafta { display: flex; align-items: center; flex-wrap: wrap; gap: var(--space-4) var(--space-6); padding-top: var(--space-2); }

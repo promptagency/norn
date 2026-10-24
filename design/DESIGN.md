@@ -134,6 +134,10 @@ The components are React code in `src/ui/components/`, documented in `src/ui/com
 
 The approved screen sketches (Start, Urd, Verdandi, Skuld, with real Timestral output on the SE3 price) are on the design canvas "Norn skärmskisser" in Claude.
 
+## Start on a computer
+
+Approved by the owner on 2026-10-24 (mockups in the brainstorm, not on the canvas). Two columns beside each other, stacked when the window is too narrow for two of 380 px: on the left the heading in `rubrik-xl`, the lead in `ingress` and what Norn gives as a list of three, each marked with a check in `--indigo`; on the right the `Slappyta`. The example cards follow under both, as before. The Norns are not named on Start; they are the step names once the user is under way.
+
 ## The phone page
 
 Phones get one page instead of the app (decision in `PLAN.md`), approved on the design canvas "Norn skärmskisser" (artboard Telefon) on 2026-10-21. One column, 16 px side margin, light and dark from the tokens like every other screen.

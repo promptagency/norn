@@ -10,7 +10,7 @@ for (const path of ["/", "/?exempel=wikipedia&horisont=1"]) {
     const requests: string[] = [];
     context.on("request", (r) => requests.push(r.url()));
     await page.goto(path);
-    await expect(page.getByRole("heading", { level: 1 })).toHaveText("Se vad som väntar i dina egna siffror");
+    await expect(page.getByRole("heading", { level: 1 })).toHaveText("Gör en prognos av dina egna siffror");
     await expect(page.getByRole("heading", { name: "Öppna Norn på en dator" })).toBeVisible();
     await expect(page.getByRole("button", { name: "Kopiera länken" })).toBeVisible();
     await expect(page.locator(".n-exempelkort")).toHaveCount(0);

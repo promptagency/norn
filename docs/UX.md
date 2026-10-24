@@ -11,22 +11,20 @@ The three step names are always visible at the top, clickable backwards. The use
 ## 0. Start
 
 ```
-                                norn
-   Ladda upp en fil med siffror över tid, så visar Norn vad som väntar.
-                       Inget lämnar din dator.
-
-   ┌──────────────────────────────────────────────────────────────┐
-   │        Släpp en fil här, eller välj en fil på datorn         │   ← drop zone, yta-sankt
-   └──────────────────────────────────────────────────────────────┘
+   Gör en prognos av dina egna siffror          ┌───────────────────────────────┐
+   Har du siffror över tid, som försäljning     │  Släpp en fil här, eller välj │   ← drop zone, yta-sankt
+   per dag eller elräkningen per månad? Lägg    │  en fil på datorn             │
+   in dem här så visar Norn                     └───────────────────────────────┘
+   ✓ vad som troligen kommer …
+   ✓ hur mycket du kan lita på det …
+   ✓ allt i din webbläsare …
 
    ┌───────────────┐ ┌───────────────┐ ┌───────────────┐
    │ Detaljhandel  │ │ Elförbrukning │ │ Wikipedia     │            ← example cards
-   │ per månad     │ │ per timme     │ │ per dag       │
-   │ julhandeln …  │ │ dygnsrytm …   │ │ en topp …     │
    └───────────────┘ └───────────────┘ └───────────────┘
 ```
 
-- One sentence, the drop zone and the example cards. That is the whole onboarding. No tutorial.
+- What Norn gives and how, in a few lines beside the drop zone, then the example cards. No tutorial. The owner asked for this on 2026-10-24: the first version went straight to the drop zone, and the phone page explained more than the app did.
 - Each example card has one line saying what it teaches (from `examples.json`). Clicking it goes straight to Urd with the file loaded.
 - Pasting text from a spreadsheet works anywhere on the page.
 
