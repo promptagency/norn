@@ -4,6 +4,8 @@ Notable changes to Norn. The format follows [Keep a Changelog](https://keepachan
 
 ## [Unreleased]
 
+## [0.1.3] - 2026-10-24
+
 ### Fixed
 
 - **The model download shows its progress from the start.** On a slow line Norn said "räknar" while it was still downloading the model, since each 25 MB piece had to arrive in full before any progress showed.
@@ -34,7 +36,8 @@ The first tagged version. Norn has been live at nornor.app since 2026-10-21; thi
 - **Works offline** after the first forecast.
 - **The version in the footer.**
 
-[Unreleased]: https://github.com/promptagency/norn/compare/v0.1.2...HEAD
+[Unreleased]: https://github.com/promptagency/norn/compare/v0.1.3...HEAD
+[0.1.3]: https://github.com/promptagency/norn/compare/v0.1.2...v0.1.3
 [0.1.2]: https://github.com/promptagency/norn/compare/v0.1.1...v0.1.2
 [0.1.1]: https://github.com/promptagency/norn/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/promptagency/norn/releases/tag/v0.1.0
