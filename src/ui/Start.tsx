@@ -48,7 +48,11 @@ export function Start({ fel, onFil, onText, onExempel }: Props) {
         </div>
         <div className="start__hoger">
           <Slappyta onFiler={(files) => onFil(files[0])} fel={fel} />
-          <p className="liten dampad start__ladda">{t("start.download", { mb: Math.round(MODELS[DEFAULT_MODEL].bytes / 1e6) })}</p>
+          <p className="liten dampad start__ladda">
+            {t("start.download", { mb: Math.round(MODELS[DEFAULT_MODEL].bytes / 1e6) })}
+            <br />
+            {COPY["start.download.after"]}
+          </p>
           <Kort>
             <table className="start__fil liten">
               <caption className="etikett">{COPY["start.file"]}</caption>

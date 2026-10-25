@@ -189,7 +189,7 @@ test("the explanation page opens from Start and loads no model", async ({ contex
   const w = watch(context, page);
   await page.goto("/");
   await expect(page.getByRole("table", { name: "Så kan filen se ut" })).toContainText("Försäljning");
-  await expect(page.getByText(/Första gången laddar Norn ner prognosmodellen, 59 MB/)).toBeVisible();
+  await expect(page.locator(".start__ladda")).toContainText("Första gången laddar Norn ner prognosmodellen, 59 MB.Sedan finns den kvar i webbläsaren. Lokalt, privat och helt offline.");
   await page.getByRole("link", { name: "Så fungerar Norn", exact: true }).click();
   await expect(page).toHaveURL(/\/om$/);
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Så fungerar Norn");

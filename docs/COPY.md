@@ -39,7 +39,8 @@ Utkast. Ändras när skärmskisserna är godkända.
 | start.file | Så kan filen se ut |
 | start.file.time | Datum |
 | start.file.value | Försäljning |
-| start.download | Första gången laddar Norn ner prognosmodellen, {mb} MB. Sedan finns den kvar i webbläsaren. |
+| start.download | Första gången laddar Norn ner prognosmodellen, {mb} MB. |
+| start.download.after | Sedan finns den kvar i webbläsaren. Lokalt, privat och helt offline. |
 | start.examples | Eller prova med riktiga siffror |
 | start.example.since | Per {enhet} sedan {ar} |
 | header.home | Norn, till start |
