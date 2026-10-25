@@ -68,7 +68,7 @@ export function Galleri() {
         <section className="g-avsnitt">
           <h2>Släppyta och exempelkort</h2>
           <Slappyta onFiler={() => {}} />
-          <Slappyta onFiler={() => {}} fel="Norn kan inte läsa kolumnen Belopp som tal. Kontrollera att den bara innehåller siffror." />
+          <Slappyta onFiler={() => {}} fel="Norn kan inte läsa kolumnen Belopp som tal. Ta bort ord och tecken som inte är siffror, eller lämna cellen tom. Tomma celler räknas som saknade värden." />
           <div className="g-rutnat">
             <Exempelkort overrad="Per månad sedan 1991" titel="Detaljhandel per bransch" text="Julhandeln syns som en topp i december, tre gånger en vanlig månad." kalla="SCB" href="#" />
             <Exempelkort overrad="Per timme sedan 2022" titel="Elpris i elområde 3" text="Dygnsrytm, vinter mot sommar, och ibland negativa priser." kalla="elprisetjustnu.se och SMHI" href="#" />

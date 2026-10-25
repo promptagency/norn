@@ -55,6 +55,7 @@ Utkast. Ändras när skärmskisserna är godkända.
 | step.skuld.hint | Prognosen |
 | urd.confirm | Stämmer det? |
 | urd.yes | Ja |
+| urd.confirm.hint | Norn har själv hittat tiden och siffrorna i filen. Kontrollera perioden och antalet, för det är dem Norn räknar på. |
 | urd.change | Nej, ändra kolumner |
 | urd.pick | Vilken kolumn vill du förutse? |
 | verdandi.heading | Kan du lita på prognosen? |
@@ -167,9 +168,9 @@ Utkast. Ändras när skärmskisserna är godkända.
 | csv.low | lägst i nio fall av tio |
 | csv.high | högst i nio fall av tio |
 | csv.level | kvantil {procent} % |
-| error.short | Serien är för kort. Norn behöver minst 64 värden för att se ett mönster. |
-| error.irregular | Tiderna i filen kommer inte med jämna mellanrum. Välj en kolumn med datum eller tid i ordning. |
-| error.column | Norn kan inte läsa kolumnen {namn} som tal. Kontrollera att den bara innehåller siffror. |
+| error.short | Serien är för kort. Norn behöver minst 64 värden, både för att se ett mönster och för att kunna pröva sig själv på en del av dem. Ta med en längre period om du kan. |
+| error.irregular | Tiderna i filen kommer inte med jämna mellanrum, så Norn kan inte se om det är timmar, dagar eller månader. Lägg ihop värdena per dag, vecka eller månad i ditt kalkylark och försök igen. |
+| error.column | Norn kan inte läsa kolumnen {namn} som tal. Ta bort ord och tecken som inte är siffror, eller lämna cellen tom. Tomma celler räknas som saknade värden. |
 | start.heading | Gör en prognos av dina egna siffror |
 | urd.heading | Det här är din data |
 | urd.describe | {namn} per {enhet}, från {start} till {slut}. |
@@ -197,7 +198,7 @@ Utkast. Ändras när skärmskisserna är godkända.
 | enhet.år | år |
 | enhet.år.flera | år |
 | error.file | Norn kan inte läsa filen. Spara den som CSV eller Excel och försök igen, eller klistra in siffrorna direkt. |
-| error.notime | Norn hittar ingen kolumn med datum eller tid. Filen behöver en kolumn för tid och en med siffror. |
+| error.notime | Norn hittar ingen kolumn med datum eller tid. Filen behöver en kolumn för tid och en med siffror. Datum som 2026-10-01 eller 1 oktober 2026 fungerar, liksom månader som 2026-10. |
 | mobil.heading | Gör en prognos av dina egna siffror |
 | mobil.lead | Du har siffror över tid, kanske försäljning per dag eller elräkningen per månad. Norn visar vad som troligen kommer och hur säker du kan vara. |
 | mobil.steps | Tre steg, som de tre nornorna |

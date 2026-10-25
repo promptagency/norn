@@ -94,6 +94,7 @@ export function Urd({ table, columns, value, combine, units, onColumns, onCombin
           <Knapp onClick={() => onJa(result.value)}>{COPY["urd.yes"]}</Knapp>
           {/* Only when there is a choice the screen does not already show. */}
           {!andra && columns.times.length > 1 && <Knapp variant="lank" onClick={() => setAndra(true)}>{COPY["urd.change"]}</Knapp>}
+          <p className="liten dampad bekrafta__varfor">{COPY["urd.confirm.hint"]}</p>
         </section>
       )}
     </main>

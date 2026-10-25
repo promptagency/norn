@@ -35,7 +35,8 @@ The three step names are always visible at the top, clickable backwards. The use
 - Under it: "Stämmer det?" with the button **Ja** and a quiet link "Nej, ändra kolumner".
 - If the file has more than one number column: "Vilken kolumn vill du förutse?" with the column names as buttons. The other columns are kept silently for Skuld.
 - For the retail example, the four trades are buttons here.
-- Errors are handled here, always with a suggestion, never only an error: irregular timestamps, too short a series (under 64 points), a column that cannot be read.
+- Under "Stämmer det?" one quiet line says why it asks: Norn found the time and the numbers itself, so check the period and the count (owner, 2026-10-25).
+- Errors are handled here, always with a suggestion, never only an error: irregular timestamps (add the values up per day, week or month), too short a series (under 64 points, since Norn needs them both to see a pattern and to test itself), a column that cannot be read (remove words and signs, or leave the cell empty), no time column (which date formats work).
 
 ## 2. Verdandi, the test: how well Norn guesses on your own data
 

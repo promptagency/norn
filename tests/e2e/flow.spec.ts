@@ -237,3 +237,13 @@ test.describe("on a touch screen", () => {
     await expect(page.locator(".n-graf-kort")).toContainText("Troligast");
   });
 });
+
+test("Urd says why it asks, and a short file is told what to do", async ({ page }) => {
+  await page.goto("/");
+  await page.locator(".n-exempelkort", { hasText: "Detaljhandel" }).click();
+  await expect(page.locator(".bekrafta")).toContainText("Kontrollera perioden och antalet, för det är dem Norn räknar på.");
+  await page.goto("/");
+  const rows = Array.from({ length: 20 }, (_, i) => `2026-01-${String(i + 1).padStart(2, "0")};${100 + i}`);
+  await page.locator(".n-slappyta__input").setInputFiles({ name: "kort.csv", mimeType: "text/csv", buffer: Buffer.from(`Datum;Kassa\n${rows.join("\n")}`) });
+  await expect(page.getByRole("alert")).toContainText("Ta med en längre period om du kan.");
+});

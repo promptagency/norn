@@ -33,6 +33,7 @@ body { margin: 0; background: var(--grund); color: var(--text); font-family: var
 .rutnat { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--space-4); }
 .bekrafta { display: flex; align-items: center; flex-wrap: wrap; gap: var(--space-4) var(--space-6); padding-top: var(--space-2); }
 .bekrafta__fraga { font-weight: 600; }
+.bekrafta__varfor { flex-basis: 100%; }
 .dampad { color: var(--text-dampad); }
 .smal { max-width: 820px; }
 .betyg-rad { display: flex; align-items: flex-start; flex-wrap: wrap; gap: var(--space-4); }
