@@ -31,6 +31,7 @@ Token names are Swedish and belong to the brand. Keep them as they are.
 | `kant` | border, decorative |
 | `kant-kontroll` | border on a control |
 | `krapp` | madder red, the accent that marks the present |
+| `ockra` | ochre, the dyer's yellow, for Norn's best guess |
 | `fel` | error |
 | `fokus` | focus ring |
 | `prognos-…` | forecast chart colours |
@@ -64,6 +65,7 @@ Two themes that mirror each other. `ljus` is the positive version on linen, `mor
 | `kant-kontroll` | `#7D786B` | `#8A92C4` | Borders on controls |
 | `fokus` | `#26325F` | `#EFE8DA` | Focus ring |
 | `krapp` | `#A8432B` | `#E8896F` | The present, sparingly |
+| `ockra` | `#6B4700` | `#F0B44C` | Dark ochre, the dyer's yellow and the complement of indigo. Only Norn's most likely line in the chart |
 | `fel` | `#9A2E1F` | `#FFB4A2` | Error text |
 
 Rules:
@@ -71,6 +73,7 @@ Rules:
 - Use tokens, never a hex value, in component CSS.
 - Let `grund` and `text` carry almost everything. A screen is first of all background, text and one chart.
 - `krapp` marks the present: the now-line in the chart, and at most one more mark per view.
+- `ockra` is for the forecast's most likely line and nothing else (owner's decision 2026-10-25: in indigo it was lost among the blue bands).
 - Errors are shown in `fel` and always say what is wrong in words.
 - Every text pair is at least 4.5:1 in both themes (checked 2026-10-20). Controls, focus ring and chart lines are at least 3:1.
 
@@ -81,7 +84,7 @@ The chart is Norn's most important picture, and where the thread lives on now th
 | Token | Light | Dark | Drawn as |
 |---|---|---|---|
 | `prognos-historik` | `#26325F` | `#EFE8DA` | Solid line, 2.5 px |
-| `prognos-median` | `#26325F` | `#EFE8DA` | Same colour, dotted (dash 1, gap 6, round caps) |
+| `prognos-median` | `= ockra` | `= ockra` | Dotted (dash 1, gap 6, round caps), 2.5 px |
 | `prognos-band-90` | `#C9CEE3` | `#323C74` | Fill, drawn first |
 | `prognos-band-50` | `#9AA3CC` | `#4E5A9C` | Fill, on top of band-90 |
 | `prognos-nu` | `= krapp` | `= krapp` | Vertical line, 2 px |
@@ -90,12 +93,12 @@ The chart is Norn's most important picture, and where the thread lives on now th
 Rules:
 
 - The bands take more of the picture than the median line. Uncertainty is the point, not the line.
-- The future never looks as certain as the past: the median is dotted, history is solid.
+- The future never looks as certain as the past: the median is dotted, history is solid. The median is ochre, so it stands out from the blue bands it runs through (3.4:1 against band-50 in the light theme).
 - Always explain the bands in words next to the chart ("Hamnar här i nio fall av tio"). Colour never carries meaning alone. The bands also differ in lightness, not only in hue.
 - At most four values on the vertical axis (owner's decision 2026-10-21, was three), with the unit written once, each with a faint 1 px line across the chart in `kant`, drawn behind the bands (owner's decision 2026-10-21; before that the chart had no grid). No vertical grid lines.
 - The vertical axis's unit is written once, above its top value, in `etikett` weight: the example's unit from `examples.json` ("MWh per timme"), or the column's own name for a user's file (owner's decision 2026-10-21). The horizontal axis carries only its dates.
 - Time on the horizontal axis in the user's unit (days, weeks, months), never "steps".
-- Hover indicator (owner's decision 2026-10-21): a 1 px vertical guide line in `kant-kontroll`, a dot on each line at that time (the line's colour, a 2 px ring in `yta`), and a small card on `yta` with a `kant` border and `radius-sm` that gives the time ("18 oktober 2026 kl. 03:00") and the values in the legend's words: "Det som varit", "Det som faktiskt hände", "Troligast", "I nio fall av tio … till …". It follows the pointer and a finger, and the arrow keys (Home and End too) when the chart has focus. The card sits at the top of the chart, on the side away from the edge. The phone page's illustration has none.
+- Hover indicator (owner's decision 2026-10-21): a 1 px vertical guide line in `kant-kontroll`, a dot on each line at that time (that line's own colour, ochre on the median, a 2 px ring in `yta`), and a small card on `yta` with a `kant` border and `radius-sm` that gives the time ("18 oktober 2026 kl. 03:00") and the values in the legend's words: "Det som varit", "Det som faktiskt hände", "Troligast", "I nio fall av tio … till …". It follows the pointer and a finger, and the arrow keys (Home and End too) when the chart has focus. The card sits at the top of the chart, on the side away from the edge. The phone page's illustration has none.
 
 ## Type
 
@@ -141,6 +144,10 @@ Approved by the owner on 2026-10-24 (mockups in the brainstorm, not on the canva
 ## The test, in Verdandi and Skuld
 
 Approved by the owner on 2026-10-25. Verdandi's lead is in `ingress`, followed by the test's three steps in a row (stacked when narrow), each with the phone page's indigo number marker. In Skuld one row under the answer holds `Betyg`, the test's sentence in `brod` and a `Knapp lank` "Se provet". The step bar's hints are "Din data", "Provet" and "Prognosen".
+
+## Start, what a file looks like
+
+Approved by the owner on 2026-10-25. Under the three points a `Kort` holds "Så kan filen se ut", a small table of three made-up rows (Datum, Försäljning) in `liten` with `kant` lines, the caption in `etikett`. Under the drop zone one line in `liten`, `text-dampad`, says the model (its size from `src/config.ts`) is downloaded the first time only.
 
 ## Så fungerar Norn
 

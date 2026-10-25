@@ -12,6 +12,13 @@ body { margin: 0; background: var(--grund); color: var(--text); font-family: var
 .start { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: var(--space-8) var(--space-12); align-items: center; }
 .start__ger { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: var(--space-2); }
 .start__ger li { display: flex; gap: var(--space-3); }
+.start__fil { border-collapse: collapse; font-variant-numeric: tabular-nums; }
+.start__fil caption { text-align: left; padding-bottom: var(--space-2); }
+.start__fil th, .start__fil td { padding: var(--space-1) var(--space-6) var(--space-1) 0; border-bottom: 1px solid var(--kant); text-align: left; }
+.start__fil th { font-weight: 600; }
+.start__fil :is(th, td):last-child { text-align: right; padding-right: 0; }
+.start__fil tr:last-child td { border-bottom: none; }
+.start .start__ladda { margin-top: var(--space-3); text-align: center; }
 .start__ger li::before { content: "✓" / ""; color: var(--indigo); font-weight: 600; }
 /* Verdandi: how the test works, three steps in a row, stacked when narrow. */
 .provet { margin: var(--space-2) 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--space-3) var(--space-6); }

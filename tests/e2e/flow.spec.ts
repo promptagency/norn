@@ -184,6 +184,8 @@ test("Skuld reminds of the test, which runs once, and links back to it", async (
 test("the explanation page opens from Start and loads no model", async ({ context, page }) => {
   const w = watch(context, page);
   await page.goto("/");
+  await expect(page.getByRole("table", { name: "Så kan filen se ut" })).toContainText("Försäljning");
+  await expect(page.getByText(/Första gången laddar Norn ner prognosmodellen, 59 MB/)).toBeVisible();
   await page.getByRole("link", { name: "Så fungerar Norn", exact: true }).click();
   await expect(page).toHaveURL(/\/om$/);
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Så fungerar Norn");

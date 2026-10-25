@@ -40,7 +40,9 @@ export function Prognosgraf({
   const reading = hover === null ? null : readingAt(hover, historik, prognos, utfall);
   const fmt = (v?: number) => (v === undefined || !Number.isFinite(v) ? null : formatY(v));
   const dots = reading && hover !== null
-    ? [reading.history, reading.outcome, reading.median].filter((v): v is number => v !== undefined && Number.isFinite(v))
+    ? ([["historik", reading.history], ["utfall", reading.outcome], ["median", reading.median]] as const).filter(
+        (d): d is readonly [typeof d[0], number] => d[1] !== undefined && Number.isFinite(d[1]),
+      )
     : [];
   const left = hover === null ? 0 : (g.x(hover) / layout.width) * 100;
 
@@ -87,7 +89,7 @@ export function Prognosgraf({
         {hover !== null && (
           <g aria-hidden="true">
             <line className="n-graf__guide" x1={g.x(hover)} x2={g.x(hover)} y1={layout.padTop} y2={bottom} />
-            {dots.map((v, i) => <circle key={i} className="n-graf__punkt" cx={g.x(hover)} cy={g.y(v)} r="5" />)}
+            {dots.map(([linje, v]) => <circle key={linje} className={`n-graf__punkt n-graf__punkt--${linje}`} cx={g.x(hover)} cy={g.y(v)} r="5" />)}
           </g>
         )}
       </svg>

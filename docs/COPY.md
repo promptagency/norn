@@ -36,6 +36,10 @@ Utkast. Ändras när skärmskisserna är godkända.
 | start.drop | Släpp en fil här, eller välj en fil på datorn |
 | start.drop.hint | CSV eller Excel med en kolumn för tid och en med siffror. Du kan också klistra in direkt från ett kalkylark. |
 | start.drop.over | Släpp filen så läser Norn in den |
+| start.file | Så kan filen se ut |
+| start.file.time | Datum |
+| start.file.value | Försäljning |
+| start.download | Första gången laddar Norn ner prognosmodellen, {mb} MB. Sedan finns den kvar i webbläsaren. |
 | start.examples | Eller prova med riktiga siffror |
 | start.example.since | Per {enhet} sedan {ar} |
 | header.home | Norn, till start |

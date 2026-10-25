@@ -219,6 +219,8 @@
 .n-graf[tabindex] { touch-action: pan-y; }
 .n-graf__guide { stroke: var(--kant-kontroll); stroke-width: 1; }
 .n-graf__punkt { fill: var(--prognos-historik); stroke: var(--yta); stroke-width: 2; }
+.n-graf__punkt--utfall { fill: var(--prognos-utfall); }
+.n-graf__punkt--median { fill: var(--prognos-median); }
 .n-graf-kort {
   position: absolute; top: 0; margin-left: var(--space-3); pointer-events: none; white-space: nowrap;
   background: var(--yta); border: 1px solid var(--kant); border-radius: var(--radius-sm);

@@ -16,9 +16,10 @@
   --kant-kontroll: #7D786B; /* borders on fields and controls (3:1) */
   --fokus: #26325F; /* focus ring, 2px solid, 2px offset */
   --krapp: #A8432B; /* accent for the present: the now-line, at most one more mark per view */
+  --ockra: #6B4700; /* dark ochre, the complement of indigo: only the forecast's most likely line */
   --fel: #9A2E1F; /* error text, always with words */
   --prognos-historik: #26325F; /* chart: the past, solid 2.5px */
-  --prognos-median: #26325F; /* chart: most likely path, same colour as history, dotted 1/6 */
+  --prognos-median: var(--ockra); /* chart: most likely path, dotted 1/6 in ockra so it stands out from the bands */
   --prognos-band-90: #C9CEE3; /* chart: nine times out of ten, drawn first */
   --prognos-band-50: #9AA3CC; /* chart: half of the time, drawn on top of band-90 */
   --prognos-nu: var(--krapp); /* chart: vertical now-line, 2px */
@@ -38,9 +39,10 @@
   --kant-kontroll: #8A92C4; /* borders on fields and controls (3:1) */
   --fokus: #EFE8DA; /* focus ring, 2px solid, 2px offset */
   --krapp: #E8896F; /* accent for the present: the now-line, at most one more mark per view */
+  --ockra: #F0B44C; /* dark ochre, the complement of indigo: only the forecast's most likely line */
   --fel: #FFB4A2; /* error text, always with words */
   --prognos-historik: #EFE8DA; /* chart: the past, solid 2.5px */
-  --prognos-median: #EFE8DA; /* chart: most likely path, same colour as history, dotted 1/6 */
+  --prognos-median: var(--ockra); /* chart: most likely path, dotted 1/6 in ockra so it stands out from the bands */
   --prognos-band-90: #323C74; /* chart: nine times out of ten, drawn first */
   --prognos-band-50: #4E5A9C; /* chart: half of the time, drawn on top of band-90 */
   --prognos-nu: var(--krapp); /* chart: vertical now-line, 2px */
@@ -61,9 +63,10 @@
     --kant-kontroll: #8A92C4;
     --fokus: #EFE8DA;
     --krapp: #E8896F;
+    --ockra: #F0B44C;
     --fel: #FFB4A2;
     --prognos-historik: #EFE8DA;
-    --prognos-median: #EFE8DA;
+    --prognos-median: var(--ockra);
     --prognos-band-90: #323C74;
     --prognos-band-50: #4E5A9C;
     --prognos-nu: var(--krapp);

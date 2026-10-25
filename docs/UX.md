@@ -24,7 +24,7 @@ The three step names are always visible at the top, clickable backwards. The use
    └───────────────┘ └───────────────┘ └───────────────┘
 ```
 
-- What Norn gives and how, in a few lines beside the drop zone, then the example cards. No tutorial. The owner asked for this on 2026-10-24: the first version went straight to the drop zone, and the phone page explained more than the app did.
+- What Norn gives and how, in a few lines beside the drop zone, then the example cards. Under the points, "Så kan filen se ut" shows three rows of a file; under the drop zone one line says the model is downloaded the first time only, with its size (owner, 2026-10-25). No tutorial. The owner asked for this on 2026-10-24: the first version went straight to the drop zone, and the phone page explained more than the app did.
 - Each example card has one line saying what it teaches (from `examples.json`). Clicking it goes straight to Urd with the file loaded.
 - Pasting text from a spreadsheet works anywhere on the page.
 

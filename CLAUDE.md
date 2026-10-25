@@ -68,7 +68,7 @@ Add a note under "Open questions" in `PLAN.md` rather than guessing on anything 
 - The visual identity is defined in `design/DESIGN.md`. Read it before any change to the interface.
 - Colours, fonts, spacing and radii come from `design/tokens.css`. Never write a hex value, an `rgb()` value or a font name in component CSS. Use the variables. Chart code reads values from the CSS variables at runtime, so both themes work.
 - Both themes must work. Check every interface change in light and in dark.
-- The forecast chart is `Prognosgraf`. It follows the chart rules in `design/DESIGN.md` exactly: history solid, median dotted in the same colour, band-90 under band-50, the now-line in krapp, bands explained in words.
+- The forecast chart is `Prognosgraf`. It follows the chart rules in `design/DESIGN.md` exactly: history solid, median dotted in ochre (owner, 2026-10-25), band-90 under band-50, the now-line in krapp, bands explained in words.
 - The logo files in `design/logo/` and the icons in `design/icon/` are used as they are. Never retype, recolour or redraw the logo.
 - Fonts are served from the repo. Never add a font CDN or any other third-party request for styling.
 - If a design decision is not covered by `DESIGN.md`, ask instead of inventing one.

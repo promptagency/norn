@@ -2,8 +2,12 @@ import { useEffect, useState } from "react";
 import { unit } from "../data/describe.ts";
 import type { Example } from "../data/examples.ts";
 import { loadExamples } from "../data/examples.ts";
-import { Exempelkort, Slappyta } from "./components/index.ts";
+import { DEFAULT_MODEL, MODELS } from "../config.ts";
+import { Exempelkort, Kort, Slappyta } from "./components/index.ts";
 import { COPY, t } from "./copy.ts";
+
+// What a file can look like: an illustration, not data. Swedish dates and amounts, as a till export would have them.
+const EXAMPLE_ROWS = [["2026-10-01", "12 400"], ["2026-10-02", "9 850"], ["2026-10-03", "11 200"]] as const;
 
 interface Props {
   fel?: string;
@@ -38,11 +42,26 @@ export function Start({ fel, onFil, onText, onExempel }: Props) {
             <li>{COPY["start.gets.trust"]}</li>
             <li>{COPY["start.gets.private"]}</li>
           </ul>
+          <Kort>
+            <table className="start__fil liten">
+              <caption className="etikett">{COPY["start.file"]}</caption>
+              <thead>
+                <tr><th scope="col">{COPY["start.file.time"]}</th><th scope="col">{COPY["start.file.value"]}</th></tr>
+              </thead>
+              <tbody>
+                {EXAMPLE_ROWS.map(([d, v]) => <tr key={d}><td>{d}</td><td>{v}</td></tr>)}
+                <tr aria-hidden="true"><td>…</td><td>…</td></tr>
+              </tbody>
+            </table>
+          </Kort>
           <p>
             <a className="n-textlank" href="/om">{COPY["om.link"]}</a>
           </p>
         </div>
-        <Slappyta onFiler={(files) => onFil(files[0])} fel={fel} />
+        <div>
+          <Slappyta onFiler={(files) => onFil(files[0])} fel={fel} />
+          <p className="liten dampad start__ladda">{t("start.download", { mb: Math.round(MODELS[DEFAULT_MODEL].bytes / 1e6) })}</p>
+        </div>
       </div>
       {exempel.length > 0 && (
         <section className="avsnitt">
