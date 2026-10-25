@@ -72,6 +72,7 @@ Runs automatically after **Ja**. A backtest on the last period, its length set b
   - **Vet du något om framtiden?** Opens a list of Swedish events that can be switched on (röda dagar, midsommar, julhandel, industrisemester) plus the user's own ("Kampanj 3 till 9 november", "Stängt 24 till 26 december"). Each change re-runs the forecast and shows the difference as a second line. If an event does not change the forecast, say so in words, so the tool does not look broken.
   - **Hur säker vill du vara?** Three choices: "Troligast", "Räcker i 9 fall av 10", "Räcker i 19 fall av 20". The answer sentence updates. This is the planning level for stock or staff.
 - At the bottom: **Ladda ner** (CSV with all quantiles), **Skriv ut**, **Kopiera länk** (settings only, never data).
+- Four short guidance lines (owner, 2026-10-25): under the horizon buttons why the bands widen further ahead; in the events question what Norn does with an event (it looks in the history for what such days did); in the certainty question which number to plan by and when 9 of 10 pays off; and under the buttons what the download holds. The download line is not printed.
 
 ## Så fungerar Norn (`/om`)
 

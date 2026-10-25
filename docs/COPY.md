@@ -128,13 +128,16 @@ Utkast. Ändras när skärmskisserna är godkända.
 | skuld.prov.poor | I provet på {period} såg Norn inget tydligt mönster. |
 | skuld.prov.link | Se provet |
 | skuld.horizon | Hur långt fram |
+| skuld.horizon.hint | Ju längre fram du tittar, desto bredare blir banden. Mer hinner hända, och det säger Norn rakt ut. |
 | skuld.events | Vet du något om framtiden? |
 | skuld.events.none | Den här händelsen ändrar inte prognosen. Norn ser ingen sådan effekt i din historik. |
 | skuld.certainty | Hur säker vill du vara? |
+| skuld.certainty.lead | Välj vilken siffra du planerar efter. Troligast är bäst i snitt. Räcker i 9 fall av 10 passar när det kostar mer att ta slut än att ha för mycket, som varor eller personal. |
 | skuld.certainty.median | Troligast |
 | skuld.certainty.90 | Räcker i 9 fall av 10 |
 | skuld.certainty.95 | Räcker i 19 fall av 20 |
 | skuld.download | Ladda ner |
+| skuld.download.hint | Ladda ner ger en fil för Excel med prognosen per {enhet}, de två banden och alla {antal} nivåer. |
 | skuld.print | Skriv ut |
 | skuld.link | Kopiera länk |
 | skuld.answer.summa | {Period} landar det troligen på totalt {median}, mellan {lag} och {hog} i minst nio fall av tio. |
@@ -147,7 +150,7 @@ Utkast. Ändras när skärmskisserna är godkända.
 | skuld.chart | {namn} den senaste tiden och Norns prognos för {period}. |
 | skuld.details | Varför står det minst? |
 | skuld.details.text | Norn räknar fram ett intervall för varje {enhet} och lägger ihop dem. Det antar att alla {enheter} slår åt samma håll samtidigt, så intervallet för helheten blir hellre för brett än för smalt. Därför står det minst nio fall av tio. |
-| skuld.events.lead | Slå på det som gäller under perioden. Norn räknar om prognosen. |
+| skuld.events.lead | Slå på det som gäller under perioden. Norn ser i din historik vad sådana dagar brukade göra med siffrorna och räknar om prognosen. |
 | skuld.events.effect | Med {handelser} landar det på {med} i stället för {utan}. |
 | skuld.events.empty | Inga av de händelser Norn känner till infaller under perioden. |
 | skuld.events.daily | Norn känner bara till händelser för data per dag eller timme. |

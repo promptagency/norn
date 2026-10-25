@@ -170,6 +170,8 @@ test("Skuld reminds of the test, which runs once, and links back to it", async (
   await page.goto("/?exempel=wikipedia&horisont=1");
   await expect(reminder).toContainText("I provet på det senaste året träffade Norn i snitt inom", { timeout: 120_000 });
   await expect(reminder.locator(".n-betyg")).toContainText("Pålitlig");
+  await expect(page.getByText(/^Ju längre fram du tittar, desto bredare blir banden\./)).toBeVisible();
+  await expect(page.getByText("Ladda ner ger en fil för Excel med prognosen per dag, de två banden och alla 21 nivåer.")).toBeVisible();
   await reminder.getByRole("button", { name: "Se provet" }).click();
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Kan du lita på prognosen?");
   await expect(page.getByRole("list", { name: "Så gick provet till" })).toContainText("Norn gömmer det senaste året i din fil.");

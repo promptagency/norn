@@ -6,6 +6,7 @@ Notable changes to Norn. The format follows [Keep a Changelog](https://keepachan
 
 ### Changed
 
+- **Skuld explains itself a little more:** why the bands widen further ahead, what Norn does with an event, which number to plan by, and what the download holds.
 - **Verdandi says what the grade means for you**, whether the bands held what they promise, what helps when the grade is Osäker, and what Norn is doing while the test runs.
 - **Urd says why it asks "Stämmer det?", and its errors say what to do.** A too short series, irregular times, a column with words in it and a file without dates now each come with a way forward.
 - **The two bands are easier to tell apart.** In the light theme the wide band is sand around the blue narrow one, and the legend says which is which: the narrow band holds half of the cases, the wide one nine of ten, and the surer you want to be, the wider the band.

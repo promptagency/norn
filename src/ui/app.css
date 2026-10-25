@@ -51,7 +51,7 @@ body { margin: 0; background: var(--grund); color: var(--text); font-family: var
 }
 .telefon__knapp { width: 100%; margin-top: var(--space-2); }
 @media print {
-  .n-steg, .n-valgrupp, .knapprad { display: none; }
+  .n-steg, .n-valgrupp, .knapprad, .knapprad + p { display: none; }
   /* A closed question prints as an empty box; only what the reader opened goes on paper. */
   .n-fraga:not([open]) { display: none; }
 }

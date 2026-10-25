@@ -184,11 +184,14 @@ export function Skuld({ series, forecaster, download, initial = {}, link, units,
         )}
       </div>
 
-      <Valgrupp etikett={COPY["skuld.horizon"]}>
-        {options.map((o, i) => (
-          <Valknapp key={label(o)} vald={i === h} onClick={() => setH(i)}>{label(o)}</Valknapp>
-        ))}
-      </Valgrupp>
+      <div className="avsnitt">
+        <Valgrupp etikett={COPY["skuld.horizon"]}>
+          {options.map((o, i) => (
+            <Valknapp key={label(o)} vald={i === h} onClick={() => setH(i)}>{label(o)}</Valknapp>
+          ))}
+        </Valgrupp>
+        <p className="liten dampad">{COPY["skuld.horizon.hint"]}</p>
+      </div>
 
       {last && drawn && (
         <Kort figur>
@@ -237,6 +240,7 @@ export function Skuld({ series, forecaster, download, initial = {}, link, units,
       </Fraga>
 
       <Fraga rubrik={COPY["skuld.certainty"]} oppen={niva !== "median"}>
+        <p>{COPY["skuld.certainty.lead"]}</p>
         <Sakerhetsval varde={niva} onChange={setNiva} />
         {sum && niva !== "median" && (
           <p role="status">
@@ -254,10 +258,13 @@ export function Skuld({ series, forecaster, download, initial = {}, link, units,
         </p>
       </Fraga>
 
-      <div className="knapprad">
-        <Knapp variant="sekundar" onClick={ladda} disabled={!shown}>{COPY["skuld.download"]}</Knapp>
-        <Knapp variant="sekundar" onClick={() => print()}>{COPY["skuld.print"]}</Knapp>
-        {link && <Knapp variant="sekundar" onClick={kopiera}>{copied ? COPY["skuld.link.done"] : COPY["skuld.link"]}</Knapp>}
+      <div className="avsnitt">
+        <div className="knapprad">
+          <Knapp variant="sekundar" onClick={ladda} disabled={!shown}>{COPY["skuld.download"]}</Knapp>
+          <Knapp variant="sekundar" onClick={() => print()}>{COPY["skuld.print"]}</Knapp>
+          {link && <Knapp variant="sekundar" onClick={kopiera}>{copied ? COPY["skuld.link.done"] : COPY["skuld.link"]}</Knapp>}
+        </div>
+        {shown && <p className="liten dampad">{t("skuld.download.hint", { enhet: unit(series.frequency), antal: shown.levels.length })}</p>}
       </div>
     </main>
   );
