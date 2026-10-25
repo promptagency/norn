@@ -4,7 +4,7 @@ Phased plan for Norn. Each phase ends in something runnable. Do not start a phas
 
 ## What's left
 
-Norn is live at `nornor.app` (2026-10-21) with all five phases built. Version 0.1.4 since 2026-10-24. What remains, as of 2026-10-24:
+Norn is live at `nornor.app` (2026-10-21) with all five phases built. Version 0.1.5 since 2026-10-25. What remains, as of 2026-10-25:
 
 Needs the owner:
 
@@ -15,7 +15,7 @@ Needs the owner:
 
 Engineering, not done yet:
 
-5. **The first scheduled data rebuild** runs on 2 November 2026. Check that it committed to `dev` and that the Tests run it starts on its commit passed (new in 0.1.1, not yet run for real), or read its issue. It ran once by hand on 2026-10-21 and passed. The new data goes live only with a release (0.1.5), so release after checking it on `https://dev.norn-3ke.pages.dev`. `dev` already holds `npm run e2e:safari` (no app change), which goes out with it; after that release run it and the live suite.
+5. **The first scheduled data rebuild** runs on 2 November 2026. Check that it committed to `dev` and that the Tests run it starts on its commit passed (new in 0.1.1, not yet run for real), or read its issue. It ran once by hand on 2026-10-21 and passed. The new data goes live only with a release (0.1.6), so release after checking it on `https://dev.norn-3ke.pages.dev`. After that release run `npm run e2e:safari` and the live suite.
 
 To watch:
 

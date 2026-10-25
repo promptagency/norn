@@ -4,6 +4,8 @@ Notable changes to Norn. The format follows [Keep a Changelog](https://keepachan
 
 ## [Unreleased]
 
+## [0.1.5] - 2026-10-25
+
 ### Changed
 
 - **Verdandi says plainly that it is a test.** It asks "Kan du lita på prognosen?" and shows in three steps how Norn hid part of your data, guessed on it and was compared with what happened. Skuld reminds you of the result under the forecast, with a link back.
@@ -47,7 +49,8 @@ The first tagged version. Norn has been live at nornor.app since 2026-10-21; thi
 - **Works offline** after the first forecast.
 - **The version in the footer.**
 
-[Unreleased]: https://github.com/promptagency/norn/compare/v0.1.4...HEAD
+[Unreleased]: https://github.com/promptagency/norn/compare/v0.1.5...HEAD
+[0.1.5]: https://github.com/promptagency/norn/compare/v0.1.4...v0.1.5
 [0.1.4]: https://github.com/promptagency/norn/compare/v0.1.3...v0.1.4
 [0.1.3]: https://github.com/promptagency/norn/compare/v0.1.2...v0.1.3
 [0.1.2]: https://github.com/promptagency/norn/compare/v0.1.1...v0.1.2
