@@ -1,6 +1,7 @@
-import { useState, type KeyboardEvent, type PointerEvent } from "react";
+import { useId, useRef, useState, type KeyboardEvent, type PointerEvent } from "react";
 import { COPY, t } from "../copy.ts";
-import { DEFAULT_LAYOUT, indexAt, layoutChart, readingAt } from "./chart.ts";
+import { DEFAULT_LAYOUT, indexAt, layoutChart, MIN_VIEW, readingAt, zoomView } from "./chart.ts";
+import { Knapp } from "./Knapp.tsx";
 import type { PrognosgrafProps } from "./types.ts";
 
 export function Prognosgraf({
@@ -19,21 +20,66 @@ export function Prognosgraf({
   beskrivning,
 }: PrognosgrafProps) {
   const layout = { ...DEFAULT_LAYOUT, height: hojd };
-  const g = layoutChart(historik, prognos, utfall, layout, yIntervall);
+  const full = Math.max(historik.length + (prognos?.median.length ?? 0), 2);
+  // Zooming in on time (owner, 2026-10-25): a stretch of the axis, or null for all of it. A stretch that no longer
+  // fits, after a new horizon, falls back to all.
+  const [zoom, setZoom] = useState<[number, number] | null>(null);
+  const view = zoom && zoom[1] <= full - 1 ? zoom : null;
+  const g = layoutChart(historik, prognos, utfall, layout, yIntervall, view ?? undefined);
+  const [from, to] = g.view;
   const bottom = hojd - layout.padBottom;
   const efter = efterText ?? (prognos && !utfall ? COPY["chart.now"] : undefined);
   const [hover, setHover] = useState<number | null>(null);
+  const [urval, setUrval] = useState<[number, number] | null>(null);
+  const drag = useRef<number | null>(null);
+  const fingers = useRef(new Map<number, number>());
+  const pinch = useRef<{ distance: number; width: number; center: number } | null>(null);
+  const clip = useId();
+  const zoomable = Boolean(tidtext) && full > 2 * MIN_VIEW;
 
   // The hover indicator, only when the caller can say what time each point is.
-  const move = (e: PointerEvent<SVGSVGElement>) => {
+  const at = (e: PointerEvent<SVGSVGElement>) => {
     const r = e.currentTarget.getBoundingClientRect();
-    setHover(indexAt(((e.clientX - r.left) / r.width) * layout.width, g.total, layout));
+    return indexAt(((e.clientX - r.left) / r.width) * layout.width, g.total, layout, g.view);
+  };
+  const down = (e: PointerEvent<SVGSVGElement>) => {
+    setHover(at(e));
+    if (!zoomable) return;
+    if (e.pointerType === "touch") {
+      fingers.current.set(e.pointerId, e.clientX);
+      const xs = [...fingers.current.values()];
+      if (xs.length === 2) pinch.current = { distance: Math.abs(xs[0] - xs[1]), width: to - from, center: at(e) };
+    } else if (e.button === 0) {
+      e.preventDefault(); // a mouse drag selects no text and leaves no keyboard focus ring; Tab still reaches the chart
+      drag.current = at(e);
+      e.currentTarget.setPointerCapture(e.pointerId);
+    }
+  };
+  const move = (e: PointerEvent<SVGSVGElement>) => {
+    const i = at(e);
+    setHover(i);
+    if (pinch.current && fingers.current.has(e.pointerId)) {
+      fingers.current.set(e.pointerId, e.clientX);
+      const [a, b] = [...fingers.current.values()];
+      const d = Math.abs(a - b);
+      if (d > 0) setZoom(zoomView(pinch.current.center, (pinch.current.width * pinch.current.distance) / d, full));
+    } else if (drag.current !== null && i !== drag.current) setUrval([drag.current, i]);
+  };
+  const up = (e: PointerEvent<SVGSVGElement>) => {
+    fingers.current.delete(e.pointerId);
+    if (fingers.current.size < 2) pinch.current = null;
+    if (urval && Math.abs(urval[1] - urval[0]) >= MIN_VIEW - 1) setZoom([Math.min(...urval), Math.max(...urval)]);
+    drag.current = null;
+    setUrval(null);
   };
   const keys = (e: KeyboardEvent<SVGSVGElement>) => {
-    const last = g.total - 1;
     const step = { ArrowLeft: -1, ArrowRight: 1 }[e.key];
-    if (e.key === "Home" || e.key === "End") setHover(e.key === "Home" ? 0 : last);
-    else if (step) setHover((h) => Math.min(last, Math.max(0, (h ?? historik.length - 1) + step)));
+    const around = hover ?? Math.round((from + to) / 2);
+    if (e.key === "Home" || e.key === "End") setHover(e.key === "Home" ? from : to);
+    else if (step) setHover((h) => Math.min(to, Math.max(from, (h ?? Math.min(to, historik.length - 1)) + step)));
+    else if (zoomable && (e.key === "+" || e.key === "=")) setZoom(zoomView(around, (to - from) / 2, full));
+    else if (zoomable && e.key === "-") setZoom(zoomView(around, (to - from) * 2, full));
+    else if (zoomable && e.key === "Escape" && view) setZoom(null);
     else return;
     e.preventDefault();
   };
@@ -45,6 +91,8 @@ export function Prognosgraf({
       )
     : [];
   const left = hover === null ? 0 : (g.x(hover) / layout.width) * 100;
+  const labels = typeof xEtiketter === "function" ? xEtiketter(from, to) : xEtiketter.filter((e) => e.index >= from && e.index <= to);
+  const nowShown = g.nowX !== undefined && historik.length - 1 >= from && historik.length - 1 <= to;
 
   return (
     <div className="n-graf-ram">
@@ -56,9 +104,11 @@ export function Prognosgraf({
         {...(tidtext && {
           tabIndex: 0,
           onPointerMove: move,
-          onPointerDown: move,
+          onPointerDown: down,
+          onPointerUp: up,
+          onPointerCancel: up,
           // A finger "leaves" as it lifts; keep the card until a tap elsewhere takes the focus away.
-          onPointerLeave: (e: PointerEvent<SVGSVGElement>) => e.pointerType !== "touch" && setHover(null),
+          onPointerLeave: (e: PointerEvent<SVGSVGElement>) => e.pointerType !== "touch" && drag.current === null && setHover(null),
           onKeyDown: keys,
           onBlur: () => setHover(null),
         })}
@@ -71,19 +121,33 @@ export function Prognosgraf({
         {g.yTicks.map((t) => (
           <text key={t.value} className="n-graf__etikett" x="0" y={t.y + 4}>{formatY(t.value)}</text>
         ))}
-        {g.band90 && <path className="n-graf__band90" d={g.band90} />}
-        {g.band50 && <path className="n-graf__band50" d={g.band50} />}
-        {g.median && <path className="n-graf__median" d={g.median} />}
-        {g.outcome && <path className="n-graf__utfall" d={g.outcome} />}
-        <path className={["n-graf__historik", tonadHistorik && "n-graf__historik--tonad"].filter(Boolean).join(" ")} d={g.history} />
-        {g.nowX !== undefined && (
+        <clipPath id={clip}>
+          <rect x={layout.padLeft - 3} y="0" width={layout.width - layout.padLeft - layout.padRight + 6} height={hojd} />
+        </clipPath>
+        <g clipPath={`url(#${clip})`}>
+          {g.band90 && <path className="n-graf__band90" d={g.band90} />}
+          {g.band50 && <path className="n-graf__band50" d={g.band50} />}
+          {g.median && <path className="n-graf__median" d={g.median} />}
+          {g.outcome && <path className="n-graf__utfall" d={g.outcome} />}
+          <path className={["n-graf__historik", tonadHistorik && "n-graf__historik--tonad"].filter(Boolean).join(" ")} d={g.history} />
+        </g>
+        {urval && (
+          <rect
+            className="n-graf__urval"
+            x={Math.min(g.x(urval[0]), g.x(urval[1]))}
+            y={layout.padTop}
+            width={Math.abs(g.x(urval[1]) - g.x(urval[0]))}
+            height={bottom - layout.padTop}
+          />
+        )}
+        {nowShown && g.nowX !== undefined && (
           <>
             <line className="n-graf__nu" x1={g.nowX} x2={g.nowX} y1={10} y2={bottom + 6} />
             {foreText && <text className="n-graf__etikett" x={g.nowX - 12} y="20" textAnchor="end">{foreText}</text>}
             {efter && <text className={utfall ? "n-graf__etikett" : "n-graf__nu-text"} x={g.nowX + 12} y="20">{efter}</text>}
           </>
         )}
-        {xEtiketter.map((e) => (
+        {labels.map((e) => (
           <text key={`${e.index}-${e.text}`} className="n-graf__etikett" x={g.x(e.index)} y={hojd - 6}>{e.text}</text>
         ))}
         {hover !== null && (
@@ -93,6 +157,21 @@ export function Prognosgraf({
           </g>
         )}
       </svg>
+      {zoomable && tidtext && (
+        <div className="n-graf__zoom liten">
+          {view ? (
+            <>
+              <span>{t("graf.zoom.shown", { start: tidtext(from), slut: tidtext(to) })}</span>
+              <Knapp variant="lank" onClick={() => setZoom(null)}>{COPY["graf.zoom.reset"]}</Knapp>
+            </>
+          ) : (
+            <span className="n-graf__zoom-tips">
+              {COPY["graf.zoom.hint"]}
+              <span className="n-dold"> {COPY["graf.zoom.keys"]}</span>
+            </span>
+          )}
+        </div>
+      )}
       {reading && hover !== null && tidtext && (
         <div className={`n-graf-kort${left > 60 ? " n-graf-kort--vanster" : ""}`} style={{ left: `${left}%` }} aria-live="polite">
           <div className="n-graf-kort__tid">{tidtext(hover)}</div>

@@ -37,14 +37,27 @@ export interface ChartGeometry {
   baseY: number;
   /** Points on the time axis: the history, then the forecast. */
   total: number;
+  /** The first and last point shown: the whole axis, or the stretch zoomed in on. */
+  view: [number, number];
   x: (index: number) => number;
   y: (value: number) => number;
 }
 
-/** The point on the time axis nearest to `vx` (in viewBox units), for the hover indicator. */
-export function indexAt(vx: number, total: number, layout: ChartLayout = DEFAULT_LAYOUT): number {
+/** The point on the time axis nearest to `vx` (in viewBox units), within the points shown. */
+export function indexAt(vx: number, total: number, layout: ChartLayout = DEFAULT_LAYOUT, view: [number, number] = [0, total - 1]): number {
   const w = layout.width - layout.padLeft - layout.padRight;
-  return Math.min(total - 1, Math.max(0, Math.round(((vx - layout.padLeft) / w) * (total - 1))));
+  const [from, to] = view;
+  return Math.min(to, Math.max(from, Math.round(from + ((vx - layout.padLeft) / w) * (to - from))));
+}
+
+/** The shortest stretch one can zoom in on, in points. */
+export const MIN_VIEW = 4;
+
+/** A stretch of `width` points around `center`, kept inside the axis and never shorter than MIN_VIEW. */
+export function zoomView(center: number, width: number, total: number): [number, number] {
+  const w = Math.min(total - 1, Math.max(MIN_VIEW - 1, Math.round(width)));
+  const from = Math.min(total - 1 - w, Math.max(0, Math.round(center - w / 2)));
+  return [from, from + w];
 }
 
 export interface Reading {
@@ -127,14 +140,19 @@ export function layoutChart(
   outcome?: number[],
   layout: ChartLayout = DEFAULT_LAYOUT,
   yRange?: [number, number],
+  view?: [number, number],
 ): ChartGeometry {
   const n = history.length;
   const h = forecast ? forecast.median.length : 0;
   const total = Math.max(n + h, 2);
+  const [from, to] = view ?? [0, total - 1];
+  // The value range fits what is shown, so a zoomed stretch fills the height.
+  const shown = (i: number) => i >= from && i <= to;
+  const ahead = (a: number[]) => a.filter((_, k) => shown(n + k));
   const values = [
-    ...history,
-    ...(forecast ? [...forecast.band90.lo, ...forecast.band90.hi, ...forecast.median] : []),
-    ...(outcome ?? []),
+    ...history.filter((_, i) => shown(i)),
+    ...(forecast ? [...ahead(forecast.band90.lo), ...ahead(forecast.band90.hi), ...ahead(forecast.median)] : []),
+    ...ahead(outcome ?? []),
   ].filter(Number.isFinite);
   let [lo, hi] = yRange ?? [Math.min(0, ...values), Math.max(...values)];
   if (lo === hi) hi = lo + 1;
@@ -142,7 +160,7 @@ export function layoutChart(
   if (!yRange) hi += pad;
 
   const { width, height, padLeft, padRight, padTop, padBottom } = layout;
-  const x = (i: number) => padLeft + ((width - padLeft - padRight) * i) / (total - 1);
+  const x = (i: number) => padLeft + ((width - padLeft - padRight) * (i - from)) / (to - from);
   const y = (v: number) => padTop + (height - padTop - padBottom) * (1 - (v - lo) / (hi - lo));
 
   const geo: ChartGeometry = {
@@ -150,6 +168,7 @@ export function layoutChart(
     yTicks: niceTicks(lo, hi).map((value) => ({ value, y: y(value) })),
     baseY: y(lo < 0 && hi > 0 ? 0 : lo),
     total,
+    view: [from, to],
     x,
     y,
   };

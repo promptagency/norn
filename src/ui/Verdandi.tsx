@@ -7,7 +7,7 @@ import { Betyg, Forklaring, Fraga, Knapp, Kort, Nyckeltal, Prognosgraf, Svar } f
 import { COPY, t } from "./copy.ts";
 import { emphasize } from "./emphasize.tsx";
 import { loadingText } from "./model.ts";
-import { timeLabels } from "./historik.ts";
+import { windowLabels } from "./historik.ts";
 import { backtestOf, graded } from "./provet.ts";
 
 interface Props {
@@ -100,7 +100,7 @@ export function Verdandi({ series, forecaster, download, units, onNext }: Props)
                 band90: { lo: result.forecast.band90.low, hi: result.forecast.band90.high },
               }}
               utfall={result.actual.map(nan)}
-              xEtiketter={timeLabels(series.times.slice(from))}
+              xEtiketter={windowLabels(series.times.slice(from))}
               formatY={number.format}
               foreText={COPY["chart.seen"]}
               efterText={COPY["chart.guessed"]}

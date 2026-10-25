@@ -10,7 +10,7 @@ import { COPY, t, type CopyKey } from "./copy.ts";
 import { emphasize } from "./emphasize.tsx";
 import { loadingText } from "./model.ts";
 import { forecastCsv } from "./csv.ts";
-import { timeLabels } from "./historik.ts";
+import { windowLabels } from "./historik.ts";
 import { backtestOf, graded } from "./provet.ts";
 
 export interface SkuldSettings {
@@ -193,7 +193,7 @@ export function Skuld({ series, forecaster, download, initial = {}, units, onPro
               band50: { lo: drawn.band50.low, hi: drawn.band50.high },
               band90: { lo: drawn.band90.low, hi: drawn.band90.high },
             }}
-            xEtiketter={timeLabels(drawnTimes)}
+            xEtiketter={windowLabels(drawnTimes)}
             formatY={number.format}
             foreText={COPY["chart.past"]}
             tonadHistorik

@@ -133,6 +133,7 @@ test("the chart says its unit and shows the values under the pointer", async ({ 
   await expect(page.locator(".n-svar")).toContainText("sidvisningar", { timeout: 120_000 });
   const chart = page.locator("svg.n-graf");
   await expect(chart.locator(".n-graf__enhet")).toHaveText("sidvisningar per dag");
+  await chart.scrollIntoViewIfNeeded(); // since the 2026-10-25 spacing, the chart can start below a 720 px window
   const box = (await chart.boundingBox())!;
   await page.mouse.move(box.x + box.width * 0.8, box.y + box.height / 2);
   const card = page.locator(".n-graf-kort");
@@ -235,6 +236,7 @@ test.describe("on a touch screen", () => {
   test("a tap shows the values and they stay after the finger lifts", async ({ page }) => {
     await page.goto("/?exempel=elforbrukning&horisont=1");
     await expect(page.locator(".n-svar")).toContainText("troligen", { timeout: 120_000 });
+    await page.locator("svg.n-graf").scrollIntoViewIfNeeded();
     const box = (await page.locator("svg.n-graf").boundingBox())!;
     await page.touchscreen.tap(box.x + box.width * 0.7, box.y + box.height / 2);
     await page.waitForTimeout(300);
@@ -269,4 +271,27 @@ test("Skuld offers Spara som PDF and no link to copy", async ({ page }) => {
   await expect(page.getByRole("button", { name: "Spara som PDF" })).toBeEnabled();
   await expect(page.getByRole("button", { name: "Kopiera länk" })).toHaveCount(0);
   await expect(page.locator("figcaption")).toContainText("prognos för den närmaste månaden");
+});
+
+test("a chart zooms in on a stretch of time and back", async ({ page }) => {
+  await page.goto("/");
+  await page.locator(".n-exempelkort", { hasText: "Detaljhandel" }).click();
+  const chart = page.locator("svg.n-graf");
+  const zoom = page.locator(".n-graf__zoom");
+  await expect(zoom).toContainText("Dra över grafen");
+  await chart.scrollIntoViewIfNeeded(); // since the 2026-10-25 spacing, the chart can start below a 720 px window
+  const box = (await chart.boundingBox())!;
+  await page.mouse.move(box.x + box.width * 0.5, box.y + box.height / 2);
+  await page.mouse.down();
+  await page.mouse.move(box.x + box.width * 0.7, box.y + box.height / 2, { steps: 5 });
+  await page.mouse.up();
+  await expect(zoom).toContainText(/^Visar \w+ \d{4} till \w+ \d{4}\./);
+  await zoom.getByRole("button", { name: "Visa allt" }).click();
+  await expect(zoom).toContainText("Dra över grafen");
+  // The keyboard does the same: plus zooms in, Esc shows all again.
+  await chart.focus();
+  await page.keyboard.press("+");
+  await expect(zoom).toContainText("Visar");
+  await page.keyboard.press("Escape");
+  await expect(zoom).toContainText("Dra över grafen");
 });

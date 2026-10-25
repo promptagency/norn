@@ -15,19 +15,29 @@ it("draws four years of hours as weekly means, labelled by year", () => {
   const h = historik(hourly(34_800));
   expect(h.grupp).toBe("vecka");
   expect(h.values).toHaveLength(Math.ceil(34_800 / 168));
-  expect(h.labels.map((l) => l.text)).toEqual(["2023", "2024", "2025", "2026"]);
-  expect(h.labels[0].index).toBe(Math.floor((Date.UTC(2023, 0, 1) - Date.UTC(2022, 10, 1)) / 3_600_000 / 168));
+  const all = h.labels(0, h.values.length - 1);
+  expect(all.map((l) => l.text)).toEqual(["2023", "2024", "2025", "2026"]);
+  expect(all[0].index).toBe(Math.floor((Date.UTC(2023, 0, 1) - Date.UTC(2022, 10, 1)) / 3_600_000 / 168));
 });
 
 it("draws a short series as it is, labelled by day, with gaps left open", () => {
   const h = historik(hourly(72));
   expect(h.grupp).toBeUndefined();
   expect(h.values[5]).toBeNaN();
-  expect(h.labels.map((l) => l.text)).toEqual(["2 november 2022", "3 november 2022"]);
+  expect(h.labels(0, 71).map((l) => l.text)).toEqual(["2 november 2022", "3 november 2022"]);
 });
 
 it("labels weekly data at the first week of each month, evenly", () => {
   const weeks = Array.from({ length: 30 }, (_, i) => Date.UTC(2023, 0, 2) + i * 7 * 86_400_000);
   const h = historik({ name: "x", frequency: "vecka", times: weeks, values: weeks.map(() => 1), missing: 0, others: {} });
-  expect(h.labels.map((l) => l.text)).toEqual(["februari 2023", "mars 2023", "april 2023", "maj 2023", "juni 2023", "juli 2023"]);
+  expect(h.labels(0, 29).map((l) => l.text)).toEqual(["februari 2023", "mars 2023", "april 2023", "maj 2023", "juni 2023", "juli 2023"]);
+});
+
+it("labels a zoomed stretch on its own scale, at the right points", () => {
+  const h = historik(hourly(34_800));
+  // Weeks 100 to 110: under three months, so labelled by month, not by year.
+  const some = h.labels(100, 110);
+  expect(some.length).toBeGreaterThanOrEqual(2);
+  expect(some.every((l) => l.index >= 100 && l.index <= 110)).toBe(true);
+  expect(some.every((l) => !/^\d{4}$/.test(l.text))).toBe(true);
 });

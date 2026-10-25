@@ -102,8 +102,11 @@ export interface PrognosgrafProps {
   prognos?: ForecastSeries;
   /** What actually happened over the forecast period. Backtest only. */
   utfall?: number[];
-  /** Labels on the time axis. Use the user's unit, never "steg". */
-  xEtiketter?: Axeletikett[];
+  /**
+   * Labels on the time axis. Use the user's unit, never "steg". A function gets the first and last point shown, so
+   * the labels can follow a zoomed stretch; a list is filtered to the stretch.
+   */
+  xEtiketter?: Axeletikett[] | ((from: number, to: number) => Axeletikett[]);
   /** Formats a value on the vertical axis, e.g. (v) => `${v} kr`. */
   formatY?: (value: number) => string;
   /** Fixed value range; otherwise from 0 (or the minimum) to the maximum. */

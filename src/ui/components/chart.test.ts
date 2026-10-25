@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { bucketMeans, DEFAULT_LAYOUT, indexAt, layoutChart, niceTicks, readingAt } from "./chart.ts";
+import { bucketMeans, DEFAULT_LAYOUT, indexAt, layoutChart, MIN_VIEW, niceTicks, readingAt, zoomView } from "./chart.ts";
 
 describe("niceTicks", () => {
   it("gives at most four round values, the top one included", () => {
@@ -58,5 +58,34 @@ describe("the hover indicator", () => {
     expect(readingAt(1, [1, 2, 3], f)).toEqual({ history: 2 });
     expect(readingAt(2, [1, 2, 3], f)).toEqual({ history: 3 });
     expect(readingAt(4, [1, 2, 3], f, [9, 10])).toEqual({ outcome: 10, median: 6, low90: 4, high90: 8 });
+  });
+});
+
+describe("zooming in on time", () => {
+  const forecast = { median: [2, 30], band50: { lo: [1.5, 20], hi: [2.5, 40] }, band90: { lo: [1, 10], hi: [3, 50] } };
+
+  it("spreads the stretch shown over the whole width, and fits the values to it", () => {
+    const g = layoutChart([0, 1, 2, 100, 2, 1], undefined, undefined, DEFAULT_LAYOUT, undefined, [0, 2]);
+    expect(g.x(0)).toBeCloseTo(DEFAULT_LAYOUT.padLeft);
+    expect(g.x(2)).toBeCloseTo(DEFAULT_LAYOUT.width - DEFAULT_LAYOUT.padRight);
+    expect(Math.max(...g.yTicks.map((t) => t.value))).toBeLessThan(10); // the peak of 100 is outside
+  });
+
+  it("fits the bands to the forecast points shown, not the ones beyond", () => {
+    const g = layoutChart([0, 1, 2], forecast, undefined, DEFAULT_LAYOUT, undefined, [0, 3]);
+    expect(Math.max(...g.yTicks.map((t) => t.value))).toBeLessThan(10); // band90 reaches 50 only at point 4
+  });
+
+  it("reads the hover point within the stretch shown", () => {
+    expect(indexAt(DEFAULT_LAYOUT.padLeft, 100, DEFAULT_LAYOUT, [40, 60])).toBe(40);
+    expect(indexAt(DEFAULT_LAYOUT.width, 100, DEFAULT_LAYOUT, [40, 60])).toBe(60);
+  });
+
+  it("keeps a zoomed stretch on the axis and at least MIN_VIEW points long", () => {
+    expect(zoomView(2, 10, 100)).toEqual([0, 10]);
+    expect(zoomView(98, 10, 100)).toEqual([89, 99]);
+    const [a, b] = zoomView(50, 1, 100);
+    expect(b - a + 1).toBe(MIN_VIEW);
+    expect(zoomView(50, 500, 100)).toEqual([0, 99]);
   });
 });

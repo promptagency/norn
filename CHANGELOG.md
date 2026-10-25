@@ -18,6 +18,7 @@ Notable changes to Norn. The format follows [Keep a Changelog](https://keepachan
 
 ### Added
 
+- **Zoom in on a stretch of time in any chart.** Drag across it, pinch with two fingers, or press plus and minus; Visa allt goes back.
 - **Vanliga frågor**, in a window you open from the top right or the footer.
 - **Start shows what a file can look like**, with a small example table, and says that the forecasting model is downloaded the first time only.
 - **Så fungerar Norn, a page that explains it all.** Why Norn exists, what you can use it for, how the test and the bands work, where your data is, and the Timestral model from Mistral AI, first in plain words and then in detail. Linked from Start, the footer and Verdandi's details.

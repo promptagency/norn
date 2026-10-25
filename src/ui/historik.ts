@@ -9,7 +9,7 @@ const MAX_POINTS = 600;
 
 export interface Historik {
   values: number[];
-  labels: Axeletikett[];
+  labels: (from: number, to: number) => Axeletikett[];
   /** Set when the chart shows means: what each point stands for ("vecka"). */
   grupp?: string;
   /** Each drawn point's time in words, for the hover card. */
@@ -26,10 +26,14 @@ function bucket(freq: Frequency, n: number): { size: number; grupp?: Frequency }
 export function historik(s: DataSeries): Historik {
   const { size, grupp } = bucket(s.frequency, s.values.length);
   const values = bucketMeans(s.values.map((v) => v ?? NaN), size);
-  const labels = timeLabels(s.times, size);
+  const labels = windowLabels(s.times, size);
   const tid = (i: number) => formatPoint(grupp ?? s.frequency, s.times[i * size]);
   return { values, labels, grupp: grupp && unit(grupp), tid };
 }
+
+/** Labels for the drawn points `from` to `to`, so a zoomed stretch gets labels of its own (days, not years). */
+export const windowLabels = (times: Time[], size = 1) => (from: number, to: number): Axeletikett[] =>
+  timeLabels(times.slice(from * size, (to + 1) * size), size).map((e) => ({ ...e, index: e.index + from }));
 
 /** Labels the first point of each new year, else month, else day: the coarsest that gives at least two, at most six. */
 export function timeLabels(times: Time[], size = 1): Axeletikett[] {
