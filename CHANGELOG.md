@@ -4,6 +4,8 @@ Notable changes to Norn. The format follows [Keep a Changelog](https://keepachan
 
 ## [Unreleased]
 
+## [0.1.6] - 2026-10-25
+
 ### Changed
 
 - **A new version shows at once.** After a release, a page that holds no data reloads itself into the new version; with a forecast open, the new version waits for the next visit.
@@ -70,7 +72,8 @@ The first tagged version. Norn has been live at nornor.app since 2026-10-21; thi
 - **Works offline** after the first forecast.
 - **The version in the footer.**
 
-[Unreleased]: https://github.com/promptagency/norn/compare/v0.1.5...HEAD
+[Unreleased]: https://github.com/promptagency/norn/compare/v0.1.6...HEAD
+[0.1.6]: https://github.com/promptagency/norn/compare/v0.1.5...v0.1.6
 [0.1.5]: https://github.com/promptagency/norn/compare/v0.1.4...v0.1.5
 [0.1.4]: https://github.com/promptagency/norn/compare/v0.1.3...v0.1.4
 [0.1.3]: https://github.com/promptagency/norn/compare/v0.1.2...v0.1.3
