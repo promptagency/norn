@@ -145,6 +145,26 @@ Approved by the owner on 2026-10-24 (mockups in the brainstorm, not on the canva
 
 Approved by the owner on 2026-10-25. Verdandi's lead is in `ingress`, followed by the test's three steps in a row (stacked when narrow), each with the phone page's indigo number marker. In Skuld one row under the answer holds `Betyg`, the test's sentence in `brod` and a `Knapp lank` "Se provet". The step bar's hints are "Din data", "Provet" and "Prognosen".
 
+## Start, after the owner's review (2026-10-25)
+
+The drop zone's top lines up with the heading's (`align-items: start`). The right column holds the drop zone, the download line and the "Så kan filen se ut" card. The lead is in `svar`, the three points in `ingress`, and "Så fungerar Norn" is a `Knapp sekundar`. A 1 px line in `kant` with `space-12` above the examples sets them apart.
+
+## Space
+
+More air on the step screens (owner, 2026-10-25): `space-12` between the parts of a screen, `space-6` between heading, lead, steps and grade.
+
+## Chart headings
+
+Every chart card has a heading in `rubrik-s` as its `figcaption` (`Kort rubrik`), saying what data it shows and for which period.
+
+## Dialogruta
+
+A window over the page for content one reads and closes (Vanliga frågor), on the native `<dialog>`: `yta`, a `kant` border, `radius-lg`, `space-8` padding, at most 720 px wide, over a backdrop of `grund` at 80 percent. Heading in `rubrik-m` with a secondary Stäng to its right.
+
+## Print (Spara som PDF)
+
+The page prints on white with the result: heading, answer, the test's line, the chart with its heading and legend, and the footer's credits. Steps, buttons, hints and links that only work on screen are left out; the chart and the legend's swatches keep their colours (`print-color-adjust: exact`).
+
 ## Start, what a file looks like
 
 Approved by the owner on 2026-10-25. Under the three points a `Kort` holds "Så kan filen se ut", a small table of three made-up rows (Datum, Försäljning) in `liten` with `kant` lines, the caption in `etikett`. Under the drop zone one line in `liten`, `text-dampad`, says the model (its size from `src/config.ts`) is downloaded the first time only.

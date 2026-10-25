@@ -59,6 +59,7 @@ Utkast. Ändras när skärmskisserna är godkända.
 | urd.change | Nej, ändra kolumner |
 | urd.pick | Vilken kolumn vill du förutse? |
 | verdandi.heading | Kan du lita på prognosen? |
+| verdandi.chart.heading | {namn} per {enhet}, provet på {period} |
 | verdandi.grade.good | Pålitlig |
 | verdandi.grade.fair | Ungefärlig |
 | verdandi.grade.poor | Osäker |
@@ -123,6 +124,7 @@ Utkast. Ändras när skärmskisserna är godkända.
 | graf.klockslag | {datum} kl. {tid} |
 | graf.vecka | veckan från {datum} |
 | skuld.heading | Det som kommer |
+| skuld.chart.heading | {namn} per {enhet}, prognos för {period} |
 | skuld.prov.percent | I provet på {period} träffade Norn i snitt inom {procent} procent. |
 | skuld.prov.abs | I provet på {period} missade Norn i snitt med {fel} per {enhet}. |
 | skuld.prov.poor | I provet på {period} såg Norn inget tydligt mönster. |
@@ -133,13 +135,14 @@ Utkast. Ändras när skärmskisserna är godkända.
 | skuld.events.none | Den här händelsen ändrar inte prognosen. Norn ser ingen sådan effekt i din historik. |
 | skuld.certainty | Hur säker vill du vara? |
 | skuld.certainty.lead | Välj vilken siffra du planerar efter. Troligast är bäst i snitt. Räcker i 9 fall av 10 passar när det kostar mer att ta slut än att ha för mycket, som varor eller personal. |
+| skuld.certainty.more | Troligast är linjen i mitten, och den slår fel åt båda hållen ungefär lika ofta. Räcker i 9 fall av 10 är en högre siffra, vald så att den räcker nio gånger av tio. Du får oftare lite över, men det tar sällan slut. Räcker i 19 fall av 20 är ännu försiktigare. Siffran du väljer står i en mening under valen. |
 | skuld.certainty.median | Troligast |
 | skuld.certainty.90 | Räcker i 9 fall av 10 |
 | skuld.certainty.95 | Räcker i 19 fall av 20 |
 | skuld.download | Ladda ner |
 | skuld.download.hint | Ladda ner ger en fil för Excel med prognosen per {enhet}, de två banden och alla {antal} nivåer. |
-| skuld.print | Skriv ut |
-| skuld.link | Kopiera länk |
+| skuld.pdf | Spara som PDF |
+| skuld.pdf.hint | Spara som PDF öppnar utskriften, där du väljer att spara som PDF. Båda filerna skapas i din dator. |
 | skuld.answer.summa | {Period} landar det troligen på totalt {median}, mellan {lag} och {hog} i minst nio fall av tio. |
 | skuld.answer.snitt | {Period} landar snittet troligen på {median}, mellan {lag} och {hog} i minst nio fall av tio. |
 | skuld.plan.summa | Räkna med {varde} totalt {period}, så räcker det i minst {fall}. |
@@ -148,13 +151,13 @@ Utkast. Ändras när skärmskisserna är godkända.
 | skuld.fall.95 | 19 fall av 20 |
 | skuld.wait | Norn räknar fram prognosen. |
 | skuld.chart | {namn} den senaste tiden och Norns prognos för {period}. |
-| skuld.details | Varför står det minst? |
-| skuld.details.text | Norn räknar fram ett intervall för varje {enhet} och lägger ihop dem. Det antar att alla {enheter} slår åt samma håll samtidigt, så intervallet för helheten blir hellre för brett än för smalt. Därför står det minst nio fall av tio. |
+| skuld.details | Varför står det minst nio fall av tio? |
+| skuld.details.text | Spannet i meningen överst gäller hela perioden. Norn räknar fram ett spann för varje {enhet} och lägger ihop dem. Det är ett försiktigt sätt att räkna, som hellre ger ett för brett spann än ett för smalt. Därför hamnar det verkliga värdet troligen inom spannet i fler än nio fall av tio, och det står minst. |
 | skuld.events.lead | Slå på det som gäller under perioden. Norn ser i din historik vad sådana dagar brukade göra med siffrorna och räknar om prognosen. |
+| skuld.events.more | Norn känner till röda dagar, midsommarafton, lucia, julhandeln och industrisemestern. Här visas de som infaller under perioden och som också finns i din historik, för bara då kan Norn se vad de brukar betyda. Med en händelse påslagen ändras linjen och banden i grafen, och en mening under knapparna säger hur mycket. |
 | skuld.events.effect | Med {handelser} landar det på {med} i stället för {utan}. |
 | skuld.events.empty | Inga av de händelser Norn känner till infaller under perioden. |
 | skuld.events.daily | Norn känner bara till händelser för data per dag eller timme. |
-| skuld.link.done | Länken är kopierad |
 | event.roda | Röda dagar |
 | event.midsommar | Midsommarafton |
 | event.lucia | Lucia |
@@ -180,6 +183,7 @@ Utkast. Ändras när skärmskisserna är godkända.
 | error.column | Norn kan inte läsa kolumnen {namn} som tal. Ta bort ord och tecken som inte är siffror, eller lämna cellen tom. Tomma celler räknas som saknade värden. |
 | start.heading | Gör en prognos av dina egna siffror |
 | urd.heading | Det här är din data |
+| urd.chart.heading | {namn} per {enhet}, {start} till {slut} |
 | urd.describe | {namn} per {enhet}, från {start} till {slut}. |
 | urd.count | {antal} {enheter}. |
 | urd.count.missing | {antal} {enheter}, {saknas} saknas. |
@@ -296,3 +300,25 @@ Utkast. Ändras när skärmskisserna är godkända.
 | om.project.code | Koden på GitHub |
 | om.project.model | Timestral hos Hugging Face |
 | om.project.thanks | Tack till Mistral AI för Timestral, amine40 för ONNX-exporten och JavaScript-koden, och SCB, eSett och Wikimedia för exempeldatan. |
+| dialog.close | Stäng |
+| faq.link | Vanliga frågor |
+| faq.heading | Vanliga frågor |
+| faq.data.q | Skickas mina siffror någonstans? |
+| faq.data.a | Nej. Filen läses och prognosen görs i din webbläsare. Norn har ingen server som tar emot filer, och inget av din data sparas. Stänger du fliken är den borta. |
+| faq.file.q | Vilka filer fungerar? |
+| faq.file.a | CSV eller Excel med en kolumn för tid och en med siffror, eller celler du klistrar in från ett kalkylark. Tiden ska komma med jämna steg, timmar, dagar, veckor, månader, kvartal eller år, och det behövs minst 64 värden. |
+| faq.model.q | Varför laddar Norn ner {mb} MB första gången? |
+| faq.model.a | Det är prognosmodellen, Timestral från Mistral AI. Den hämtas från samma adress som sidan och sparas i webbläsaren, så nästa gång behöver den inte laddas ner igen. |
+| faq.offline.q | Fungerar Norn utan internet? |
+| faq.offline.a | Ja, efter den första prognosen. Då finns modellen och sidan sparade i webbläsaren. |
+| faq.trust.q | Hur vet jag om jag kan lita på prognosen? |
+| faq.trust.a | Det visar provet i steg 2. Norn gömmer den senaste perioden i din fil, gissar på den och jämför med det som hände. Betyget Pålitlig, Ungefärlig eller Osäker gäller just dina siffror. |
+| faq.bands.q | Vad betyder banden? |
+| faq.bands.a | Det smala bandet visar var det hamnar i hälften av fallen, det breda var det hamnar i nio fall av tio. Ju säkrare du vill vara, desto bredare blir bandet, och längre fram blir båda bredare. |
+| faq.save.q | Hur sparar eller delar jag resultatet? |
+| faq.save.a | Ladda ner ger en fil för Excel, och Spara som PDF ger en sida du kan skicka vidare. Båda skapas i din dator. Norn sparar ingenting själv. |
+| faq.phone.q | Fungerar Norn på mobilen? |
+| faq.phone.a | Norn behöver en större skärm och laddar ner en stor modell, så på en telefon visas en sida om Norn. Öppna Norn på en dator eller surfplatta i stället. |
+| faq.cost.q | Vad kostar det? |
+| faq.cost.a | Ingenting. Norn är ett experiment från Prompt Agency och fri programvara. Det finns ingen support och ingen garanti. |
+| faq.more | Läs mer på sidan Så fungerar Norn |

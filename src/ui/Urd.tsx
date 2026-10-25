@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { axisUnit, describe, columnName, unit, type Units } from "../data/describe.ts";
+import { axisUnit, describe, columnName, formatTime, unit, type Units } from "../data/describe.ts";
 import { buildSeries, detectColumns, type Columns, type Combine, type DataSeries } from "../data/detect.ts";
 import type { Table } from "../data/parse.ts";
 import { Knapp, Kort, Prognosgraf, Svar, Valgrupp, Valknapp } from "./components/index.ts";
@@ -39,7 +39,15 @@ export function Urd({ table, columns, value, combine, units, onColumns, onCombin
       </div>
 
       {result.ok && h && (
-        <Kort figur>
+        <Kort
+          figur
+          rubrik={t("urd.chart.heading", {
+            namn: columnName(result.value.name),
+            enhet: unit(result.value.frequency),
+            start: formatTime(result.value.frequency, result.value.times[0]),
+            slut: formatTime(result.value.frequency, result.value.times[result.value.times.length - 1]),
+          })}
+        >
           <Prognosgraf
             historik={h.values}
             xEtiketter={h.labels}
@@ -50,7 +58,7 @@ export function Urd({ table, columns, value, combine, units, onColumns, onCombin
             beskrivning={describe(result.value)}
           />
           {h.grupp && (
-            <figcaption className="liten dampad">{t("urd.bucketed", { grupp: h.grupp, enhet: unit(result.value.frequency) })}</figcaption>
+            <p className="liten dampad">{t("urd.bucketed", { grupp: h.grupp, enhet: unit(result.value.frequency) })}</p>
           )}
         </Kort>
       )}

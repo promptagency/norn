@@ -25,6 +25,7 @@ The three step names are always visible at the top, clickable backwards. The use
 ```
 
 - What Norn gives and how, in a few lines beside the drop zone, then the example cards. Under the points, "Så kan filen se ut" shows three rows of a file; under the drop zone one line says the model is downloaded the first time only, with its size (owner, 2026-10-25). No tutorial. The owner asked for this on 2026-10-24: the first version went straight to the drop zone, and the phone page explained more than the app did.
+- Layout (owner, 2026-10-25): the drop zone's top lines up with the heading's; under it the download line and "Så kan filen se ut". The lead and the three points are a size larger, "Så fungerar Norn" is a secondary button, and a line divides the examples ("Eller prova med riktiga siffror") from the rest.
 - Each example card has one line saying what it teaches (from `examples.json`). Clicking it goes straight to Urd with the file loaded.
 - Pasting text from a spreadsheet works anywhere on the page.
 
@@ -71,8 +72,14 @@ Runs automatically after **Ja**. A backtest on the last period, its length set b
 - Under the chart, two collapsed questions:
   - **Vet du något om framtiden?** Opens a list of Swedish events that can be switched on (röda dagar, midsommar, julhandel, industrisemester) plus the user's own ("Kampanj 3 till 9 november", "Stängt 24 till 26 december"). Each change re-runs the forecast and shows the difference as a second line. If an event does not change the forecast, say so in words, so the tool does not look broken.
   - **Hur säker vill du vara?** Three choices: "Troligast", "Räcker i 9 fall av 10", "Räcker i 19 fall av 20". The answer sentence updates. This is the planning level for stock or staff.
-- At the bottom: **Ladda ner** (CSV with all quantiles), **Skriv ut**, **Kopiera länk** (settings only, never data).
+- At the bottom: **Ladda ner** (CSV with all quantiles) and **Spara som PDF** (the browser's print dialog, with a print layout that leaves out what only works on screen and keeps the bands' colours). Kopiera länk was removed (owner, 2026-10-25): it read as sharing, which Norn otherwise never does; old example links still open.
+- Every chart has a heading that says what data it shows: "Leksaksaffärer per månad, provet på det senaste året" (owner, 2026-10-25).
+- "Vet du något om framtiden?" and "Hur säker vill du vara?" each have a longer explanation in quiet text under their lead. The details question is "Varför står det minst nio fall av tio?".
 - Four short guidance lines (owner, 2026-10-25): under the horizon buttons why the bands widen further ahead; in the events question what Norn does with an event (it looks in the history for what such days did); in the certainty question which number to plan by and when 9 of 10 pays off; and under the buttons what the download holds. The download line is not printed.
+
+## Vanliga frågor
+
+A window over the page (owner, 2026-10-25), opened from "Vanliga frågor" after the header tag ("Ett experiment från Prompt Agency | Vanliga frågor") on Start, the explanation page and the phone page, and from the footer on every screen. Nine questions as `Fraga`, then a link to Så fungerar Norn in a new tab. A window, so a forecast in progress stays where it is.
 
 ## Så fungerar Norn (`/om`)
 

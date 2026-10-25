@@ -5,6 +5,7 @@ import logoNegativ from "../../design/logo/norn-logotyp-negativ.svg";
 import logoPositiv from "../../design/logo/norn-logotyp-positiv.svg";
 import { DEFAULT_MODEL, MODELS, PRODUCT_URL } from "../config.ts";
 import { Knapp, Kort, Prognosgraf, Sidfot, Sidhuvud } from "./components/index.ts";
+import { Faq } from "./Faq.tsx";
 import { COPY, t } from "./copy.ts";
 import { emphasize } from "./emphasize.tsx";
 import { useDark } from "./theme.ts";
@@ -36,7 +37,7 @@ export function Telefon() {
 
   return (
     <div className="app">
-      <Sidhuvud logoSrc={dark ? logoNegativ : logoPositiv} />
+      <Sidhuvud logoSrc={dark ? logoNegativ : logoPositiv} tillagg={<Faq />} />
       <main className="sida telefon">
         <div className="intro">
           <h1 className="rubrik-l">{COPY["mobil.heading"]}</h1>
@@ -88,7 +89,7 @@ export function Telefon() {
           <Knapp className="telefon__knapp" onClick={kopiera}>{copied ? COPY["mobil.link.done"] : COPY["mobil.link"]}</Knapp>
         </Kort>
       </main>
-      <Sidfot />
+      <Sidfot tillagg={<Faq />} />
     </div>
   );
 }

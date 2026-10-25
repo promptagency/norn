@@ -24,8 +24,6 @@ interface Props {
   forecaster: Forecaster;
   download?: { loaded: number; total: number };
   initial?: Partial<SkuldSettings>;
-  /** A link that opens these settings again; only examples have one (settings only, never data). */
-  link?: (settings: SkuldSettings) => string;
   /** Known for the examples; puts the unit on the axis and after the amounts. */
   units?: Units;
   /** Back to Verdandi, from the reminder of the test. */
@@ -48,7 +46,7 @@ const ahead = (h: Horizon) =>
   h.n === 1 ? t(`narmast.${h.unit}` as CopyKey) : t("narmast.n", { antal: h.n, enheter: t(`enhet.${h.unit}.bestamd` as CopyKey) });
 const label = (h: Horizon) => `${h.n} ${t(`enhet.${h.unit}${h.n === 1 ? "" : ".flera"}` as CopyKey)}`;
 
-export function Skuld({ series, forecaster, download, initial = {}, link, units, onProvet }: Props) {
+export function Skuld({ series, forecaster, download, initial = {}, units, onProvet }: Props) {
   const n = series.values.length;
   const options = useMemo(() => horizons(series.frequency, series.times[n - 1]), [series, n]);
   // The horizon may come from a link, so anything but a valid button index falls back to the default.
@@ -58,7 +56,6 @@ export function Skuld({ series, forecaster, download, initial = {}, link, units,
   });
   const [niva, setNiva] = useState<Sakerhetsniva>(initial.sakerhet ?? "median");
   const [on, setOn] = useState<EventId[]>(initial.handelser ?? []);
-  const [copied, setCopied] = useState(false);
 
   const { steps } = options[h];
   const future = useMemo(() => futureTimes(series, steps), [series, steps]);
@@ -154,7 +151,6 @@ export function Skuld({ series, forecaster, download, initial = {}, link, units,
 
   const drawnTimes = last ? [...series.times.slice(Math.max(0, n - last.future.length)), ...last.future] : [];
   const nan = (v: number | null) => v ?? NaN;
-  const settings = { horisont: h, sakerhet: niva, handelser: on };
   const fall = niva === "median" ? "" : COPY[`skuld.fall.${niva}`];
 
   const ladda = () => {
@@ -164,11 +160,6 @@ export function Skuld({ series, forecaster, download, initial = {}, link, units,
     a.click();
     URL.revokeObjectURL(url);
   };
-  const kopiera = () =>
-    link && navigator.clipboard.writeText(link(settings)).then(() => {
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2500);
-    });
 
   return (
     <main className="sida sida--steg">
@@ -194,7 +185,7 @@ export function Skuld({ series, forecaster, download, initial = {}, link, units,
       </div>
 
       {last && drawn && (
-        <Kort figur>
+        <Kort figur rubrik={t("skuld.chart.heading", { namn: columnName(series.name), enhet: unit(series.frequency), period })}>
           <Prognosgraf
             historik={series.values.slice(Math.max(0, n - last.future.length)).map(nan)}
             prognos={{
@@ -223,6 +214,7 @@ export function Skuld({ series, forecaster, download, initial = {}, link, units,
         ) : (
           <>
             <p>{COPY["skuld.events.lead"]}</p>
+            <p className="liten dampad">{COPY["skuld.events.more"]}</p>
             <Valgrupp etikett={COPY["skuld.events"]}>
               {available.map((id) => (
                 <Valknapp
@@ -241,6 +233,7 @@ export function Skuld({ series, forecaster, download, initial = {}, link, units,
 
       <Fraga rubrik={COPY["skuld.certainty"]} oppen={niva !== "median"}>
         <p>{COPY["skuld.certainty.lead"]}</p>
+        <p className="liten dampad">{COPY["skuld.certainty.more"]}</p>
         <Sakerhetsval varde={niva} onChange={setNiva} />
         {sum && niva !== "median" && (
           <p role="status">
@@ -261,10 +254,14 @@ export function Skuld({ series, forecaster, download, initial = {}, link, units,
       <div className="avsnitt">
         <div className="knapprad">
           <Knapp variant="sekundar" onClick={ladda} disabled={!shown}>{COPY["skuld.download"]}</Knapp>
-          <Knapp variant="sekundar" onClick={() => print()}>{COPY["skuld.print"]}</Knapp>
-          {link && <Knapp variant="sekundar" onClick={kopiera}>{copied ? COPY["skuld.link.done"] : COPY["skuld.link"]}</Knapp>}
+          {/* The browser's own print dialog saves a PDF on the computer: no library, nothing sent (owner, 2026-10-25). */}
+          <Knapp variant="sekundar" onClick={() => print()} disabled={!shown}>{COPY["skuld.pdf"]}</Knapp>
         </div>
-        {shown && <p className="liten dampad">{t("skuld.download.hint", { enhet: unit(series.frequency), antal: shown.levels.length })}</p>}
+        {shown && (
+          <p className="liten dampad">
+            {t("skuld.download.hint", { enhet: unit(series.frequency), antal: shown.levels.length })} {COPY["skuld.pdf.hint"]}
+          </p>
+        )}
       </div>
     </main>
   );

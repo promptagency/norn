@@ -251,3 +251,22 @@ test("Urd says why it asks, and a short file is told what to do", async ({ page 
   await page.locator(".n-slappyta__input").setInputFiles({ name: "kort.csv", mimeType: "text/csv", buffer: Buffer.from(`Datum;Kassa\n${rows.join("\n")}`) });
   await expect(page.getByRole("alert")).toContainText("Ta med en längre period om du kan.");
 });
+
+test("Vanliga frågor opens in a window and closes again", async ({ page }) => {
+  await page.goto("/");
+  await page.locator("header").getByRole("button", { name: "Vanliga frågor" }).click();
+  const dialog = page.getByRole("dialog", { name: "Vanliga frågor" });
+  await expect(dialog).toBeVisible();
+  await dialog.getByText("Skickas mina siffror någonstans?").click();
+  await expect(dialog).toContainText("Filen läses och prognosen görs i din webbläsare.");
+  await dialog.getByRole("button", { name: "Stäng" }).click();
+  await expect(dialog).toBeHidden();
+});
+
+test("Skuld offers Spara som PDF and no link to copy", async ({ page }) => {
+  await page.goto("/?exempel=wikipedia&horisont=1");
+  await expect(page.locator(".n-svar")).toContainText("troligen", { timeout: 120_000 });
+  await expect(page.getByRole("button", { name: "Spara som PDF" })).toBeEnabled();
+  await expect(page.getByRole("button", { name: "Kopiera länk" })).toHaveCount(0);
+  await expect(page.locator("figcaption")).toContainText("prognos för den närmaste månaden");
+});

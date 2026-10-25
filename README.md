@@ -34,7 +34,7 @@ It is free and open source, a labs project from [Prompt Agency](https://promptag
 - **Nothing is stored.** The data lives in memory only; close the tab and it is gone. No cookies, no local storage. A test checks this after a full run.
 - **Every request goes to Norn's own address.** The model and the runtime are served from Norn's own origin, and a strict Content Security Policy (`connect-src 'self'`) stops the page from talking to anything else. An end-to-end test lists every request in a full run on each example and fails on any other origin.
 - **Visits are counted anonymously.** One page view per visit goes to Prompt Agency's self-hosted Plausible, through a function on Norn's own address (`functions/api/event.ts`). It carries the page address (of its query string only `utm_` tags are kept), the referring page (origin and path) and the site's name. Never your file, its numbers, the forecast or the settings in a copied link. Do Not Track and Global Privacy Control are respected.
-- **Kopiera länk** is only offered for the built-in examples, and only carries settings (example, column, horizon, certainty, events).
+- **Sharing is a PDF you make yourself.** Spara som PDF opens the browser's print dialog, which saves the page as a PDF on your computer. Links to the built-in examples from earlier versions (`?exempel=…`) still open, and carry only settings.
 
 ## What it is not
 

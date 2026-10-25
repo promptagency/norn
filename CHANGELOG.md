@@ -6,6 +6,10 @@ Notable changes to Norn. The format follows [Keep a Changelog](https://keepachan
 
 ### Changed
 
+- **Kopiera länk is gone, and Skriv ut is now Spara som PDF.** The PDF is made by your browser on your computer and leaves out what only works on screen. Old links to the examples still open.
+- **Every chart says what it shows**, with a heading such as "Leksaksaffärer per månad, provet på det senaste året".
+- **More air and a clearer Start.** The drop zone lines up with the heading, with the example table under it, the text is a little larger, and Så fungerar Norn is a button.
+- **Skuld explains events and certainty in more detail**, and "Varför står det minst?" became "Varför står det minst nio fall av tio?".
 - **Skuld explains itself a little more:** why the bands widen further ahead, what Norn does with an event, which number to plan by, and what the download holds.
 - **Verdandi says what the grade means for you**, whether the bands held what they promise, what helps when the grade is Osäker, and what Norn is doing while the test runs.
 - **Urd says why it asks "Stämmer det?", and its errors say what to do.** A too short series, irregular times, a column with words in it and a file without dates now each come with a way forward.
@@ -14,6 +18,7 @@ Notable changes to Norn. The format follows [Keep a Changelog](https://keepachan
 
 ### Added
 
+- **Vanliga frågor**, in a window you open from the top right or the footer.
 - **Start shows what a file can look like**, with a small example table, and says that the forecasting model is downloaded the first time only.
 - **Så fungerar Norn, a page that explains it all.** Why Norn exists, what you can use it for, how the test and the bands work, where your data is, and the Timestral model from Mistral AI, first in plain words and then in detail. Linked from Start, the footer and Verdandi's details.
 

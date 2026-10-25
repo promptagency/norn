@@ -17,7 +17,7 @@ En knapp för en handling, eller en länk som ser ut som en knapp när den leder
 ## Regler
 
 - Ha en enda `primar` per skärm. Det är steget framåt, till exempel Ja, Visa vad som kommer.
-- Använd `sekundar` för det man kan göra med resultatet, Ladda ner, Skriv ut, Kopiera länk.
+- Använd `sekundar` för det man kan göra med resultatet, Ladda ner och Spara som PDF, och för Så fungerar Norn på Start.
 - Använd `lank` för att backa eller ändra, till exempel Nej, ändra kolumner.
 - Ge `href` när knappen leder till en annan skärm, så blir den en riktig länk.
 - Skriv handlingen som ett verb eller ett svar. Inga ikoner utan text.
@@ -153,11 +153,12 @@ En upphöjd yta för en graf med förklaring, en fråga eller en grupp nyckeltal
 - Använd `figur` för en graf med sin förklaring, så hör de ihop för skärmläsare.
 - Skilj kort från grunden med `yta` och en kant i `kant`, aldrig med skugga.
 - Använd `framhavd` för det enda kort en skärm pekar mot, till exempel Öppna Norn på en dator på telefonsidan. Högst ett per skärm.
+- Ge en graf en `rubrik` som säger vilken data den visar, till exempel Leksaksaffärer per månad, provet på det senaste året. Den blir grafens bildtext.
 
 ## Exempel
 
 ```tsx
-<Kort figur>
+<Kort figur rubrik="Leksaksaffärer per månad, prognos för de närmaste 6 månaderna">
   <Prognosgraf … />
   <Forklaring poster={["median", "band50", "band90"]} />
 </Kort>
@@ -277,7 +278,8 @@ Logotypen och, på stegskärmarna, stegen. Sidfoten med experiment och tack hör
 ## Regler
 
 - Ge `logoSrc` den positiva logotypen i ljust tema och den negativa i mörkt.
-- På Start står Ett experiment från Prompt Agency till höger. På stegskärmarna står `Steg` där.
+- På Start står Ett experiment från Prompt Agency till höger, och efter ett streck det som skickas i `tillagg`, Vanliga frågor. På stegskärmarna står `Steg` där.
+- `Sidfot` tar också `tillagg`, som hamnar efter länken till Så fungerar Norn.
 - `Sidfot` visas på varje skärm och säger alltid att datan aldrig lämnar datorn. Skicka egna barn för att byta raden med tack och källor. Länken till Så fungerar Norn öppnas i en ny flik, så en pågående prognos finns kvar. På den sidan själv skickas `utanOm`.
 - Prompt Agency är en länk till promptagency.se i både taggen och sidfoten. Den öppnas i en ny flik, så att användarens data inte försvinner.
 
@@ -287,7 +289,27 @@ Logotypen och, på stegskärmarna, stegen. Sidfoten med experiment och tack hör
 <Sidhuvud logoSrc={logo}>
   <Steg steg={NORNORNA} aktivt={1} />
 </Sidhuvud>
-<Sidfot />
+<Sidfot tillagg={<Faq />} />
 ```
 
 Källkoden finns i repot under `src/ui/components/Sidhuvud.tsx` och propsen i `src/ui/components/types.ts`.
+
+## Dialogruta
+
+Ett fönster ovanpå sidan, för Vanliga frågor. Byggt på webbläsarens egen `<dialog>`, så fokus stannar i fönstret och sidan bakom går inte att nå.
+
+## Regler
+
+- Använd det bara för innehåll man läser och stänger, aldrig för ett steg i flödet. Användarens data finns kvar bakom fönstret.
+- Rubriken står överst och knappen Stäng till höger om den. Esc stänger också.
+- Innehållet byggs av andra komponenter, till exempel en `Fraga` per fråga.
+
+## Exempel
+
+```tsx
+<Dialogruta rubrik="Vanliga frågor" oppen={oppen} onStang={() => setOppen(false)}>
+  <Fraga rubrik="Skickas mina siffror någonstans?"><p>Nej …</p></Fraga>
+</Dialogruta>
+```
+
+Källkoden finns i repot under `src/ui/components/Dialogruta.tsx` och propsen i `src/ui/components/types.ts`.

@@ -91,7 +91,7 @@ export function Verdandi({ series, forecaster, download, units, onNext }: Props)
 
       {s && result && result !== "fel" && (
         <>
-          <Kort figur>
+          <Kort figur rubrik={t("verdandi.chart.heading", { namn: columnName(series.name), enhet: unit(series.frequency), period })}>
             <Prognosgraf
               historik={series.values.slice(from, cut).map(nan)}
               prognos={{

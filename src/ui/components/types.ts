@@ -81,6 +81,8 @@ export interface KortProps {
   figur?: boolean;
   /** A 2 px border in indigo, for the one card a screen points to (the phone page's Öppna Norn på en dator). */
   framhavd?: boolean;
+  /** With `figur`: a heading above the chart saying what data it shows (owner, 2026-10-25). */
+  rubrik?: string;
 }
 
 export interface Axeletikett {
@@ -167,13 +169,26 @@ export interface SidhuvudProps {
   /** URL of design/logo/norn-logotyp-positiv.svg (or negativ in the dark theme). */
   logoSrc: string;
   hemHref?: string;
+  /** After the tag, separated by a bar: Vanliga frågor. Not shown on the step screens, where the steps take the place. */
+  tillagg?: ReactNode;
   /** Right-hand side: Steg on step screens, nothing on Start. */
   children?: ReactNode;
 }
 
 /** The footer on every screen. Children replace the credits line. */
+/** A modal window (the questions in Vanliga frågor). */
+export interface DialogrutaProps {
+  rubrik: string;
+  oppen: boolean;
+  /** Called on Stäng, on Esc and when the browser closes the window. */
+  onStang: () => void;
+  children: ReactNode;
+}
+
 export interface SidfotProps {
   children?: ReactNode;
+  /** After the link to Så fungerar Norn, separated by a bar: Vanliga frågor. */
+  tillagg?: ReactNode;
   /** Leaves out the link to "Så fungerar Norn", on that page itself. */
   utanOm?: boolean;
 }

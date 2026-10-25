@@ -26,7 +26,7 @@ Ordinary people with numbers over time and no background in statistics: a shop o
 
 - **The user's data never leaves the device.** No backend, no accounts, no cookies, no analytics unless `PLAN.md` says otherwise. No CDN fonts, no error reporting. Enforce with a strict CSP and verify with a Playwright test that lists every request.
 - User data (the file, the parsed series, forecasts) lives **in memory only** in v1. Never `localStorage`, `sessionStorage`, IndexedDB, cookies or URL params. The only persistence is an explicit user-triggered download. A per-viewer convenience (theme) may use `localStorage`; nothing derived from the data may.
-- "Kopiera länk" encodes settings only (example id, horizon, certainty level), never values from the user's file.
+- There is no "Kopiera länk" (removed by the owner 2026-10-25: sharing is Spara som PDF). Old example links (`?exempel=…`) still open, and carry settings only, never values from the user's file.
 - All inference runs in a **Web Worker**. The main thread never blocks.
 - Model and ONNX runtime files are served from our own origin (split into chunks under 25 MiB, joined in the worker) and cached by the service worker so the app works offline after the first visit. URLs live in `src/config.ts` only.
 - The only analytics is anonymous page views to self-hosted Plausible through a Pages Function on our own origin, as in Skrubba. No custom events, nothing from the user's data.

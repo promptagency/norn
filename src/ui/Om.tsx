@@ -6,6 +6,7 @@ import pkg from "../../package.json";
 import { DEFAULT_MODEL, MODELS } from "../config.ts";
 import { MAX_HISTORY, THRESHOLDS } from "../engine/index.ts";
 import { Knapp, Kort, Nyckeltal, Sidfot, Sidhuvud } from "./components/index.ts";
+import { Faq } from "./Faq.tsx";
 import { COPY, t, type CopyKey } from "./copy.ts";
 import { emphasize } from "./emphasize.tsx";
 import { useDark } from "./theme.ts";
@@ -42,7 +43,7 @@ export function Om() {
   const dark = useDark();
   return (
     <div className="app">
-      <Sidhuvud logoSrc={dark ? logoNegativ : logoPositiv} />
+      <Sidhuvud logoSrc={dark ? logoNegativ : logoPositiv} tillagg={<Faq />} />
       <main className="sida om">
         <div className="intro">
           <h1 className="rubrik-xl">{COPY["om.heading"]}</h1>
@@ -151,7 +152,7 @@ export function Om() {
           <Knapp href="/">{COPY["om.back"]}</Knapp>
         </div>
       </main>
-      <Sidfot utanOm />
+      <Sidfot utanOm tillagg={<Faq />} />
     </div>
   );
 }

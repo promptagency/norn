@@ -324,6 +324,21 @@
 /* A link inside running text (Prompt Agency in the header tag and footer): the text's own colour, underlined. */
 .n-textlank { color: inherit; text-decoration: underline; text-underline-offset: 3px; border-radius: var(--radius-sm); }
 .n-textlank:hover { color: var(--text); }
+/* A button that looks like a text link (Vanliga frågor opens a window, so it is a button). */
+.n-lankknapp { background: none; border: 0; padding: 0; font: inherit; cursor: pointer; }
+.n-avskiljare { margin: 0 var(--space-2); }
+
+/* Dialogruta ------------------------------------------------------------ */
+.n-dialog {
+  width: min(720px, calc(100% - 32px)); max-height: calc(100vh - 64px); box-sizing: border-box;
+  padding: var(--space-8); border: 1px solid var(--kant); border-radius: var(--radius-lg);
+  background: var(--yta); color: var(--text); font-family: var(--font-text);
+}
+.n-dialog::backdrop { background: color-mix(in srgb, var(--grund) 80%, transparent); }
+.n-dialog__topp { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); margin-bottom: var(--space-6); }
+.n-dialog__topp h2 { margin: 0; }
+.n-dialog__innehall { display: flex; flex-direction: column; gap: var(--space-3); }
+.n-dialog__innehall p { margin: 0; }
 .n-textlank:focus-visible { outline: 2px solid var(--fokus); outline-offset: 2px; }
 .n-sidfot { background: var(--yta-sankt); }
 .n-sidfot__inre {

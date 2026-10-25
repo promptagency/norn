@@ -3,7 +3,7 @@ import { unit } from "../data/describe.ts";
 import type { Example } from "../data/examples.ts";
 import { loadExamples } from "../data/examples.ts";
 import { DEFAULT_MODEL, MODELS } from "../config.ts";
-import { Exempelkort, Kort, Slappyta } from "./components/index.ts";
+import { Exempelkort, Knapp, Kort, Slappyta } from "./components/index.ts";
 import { COPY, t } from "./copy.ts";
 
 // What a file can look like: an illustration, not data. Swedish dates and amounts, as a till export would have them.
@@ -36,12 +36,19 @@ export function Start({ fel, onFil, onText, onExempel }: Props) {
       <div className="start">
         <div className="intro">
           <h1 className="rubrik-xl">{COPY["start.heading"]}</h1>
-          <p className="ingress">{COPY["start.lead"]}</p>
-          <ul className="start__ger">
+          <p className="svar">{COPY["start.lead"]}</p>
+          <ul className="start__ger ingress">
             <li>{COPY["start.gets.forecast"]}</li>
             <li>{COPY["start.gets.trust"]}</li>
             <li>{COPY["start.gets.private"]}</li>
           </ul>
+          <div>
+            <Knapp variant="sekundar" href="/om">{COPY["om.link"]}</Knapp>
+          </div>
+        </div>
+        <div className="start__hoger">
+          <Slappyta onFiler={(files) => onFil(files[0])} fel={fel} />
+          <p className="liten dampad start__ladda">{t("start.download", { mb: Math.round(MODELS[DEFAULT_MODEL].bytes / 1e6) })}</p>
           <Kort>
             <table className="start__fil liten">
               <caption className="etikett">{COPY["start.file"]}</caption>
@@ -54,17 +61,10 @@ export function Start({ fel, onFil, onText, onExempel }: Props) {
               </tbody>
             </table>
           </Kort>
-          <p>
-            <a className="n-textlank" href="/om">{COPY["om.link"]}</a>
-          </p>
-        </div>
-        <div>
-          <Slappyta onFiler={(files) => onFil(files[0])} fel={fel} />
-          <p className="liten dampad start__ladda">{t("start.download", { mb: Math.round(MODELS[DEFAULT_MODEL].bytes / 1e6) })}</p>
         </div>
       </div>
       {exempel.length > 0 && (
-        <section className="avsnitt">
+        <section className="avsnitt start__exempel">
           <h2 className="rubrik-s">{COPY["start.examples"]}</h2>
           <div className="rutnat">
             {exempel.map((ex) => (
