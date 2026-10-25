@@ -8,21 +8,13 @@ import { Knapp, Kort, Prognosgraf, Sidfot, Sidhuvud } from "./components/index.t
 import { Faq } from "./Faq.tsx";
 import { COPY, t } from "./copy.ts";
 import { emphasize } from "./emphasize.tsx";
+import { HISTORY, ILLUSTRATION, RANGE } from "./illustration.ts";
 import { useDark } from "./theme.ts";
 import "./app.css";
 
 /** A phone: the screen's short side is narrow and touch is the only pointer. Tablets and laptop windows get the app. */
 export const isPhone = () => Math.min(screen.width, screen.height) < 600 && matchMedia("(pointer: coarse)").matches;
 
-// The illustration: a made-up history and a widening forecast. Not data, so the chart shows no numbers.
-const HISTORY = [150, 170, 140, 200, 155, 175, 145, 210, 160, 185, 150, 220, 165, 190, 175];
-const MEDIAN = [185, 155, 205, 162, 188, 152, 215, 164, 190, 156, 210];
-const around = (spread: (k: number) => number, sign: number) => MEDIAN.map((v, k) => v + sign * spread(k + 1));
-const ILLUSTRATION = {
-  median: MEDIAN,
-  band50: { lo: around((k) => 4 + 3 * k, -1), hi: around((k) => 4 + 3 * k, 1) },
-  band90: { lo: around((k) => 8 + 8 * k, -1), hi: around((k) => 8 + 8 * k, 1) },
-};
 
 const STEPS = ["mobil.urd", "mobil.verdandi", "mobil.skuld"] as const;
 
@@ -48,7 +40,7 @@ export function Telefon() {
           <Prognosgraf
             historik={HISTORY}
             prognos={ILLUSTRATION}
-            yIntervall={[0, 330]}
+            yIntervall={RANGE}
             formatY={() => ""}
             hojd={400}
             beskrivning="En kurva som går fram till nu och sedan fortsätter som en prickad linje i två band som vidgas mot framtiden."

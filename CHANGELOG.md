@@ -4,6 +4,10 @@ Notable changes to Norn. The format follows [Keep a Changelog](https://keepachan
 
 ## [Unreleased]
 
+### Added
+
+- **Pictures on Så fungerar Norn:** the bands with labels, the three steps side by side, the grades, how your data stays on your computer, and the model's 21 quantiles.
+
 ## [0.1.6] - 2026-10-25
 
 ### Changed

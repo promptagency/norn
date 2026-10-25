@@ -5,7 +5,8 @@ import logoPositiv from "../../design/logo/norn-logotyp-positiv.svg";
 import pkg from "../../package.json";
 import { DEFAULT_MODEL, MODELS } from "../config.ts";
 import { MAX_HISTORY, THRESHOLDS } from "../engine/index.ts";
-import { Knapp, Kort, Nyckeltal, Sidfot, Sidhuvud } from "./components/index.ts";
+import { Betyg, Knapp, Kort, Nyckeltal, Sidfot, Sidhuvud } from "./components/index.ts";
+import { BandBild, Flode, KvantilBild, StegBilder } from "./OmBilder.tsx";
 import { Faq } from "./Faq.tsx";
 import { COPY, t, type CopyKey } from "./copy.ts";
 import { emphasize } from "./emphasize.tsx";
@@ -70,18 +71,25 @@ export function Om() {
               </li>
             ))}
           </ol>
+          <StegBilder />
           <p>{COPY["om.steps.why"]}</p>
           <p className="dampad">{COPY["om.steps.names"]}</p>
         </Section>
 
         <Section id="banden" heading="om.bands.heading">
           <p>{COPY["om.bands.1"]}</p>
+          <BandBild />
           <p>{COPY["om.bands.2"]}</p>
           <p>{COPY["om.bands.3"]}</p>
         </Section>
 
         <Section id="betygen" heading="om.grades.heading">
-          {(["om.grades.palitlig", "om.grades.ungefarlig", "om.grades.osaker"] as const).map((k) => <Lead key={k} k={k} />)}
+          {(["palitlig", "ungefarlig", "osaker"] as const).map((niva) => (
+            <div key={niva} className="om__betyg">
+              <Betyg niva={niva} />
+              <Lead k={`om.grades.${niva}`} />
+            </div>
+          ))}
           <p>{COPY["om.grades.naive"]}</p>
           <p className="dampad">
             {t("om.grades.rule", {
@@ -95,6 +103,7 @@ export function Om() {
 
         <Section id="data" heading="om.privacy.heading">
           <p>{COPY["om.privacy.1"]}</p>
+          <Flode />
           <p>{COPY["om.privacy.2"]}</p>
           <p>{t("om.privacy.3", { mb })}</p>
           <p>{COPY["om.privacy.4"]}</p>
@@ -124,6 +133,7 @@ export function Om() {
             />
           </Kort>
           <p>{COPY["om.tech.quantiles"]}</p>
+          <KvantilBild />
           <p>{t("om.tech.history", { max })}</p>
           <p>{COPY["om.tech.backtest"]}</p>
           <p>{COPY["om.tech.events"]}</p>

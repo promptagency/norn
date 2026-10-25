@@ -18,6 +18,7 @@ export function Prognosgraf({
   enhet,
   tidtext,
   beskrivning,
+  markeringar = [],
 }: PrognosgrafProps) {
   const layout = { ...DEFAULT_LAYOUT, height: hojd };
   const full = Math.max(historik.length + (prognos?.median.length ?? 0), 2);
@@ -158,6 +159,16 @@ export function Prognosgraf({
               {efter && <text className={utfall ? "n-graf__etikett" : "n-graf__nu-text"} x={g.nowX + 12} y="20">{efter}</text>}
           </>
         )}
+        {markeringar.map((m) => {
+          const px = g.x(m.index), py = g.y(m.varde);
+          return (
+            <g key={m.text} className="n-graf__markering" aria-hidden="true">
+              <line x1={px} y1={py} x2={px + m.dx} y2={py + m.dy} />
+              <circle cx={px} cy={py} r="4" />
+              <text x={px + m.dx} y={py + m.dy + (m.dy < 0 ? -8 : 20)} textAnchor="middle">{m.text}</text>
+            </g>
+          );
+        })}
         {labels.map((e) => (
           <text key={`${e.index}-${e.text}`} className="n-graf__etikett" x={g.x(e.index)} y={hojd - 6}>{e.text}</text>
         ))}

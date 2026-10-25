@@ -197,6 +197,11 @@ test("the explanation page opens from Start and loads no model", async ({ contex
   await expect(page.getByRole("heading", { name: "Modellen, Timestral från Mistral AI" })).toBeVisible();
   await expect(page.getByText(/Högst 8\s192 värden/)).toBeVisible();
   await expect(page.getByText(/minst 75 procent av det som hände/)).toBeVisible();
+  // The pictures: the labelled bands, the three steps, the privacy diagram and the quantiles.
+  await expect(page.getByRole("img", { name: /pilar som visar Troligast/ })).toBeVisible();
+  await expect(page.locator(".om__bilder svg")).toHaveCount(3);
+  await expect(page.locator(".om__flode")).toContainText("Ut går bara en anonym sidvisning");
+  await expect(page.getByRole("img", { name: /21 kvantiler/ })).toBeVisible();
   await page.getByRole("link", { name: "Till Norn" }).click();
   await expect(page.locator(".n-slappyta")).toBeVisible();
   expect(w.foreign()).toEqual([]);

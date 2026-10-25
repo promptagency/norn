@@ -305,6 +305,24 @@ Utkast. Ändras när skärmskisserna är godkända.
 | om.project.code | Koden på GitHub |
 | om.project.model | Timestral hos Hugging Face |
 | om.project.thanks | Tack till Mistral AI för Timestral, amine40 för ONNX-exporten och JavaScript-koden, och SCB, eSett och Wikimedia för exempeldatan. |
+| om.fig.bands | En prognos med pilar som visar Troligast, det smala och det breda bandet, och hur banden blir bredare längre fram. |
+| om.fig.bands.wider | Bredare längre fram |
+| om.fig.urd | Urd, det som varit |
+| om.fig.verdandi | Verdandi, provet med facit |
+| om.fig.skuld | Skuld, det som kommer |
+| om.fig.urd.desc | En kurva över det som varit, utan prognos. |
+| om.fig.verdandi.desc | Kurvans sista del är gömd för Norn. Norns gissning med två band ligger över det som faktiskt hände. |
+| om.fig.skuld.desc | Kurvan fram till nu, och sedan prognosen som en prickad linje i två band som vidgas. |
+| om.flow.computer | Din dator |
+| om.flow.file | Din fil |
+| om.flow.norn | Norn räknar i webbläsaren |
+| om.flow.result | Prognosen |
+| om.flow.in | Från nornor.app, första gången |
+| om.flow.in.what | Sidan och prognosmodellen |
+| om.flow.out | Ut går bara en anonym sidvisning, aldrig något från din fil. |
+| om.flow.caption | Allt som har med dina siffror att göra stannar i din dator. |
+| om.fig.quantiles | Modellens 21 kvantiler som tunna linjer, med de fem som Norn visar markerade. |
+| om.fig.quantiles.caption | De tunna linjerna är modellens 21 kvantiler. Norn visar fem av dem, medianen som den prickade linjen och kanterna på de två banden. |
 | dialog.close | Stäng |
 | faq.link | Vanliga frågor |
 | faq.heading | Vanliga frågor |

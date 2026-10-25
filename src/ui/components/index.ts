@@ -17,6 +17,6 @@ export { Sakerhetsval } from "./Sakerhetsval.tsx";
 export { Nyckeltal } from "./Nyckeltal.tsx";
 export { Sidhuvud, Sidfot } from "./Sidhuvud.tsx";
 export { Dialogruta } from "./Dialogruta.tsx";
-export { bucketMeans, layoutChart, niceTicks } from "./chart.ts";
+export { bucketMeans, DEFAULT_LAYOUT, layoutChart, niceTicks } from "./chart.ts";
 export type * from "./types.ts";
 export type { Band, ForecastSeries } from "./chart.ts";

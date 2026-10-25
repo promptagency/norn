@@ -31,6 +31,24 @@ body { margin: 0; background: var(--grund); color: var(--text); font-family: var
 .provet li { display: flex; gap: var(--space-3); align-items: flex-start; }
 /* "Så fungerar Norn" (/om): a column of text that reads at the width of a line. */
 .om .avsnitt { max-width: 720px; gap: var(--space-4); }
+.om__bilder { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--space-4); }
+/* Drawn at a third of the width: lines keep their thickness instead of shrinking with the drawing. */
+.om__bilder .n-graf :is(path, line) { vector-effect: non-scaling-stroke; }
+.om__betyg { display: flex; gap: var(--space-4); align-items: flex-start; }
+.om__betyg .n-betyg { flex: none; margin-top: 2px; }
+/* The privacy diagram: what comes in, the computer with everything that stays, what goes out. */
+.om__flode { margin: 0; display: flex; flex-direction: column; align-items: center; gap: var(--space-3); text-align: center; }
+.om__flode-in { display: flex; flex-direction: column; align-items: center; gap: var(--space-2); }
+.om__flode-dator { width: 100%; box-sizing: border-box; border: 2px solid var(--indigo); border-radius: var(--radius-lg); padding: var(--space-4) var(--space-6) var(--space-6); display: flex; flex-direction: column; gap: var(--space-3); }
+.om__flode-rad { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: var(--space-3); }
+.om__flode-ruta { background: var(--yta); border: 1px solid var(--kant); border-radius: var(--radius-md); padding: var(--space-2) var(--space-4); }
+.om__flode-ruta--norn { border-color: var(--indigo); font-weight: 600; }
+.om__kvantiler { margin: 0; }
+.om__kvantil { fill: none; stroke-linecap: round; }
+.om__kvantil--ovrig { stroke: var(--kant-kontroll); stroke-width: 1; opacity: 0.6; }
+.om__kvantil--kant50, .om__kvantil--kant90 { stroke: var(--indigo); stroke-width: 2.5; }
+.om__kvantil--kant90 { stroke-dasharray: 8 6; }
+.om__kvantil--median { stroke: var(--prognos-median); stroke-width: 3; stroke-dasharray: 1 7; }
 .om__lista { margin: 0; padding-left: var(--space-6); display: flex; flex-direction: column; gap: var(--space-2); }
 .om__lankar { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-6); }
 /* Skuld: the reminder of the test, under the answer. */

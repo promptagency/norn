@@ -237,6 +237,9 @@
 .n-graf-kort strong { font-weight: 600; }
 .n-graf__etikett { fill: var(--text-dampad); font-size: 13px; font-variant-numeric: tabular-nums; }
 .n-graf__nu-text { fill: var(--krapp); font-size: 13px; font-weight: 600; }
+.n-graf__markering line { stroke: var(--text); stroke-width: 1.5; }
+.n-graf__markering circle { fill: var(--text); }
+.n-graf__markering text { fill: var(--text); font-size: 18px; font-weight: 600; }
 /* Faint lines at the values on the vertical axis, behind everything else (design/DESIGN.md). */
 .n-graf__rutnat {
   stroke: var(--kant);

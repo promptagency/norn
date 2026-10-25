@@ -97,6 +97,17 @@ export interface Axeletikett {
  * Follows the chart rules in design/DESIGN.md. Values are drawn as given; downsample long
  * histories with `bucketMeans` first.
  */
+/** A label pointing at a place in the chart, for the explanation page's pictures. */
+export interface Markering {
+  /** The point on the time axis and the value it points at. */
+  index: number;
+  varde: number;
+  text: string;
+  /** Where the label sits relative to the point, in viewBox units (the chart is 1000 wide). */
+  dx: number;
+  dy: number;
+}
+
 export interface PrognosgrafProps {
   historik: number[];
   prognos?: ForecastSeries;
@@ -127,6 +138,8 @@ export interface PrognosgrafProps {
   tidtext?: (index: number) => string;
   /** Describes the chart for screen readers. Required. */
   beskrivning: string;
+  /** Labels with a short line to what they name (Troligast, the bands). Only for illustrations. */
+  markeringar?: Markering[];
 }
 
 export type Forklaringspost = "historik" | "utfall" | "median" | "median-backtest" | "band50" | "band90";

@@ -172,7 +172,7 @@ Approved by the owner on 2026-10-25. Under the three points a `Kort` holds "Så 
 
 ## Så fungerar Norn
 
-Approved by the owner on 2026-10-25. One column of text at most 720 px wide, so lines stay readable: the page heading in `rubrik-xl`, the lead in `ingress`, each section headed in `rubrik-m`, body text in `brod`. The three steps use the phone page's numbered list. The technical facts sit in a `Kort` with `Nyckeltal`. One `primar` button at the end, Till Norn. Both themes, from the tokens like every screen.
+Approved by the owner on 2026-10-25. One column of text at most 720 px wide, so lines stay readable: the page heading in `rubrik-xl`, the lead in `ingress`, each section headed in `rubrik-m`, body text in `brod`. The three steps use the phone page's numbered list. The technical facts sit in a `Kort` with `Nyckeltal`. One `primar` button at the end, Till Norn. Pictures (owner, 2026-10-25), all drawn from the components and made-up numbers (`src/ui/illustration.ts`), never screenshots, so they follow both themes: the bands as a `Prognosgraf` with labels (`markeringar`: text in `text`, 18 units, a 1.5 unit line and a dot); the three steps as three small charts in a row; the grades as `Betyg` badges before each paragraph; the privacy flow as boxes inside a 2 px `indigo` frame for "Din dator"; the 21 quantiles as thin `kant-kontroll` lines with the band edges in `indigo` and the median in ochre. Both themes, from the tokens like every screen.
 
 ## The phone page
 
