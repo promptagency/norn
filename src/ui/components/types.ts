@@ -142,6 +142,8 @@ export interface FragaProps {
   /** `liten` is a text link, used for "Visa detaljer". */
   variant?: "rubrik" | "liten";
   oppen?: boolean;
+  /** Questions with the same group open one at a time: opening one closes the others (native `name`). */
+  grupp?: string;
   children: ReactNode;
 }
 

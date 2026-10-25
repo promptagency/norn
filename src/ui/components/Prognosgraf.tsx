@@ -95,56 +95,64 @@ export function Prognosgraf({
   const nowShown = g.nowX !== undefined && historik.length - 1 >= from && historik.length - 1 <= to;
 
   return (
-    <div className="n-graf-ram">
-      <svg
-        className="n-graf"
-        viewBox={`0 0 ${layout.width} ${hojd}`}
-        role="img"
-        aria-label={beskrivning}
-        {...(tidtext && {
-          tabIndex: 0,
-          onPointerMove: move,
-          onPointerDown: down,
-          onPointerUp: up,
-          onPointerCancel: up,
-          // A finger "leaves" as it lifts; keep the card until a tap elsewhere takes the focus away.
-          onPointerLeave: (e: PointerEvent<SVGSVGElement>) => e.pointerType !== "touch" && drag.current === null && setHover(null),
-          onKeyDown: keys,
-          onBlur: () => setHover(null),
-        })}
-      >
-        {enhet && <text className="n-graf__etikett n-graf__enhet" x="0" y="12">{enhet}</text>}
-        {g.yTicks.map((t) => (
-          <line key={`r${t.value}`} className="n-graf__rutnat" x1={layout.padLeft} x2={layout.width - layout.padRight} y1={t.y} y2={t.y} />
-        ))}
-        <line className="n-graf__baslinje" x1={layout.padLeft} x2={layout.width - layout.padRight} y1={g.baseY} y2={g.baseY} />
-        {g.yTicks.map((t) => (
-          <text key={t.value} className="n-graf__etikett" x="0" y={t.y + 4}>{formatY(t.value)}</text>
-        ))}
-        <clipPath id={clip}>
-          <rect x={layout.padLeft - 3} y="0" width={layout.width - layout.padLeft - layout.padRight + 6} height={hojd} />
-        </clipPath>
-        <g clipPath={`url(#${clip})`}>
-          {g.band90 && <path className="n-graf__band90" d={g.band90} />}
-          {g.band50 && <path className="n-graf__band50" d={g.band50} />}
-          {g.median && <path className="n-graf__median" d={g.median} />}
-          {g.outcome && <path className="n-graf__utfall" d={g.outcome} />}
-          <path className={["n-graf__historik", tonadHistorik && "n-graf__historik--tonad"].filter(Boolean).join(" ")} d={g.history} />
-        </g>
-        {urval && (
-          <rect
-            className="n-graf__urval"
-            x={Math.min(g.x(urval[0]), g.x(urval[1]))}
-            y={layout.padTop}
-            width={Math.abs(g.x(urval[1]) - g.x(urval[0]))}
-            height={bottom - layout.padTop}
-          />
-        )}
-        {nowShown && g.nowX !== undefined && (
-          <>
-            <line className="n-graf__nu" x1={g.nowX} x2={g.nowX} y1={10} y2={bottom + 6} />
-            {foreText && <text className="n-graf__etikett" x={g.nowX - 12} y="20" textAnchor="end">{foreText}</text>}
-            {efter && <text className={utfall ? "n-graf__etikett" : "n-graf__nu-text"} x={g.nowX + 12} y="20">{efter}</text>}
+    <>
+      {/* Zoomed in: say which stretch, with a clear way back above the chart, where the eye is (owner, 2026-10-25). */}
+      {view && tidtext && (
+        <div className="n-graf__zoomad liten">
+          <span>{t("graf.zoom.shown", { start: tidtext(from), slut: tidtext(to) })}</span>
+          <Knapp variant="sekundar" onClick={() => setZoom(null)}>{COPY["graf.zoom.reset"]}</Knapp>
+        </div>
+      )}
+      <div className="n-graf-ram">
+        <svg
+          className="n-graf"
+          viewBox={`0 0 ${layout.width} ${hojd}`}
+          role="img"
+          aria-label={beskrivning}
+          {...(tidtext && {
+            tabIndex: 0,
+            onPointerMove: move,
+            onPointerDown: down,
+            onPointerUp: up,
+            onPointerCancel: up,
+            // A finger "leaves" as it lifts; keep the card until a tap elsewhere takes the focus away.
+            onPointerLeave: (e: PointerEvent<SVGSVGElement>) => e.pointerType !== "touch" && drag.current === null && setHover(null),
+            onKeyDown: keys,
+            onBlur: () => setHover(null),
+          })}
+        >
+          {enhet && <text className="n-graf__etikett n-graf__enhet" x="0" y="12">{enhet}</text>}
+          {g.yTicks.map((t) => (
+            <line key={`r${t.value}`} className="n-graf__rutnat" x1={layout.padLeft} x2={layout.width - layout.padRight} y1={t.y} y2={t.y} />
+          ))}
+          <line className="n-graf__baslinje" x1={layout.padLeft} x2={layout.width - layout.padRight} y1={g.baseY} y2={g.baseY} />
+          {g.yTicks.map((t) => (
+            <text key={t.value} className="n-graf__etikett" x="0" y={t.y + 4}>{formatY(t.value)}</text>
+          ))}
+          <clipPath id={clip}>
+            <rect x={layout.padLeft - 3} y="0" width={layout.width - layout.padLeft - layout.padRight + 6} height={hojd} />
+          </clipPath>
+          <g clipPath={`url(#${clip})`}>
+            {g.band90 && <path className="n-graf__band90" d={g.band90} />}
+            {g.band50 && <path className="n-graf__band50" d={g.band50} />}
+            {g.median && <path className="n-graf__median" d={g.median} />}
+            {g.outcome && <path className="n-graf__utfall" d={g.outcome} />}
+            <path className={["n-graf__historik", tonadHistorik && "n-graf__historik--tonad"].filter(Boolean).join(" ")} d={g.history} />
+          </g>
+          {urval && (
+            <rect
+              className="n-graf__urval"
+              x={Math.min(g.x(urval[0]), g.x(urval[1]))}
+              y={layout.padTop}
+              width={Math.abs(g.x(urval[1]) - g.x(urval[0]))}
+              height={bottom - layout.padTop}
+            />
+          )}
+          {nowShown && g.nowX !== undefined && (
+            <>
+              <line className="n-graf__nu" x1={g.nowX} x2={g.nowX} y1={10} y2={bottom + 6} />
+              {foreText && <text className="n-graf__etikett" x={g.nowX - 12} y="20" textAnchor="end">{foreText}</text>}
+              {efter && <text className={utfall ? "n-graf__etikett" : "n-graf__nu-text"} x={g.nowX + 12} y="20">{efter}</text>}
           </>
         )}
         {labels.map((e) => (
@@ -157,19 +165,10 @@ export function Prognosgraf({
           </g>
         )}
       </svg>
-      {zoomable && tidtext && (
+      {zoomable && tidtext && !view && (
         <div className="n-graf__zoom liten">
-          {view ? (
-            <>
-              <span>{t("graf.zoom.shown", { start: tidtext(from), slut: tidtext(to) })}</span>
-              <Knapp variant="lank" onClick={() => setZoom(null)}>{COPY["graf.zoom.reset"]}</Knapp>
-            </>
-          ) : (
-            <span className="n-graf__zoom-tips">
-              {COPY["graf.zoom.hint"]}
-              <span className="n-dold"> {COPY["graf.zoom.keys"]}</span>
-            </span>
-          )}
+          {COPY["graf.zoom.hint"]}
+          <span className="n-dold"> {COPY["graf.zoom.keys"]}</span>
         </div>
       )}
       {reading && hover !== null && tidtext && (
@@ -183,6 +182,7 @@ export function Prognosgraf({
           )}
         </div>
       )}
-    </div>
+      </div>
+    </>
   );
 }

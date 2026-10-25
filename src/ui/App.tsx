@@ -10,7 +10,7 @@ import { createForecaster, EVENTS, type EventId } from "../engine/index.ts";
 import { NORNORNA, Sidfot, Sidhuvud, Steg } from "./components/index.ts";
 import { Faq } from "./Faq.tsx";
 import { COPY, t } from "./copy.ts";
-import { serviceWorkerReady } from "./serviceWorker.ts";
+import { serviceWorkerReady, setHoldsData } from "./serviceWorker.ts";
 import { Skuld, type SkuldSettings } from "./Skuld.tsx";
 import { Start } from "./Start.tsx";
 import { Urd } from "./Urd.tsx";
@@ -37,6 +37,7 @@ export function App() {
 
   // Start the model download as soon as there is data, so it is usually ready by the time the user says Ja.
   const hasData = screen.name !== "start";
+  useEffect(() => setHoldsData(hasData), [hasData]);
   useEffect(() => {
     if (!hasData) return;
     forecaster.init((loaded, total) => setDownload(loaded < total ? { loaded, total } : undefined)).then(

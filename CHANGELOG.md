@@ -6,6 +6,8 @@ Notable changes to Norn. The format follows [Keep a Changelog](https://keepachan
 
 ### Changed
 
+- **A new version shows at once.** After a release, a page that holds no data reloads itself into the new version; with a forecast open, the new version waits for the next visit.
+- **Vanliga frågor opens one answer at a time.**
 - **Kopiera länk is gone, and Skriv ut is now Spara som PDF.** The PDF is made by your browser on your computer and leaves out what only works on screen. Old links to the examples still open.
 - **Every chart says what it shows**, with a heading such as "Leksaksaffärer per månad, provet på det senaste året".
 - **More air and a clearer Start.** The drop zone lines up with the heading, with the example table under it, the text is a little larger, and Så fungerar Norn is a button.
@@ -18,7 +20,7 @@ Notable changes to Norn. The format follows [Keep a Changelog](https://keepachan
 
 ### Added
 
-- **Zoom in on a stretch of time in any chart.** Drag across it, pinch with two fingers, or press plus and minus; Visa allt goes back.
+- **Zoom in on a stretch of time in any chart.** Drag across it, pinch with two fingers, or press plus and minus; the button Visa hela perioden goes back.
 - **Vanliga frågor**, in a window you open from the top right or the footer.
 - **Start shows what a file can look like**, with a small example table, and says that the forecasting model is downloaded the first time only.
 - **Så fungerar Norn, a page that explains it all.** Why Norn exists, what you can use it for, how the test and the bands work, where your data is, and the Timestral model from Mistral AI, first in plain words and then in detail. Linked from Start, the footer and Verdandi's details.

@@ -9,6 +9,15 @@ declare const __SW_KILL__: boolean;
  */
 let registered: Promise<boolean> | undefined;
 
+/**
+ * Whether the page holds the user's data (a file or an example past Start). A new release then waits for the next
+ * visit; without data, the page reloads into it as soon as it takes over, so nobody sees the old version twice.
+ */
+let holdsData = false;
+export const setHoldsData = (v: boolean) => {
+  holdsData = v;
+};
+
 /** Registers once; later calls get the same answer. */
 export const serviceWorkerReady = () => (registered ??= controlledByServiceWorker());
 
@@ -18,6 +27,10 @@ export async function controlledByServiceWorker(timeoutMs = 5000): Promise<boole
     // Kill-switch build: make sure nothing stays registered.
     for (const reg of await navigator.serviceWorker.getRegistrations()) await reg.unregister();
     return false;
+  }
+  // Already controlled at load: a later change of controller is a new release taking over.
+  if (navigator.serviceWorker.controller) {
+    navigator.serviceWorker.addEventListener("controllerchange", () => !holdsData && location.reload(), { once: true });
   }
   try {
     retryWaitingActivation(await navigator.serviceWorker.register("/sw.js"));

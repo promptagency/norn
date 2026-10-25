@@ -79,11 +79,11 @@ Runs automatically after **Ja**. A backtest on the last period, its length set b
 
 ## Zooming in on a chart
 
-Every chart with values under the pointer can zoom in on time (owner, 2026-10-25): drag across it with the mouse, pinch with two fingers, or press plus and minus with the chart focused. The line under the chart says which stretch is shown, with "Visa allt" to go back (Esc does the same). In Urd a long history is drawn as means per day or week; zooming in shows those means closer, not the single hours.
+Every chart with values under the pointer can zoom in on time (owner, 2026-10-25): drag across it with the mouse, pinch with two fingers, or press plus and minus with the chart focused. A row above the chart says which stretch is shown, with the button "Visa hela perioden" to go back (Esc does the same). In Urd a long history is drawn as means per day or week; zooming in shows those means closer, not the single hours.
 
 ## Vanliga frågor
 
-A window over the page (owner, 2026-10-25), opened from "Vanliga frågor" after the header tag ("Ett experiment från Prompt Agency | Vanliga frågor") on Start, the explanation page and the phone page, and from the footer on every screen. Nine questions as `Fraga`, then a link to Så fungerar Norn in a new tab. A window, so a forecast in progress stays where it is.
+A window over the page (owner, 2026-10-25), opened from "Vanliga frågor" after the header tag ("Ett experiment från Prompt Agency | Vanliga frågor") on Start, the explanation page and the phone page, and from the footer on every screen. Nine questions as `Fraga`, one open at a time, then a link to Så fungerar Norn in a new tab. A window, so a forecast in progress stays where it is.
 
 ## Så fungerar Norn (`/om`)
 

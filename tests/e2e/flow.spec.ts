@@ -261,6 +261,10 @@ test("Vanliga frågor opens in a window and closes again", async ({ page }) => {
   await expect(dialog).toBeVisible();
   await dialog.getByText("Skickas mina siffror någonstans?").click();
   await expect(dialog).toContainText("Filen läses och prognosen görs i din webbläsare.");
+  // One answer at a time: opening the next question closes the first.
+  await dialog.getByText("Vad kostar det?").click();
+  await expect(dialog.locator("details[open]")).toHaveCount(1);
+  await expect(dialog.locator("details[open]")).toContainText("Ingenting.");
   await dialog.getByRole("button", { name: "Stäng" }).click();
   await expect(dialog).toBeHidden();
 });
@@ -278,6 +282,7 @@ test("a chart zooms in on a stretch of time and back", async ({ page }) => {
   await page.locator(".n-exempelkort", { hasText: "Detaljhandel" }).click();
   const chart = page.locator("svg.n-graf");
   const zoom = page.locator(".n-graf__zoom");
+  const zoomed = page.locator(".n-graf__zoomad");
   await expect(zoom).toContainText("Dra över grafen");
   await chart.scrollIntoViewIfNeeded(); // since the 2026-10-25 spacing, the chart can start below a 720 px window
   const box = (await chart.boundingBox())!;
@@ -285,13 +290,13 @@ test("a chart zooms in on a stretch of time and back", async ({ page }) => {
   await page.mouse.down();
   await page.mouse.move(box.x + box.width * 0.7, box.y + box.height / 2, { steps: 5 });
   await page.mouse.up();
-  await expect(zoom).toContainText(/^Visar \w+ \d{4} till \w+ \d{4}\./);
-  await zoom.getByRole("button", { name: "Visa allt" }).click();
+  await expect(zoomed).toContainText(/^Visar \w+ \d{4} till \w+ \d{4}\./);
+  await zoomed.getByRole("button", { name: "Visa hela perioden" }).click();
   await expect(zoom).toContainText("Dra över grafen");
   // The keyboard does the same: plus zooms in, Esc shows all again.
   await chart.focus();
   await page.keyboard.press("+");
-  await expect(zoom).toContainText("Visar");
+  await expect(zoomed).toContainText("Visar");
   await page.keyboard.press("Escape");
   await expect(zoom).toContainText("Dra över grafen");
 });

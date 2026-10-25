@@ -221,7 +221,8 @@
 /* Zooming in on time: the stretch being dragged over, and the line under the chart. */
 .n-graf[tabindex] { cursor: crosshair; }
 .n-graf__urval { fill: var(--kant); opacity: 0.5; }
-.n-graf__zoom { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-1) var(--space-4); margin-top: var(--space-2); color: var(--text-dampad); }
+.n-graf__zoom { margin-top: var(--space-2); color: var(--text-dampad); }
+.n-graf__zoomad { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-2) var(--space-4); margin-bottom: var(--space-3); color: var(--text-dampad); }
 .n-graf__punkt { fill: var(--prognos-historik); stroke: var(--yta); stroke-width: 2; }
 .n-graf__punkt--utfall { fill: var(--prognos-utfall); }
 .n-graf__punkt--median { fill: var(--prognos-median); }

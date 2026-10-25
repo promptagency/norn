@@ -18,7 +18,7 @@ export function Faq() {
       {oppen && (
         <Dialogruta rubrik={COPY["faq.heading"]} oppen onStang={() => setOppen(false)}>
           {TOPICS.map((k) => (
-            <Fraga key={k} rubrik={t(`faq.${k}.q` as CopyKey, { mb })}>
+            <Fraga key={k} grupp="faq" rubrik={t(`faq.${k}.q` as CopyKey, { mb })}>
               <p>{t(`faq.${k}.a` as CopyKey, { mb })}</p>
             </Fraga>
           ))}

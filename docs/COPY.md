@@ -125,7 +125,7 @@ Utkast. Ändras när skärmskisserna är godkända.
 | graf.zoom.hint | Dra över grafen, eller nyp med två fingrar, för att se en period närmare. |
 | graf.zoom.keys | Med tangentbordet zoomar plus och minus, och Esc visar allt igen. |
 | graf.zoom.shown | Visar {start} till {slut}. |
-| graf.zoom.reset | Visa allt |
+| graf.zoom.reset | Visa hela perioden |
 | graf.klockslag | {datum} kl. {tid} |
 | graf.vecka | veckan från {datum} |
 | skuld.heading | Det som kommer |
