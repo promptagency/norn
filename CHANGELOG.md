@@ -4,6 +4,8 @@ Notable changes to Norn. The format follows [Keep a Changelog](https://keepachan
 
 ## [Unreleased]
 
+## [0.1.7] - 2026-10-25
+
 ### Added
 
 - **Pictures on Så fungerar Norn:** the bands with labels, the three steps side by side, the grades, how your data stays on your computer, and the model's 21 quantiles.
@@ -76,7 +78,8 @@ The first tagged version. Norn has been live at nornor.app since 2026-10-21; thi
 - **Works offline** after the first forecast.
 - **The version in the footer.**
 
-[Unreleased]: https://github.com/promptagency/norn/compare/v0.1.6...HEAD
+[Unreleased]: https://github.com/promptagency/norn/compare/v0.1.7...HEAD
+[0.1.7]: https://github.com/promptagency/norn/compare/v0.1.6...v0.1.7
 [0.1.6]: https://github.com/promptagency/norn/compare/v0.1.5...v0.1.6
 [0.1.5]: https://github.com/promptagency/norn/compare/v0.1.4...v0.1.5
 [0.1.4]: https://github.com/promptagency/norn/compare/v0.1.3...v0.1.4
