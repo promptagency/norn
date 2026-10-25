@@ -57,6 +57,9 @@ Runs automatically after **Ja**. A backtest on the last period, its length set b
   - **Ungefärlig.** "Norn träffade inom 18 procent. Bättre än att gissa, men lita mer på intervallet än på linjen."
   - **Osäker.** "Norn såg inget tydligt mönster i den här datan. Prognosen blir bred. Fler datapunkter eller en jämnare serie hjälper."
 - The numbers behind the grade (error, error of repeating last season, share inside each band) sit under a collapsible "Visa detaljer", with the rule in words. The thresholds are decided in `PLAN.md`.
+- Under the grade's sentence, one line says what the grade means for the user (owner, 2026-10-25): Pålitlig, plan by the forecast; Ungefärlig, plan by the bands rather than the line; Osäker, take it as a hint. Osäker's sentence also says what helps (a longer period, or the numbers added up per week or month).
+- Under the chart, one sentence says whether the bands held, by the same 75 percent limit as the grade: "Banden höll ungefär vad de lovar…" or "Banden var för smala…".
+- While the test runs it is named: "Norn gissar på det senaste året utan att titta på facit."
 - One button: **Visa vad som kommer**.
 
 ## 3. Skuld, what is to come

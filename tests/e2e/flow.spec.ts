@@ -174,6 +174,8 @@ test("Skuld reminds of the test, which runs once, and links back to it", async (
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Kan du lita på prognosen?");
   await expect(page.getByRole("list", { name: "Så gick provet till" })).toContainText("Norn gömmer det senaste året i din fil.");
   await expect(page.locator(".n-betyg")).toContainText("Pålitlig");
+  await expect(page.getByText("Pålitlig betyder att du kan planera efter prognosen.")).toBeVisible();
+  await expect(page.getByText(/^Banden höll ungefär vad de lovar\./)).toBeVisible();
   await page.getByRole("button", { name: "Visa vad som kommer" }).click();
   await expect(reminder).toBeVisible();
   expect(await backtests()).toBe(1);

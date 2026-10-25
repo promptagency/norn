@@ -47,7 +47,7 @@ export function Verdandi({ series, forecaster, download, units, onNext }: Props)
 
   let svar: ReactNode;
   if (result === "fel" || (result && !s)) svar = COPY["error.model"];
-  else if (!s) svar = download ? loadingText(download) : COPY["verdandi.wait"];
+  else if (!s) svar = download ? loadingText(download) : t("verdandi.wait", { period });
   else if (niva === "osaker") svar = COPY["verdandi.poor"];
   else {
     const Period = period.charAt(0).toUpperCase() + period.slice(1);
@@ -86,6 +86,7 @@ export function Verdandi({ series, forecaster, download, units, onNext }: Props)
           {niva && <Betyg niva={niva} />}
           <Svar>{svar}</Svar>
         </div>
+        {niva && <p className="brod-stark">{COPY[`verdandi.means.${niva}`]}</p>}
       </div>
 
       {s && result && result !== "fel" && (
@@ -113,7 +114,10 @@ export function Verdandi({ series, forecaster, download, units, onNext }: Props)
             />
             <Forklaring poster={["utfall", "median-backtest", "band50", "band90"]} />
           </Kort>
-          <p className="smal">{t("verdandi.bands", { in50: percent(s.inside50), in90: percent(s.inside90) })}</p>
+          <p className="smal">
+            {/* Held or not by the same limit as the grade, so the sentence and the grade never disagree. */}
+            {t(s.inside90 >= THRESHOLDS.inside90 ? "verdandi.bands.held" : "verdandi.bands.narrow", { in50: percent(s.inside50), in90: percent(s.inside90) })}
+          </p>
           <Fraga rubrik={COPY["verdandi.details"]} variant="liten">
             <Nyckeltal
               poster={[

@@ -69,15 +69,19 @@ Utkast. Ändras när skärmskisserna är godkända.
 | verdandi.how.hide | Norn gömmer {period} i din fil. |
 | verdandi.how.guess | Norn gissar på det, utan facit. |
 | verdandi.how.compare | Gissningen jämförs med det som hände. |
-| verdandi.wait | Norn räknar. Det tar några sekunder. |
+| verdandi.wait | Norn gissar på {period} utan att titta på facit. Det tar några sekunder. |
 | verdandi.good | {Period} träffade Norn i snitt inom {procent} procent, betydligt bättre än att upprepa {jamfort}. |
-| verdandi.fair | {Period} träffade Norn i snitt inom {procent} procent. Bättre än att gissa, men lita mer på banden än på linjen. |
+| verdandi.fair | {Period} träffade Norn i snitt inom {procent} procent, bättre än att gissa. |
 | verdandi.good.abs | {Period} missade Norn i snitt med {fel} per {enhet}, betydligt bättre än att upprepa {jamfort}. |
-| verdandi.fair.abs | {Period} missade Norn i snitt med {fel} per {enhet}. Bättre än att gissa, men lita mer på banden än på linjen. |
+| verdandi.fair.abs | {Period} missade Norn i snitt med {fel} per {enhet}, bättre än att gissa. |
 | verdandi.good.plain | {Period} träffade Norn i snitt inom {procent} procent. Att upprepa {jamfort} hade träffat nästan lika bra, så mönstret är tydligt. |
-| verdandi.fair.plain | {Period} träffade Norn i snitt inom {procent} procent, ungefär som att upprepa {jamfort}. Lita mer på banden än på linjen. |
-| verdandi.poor | Norn såg inget tydligt mönster i den här datan. Prognosen blir bred. Fler datapunkter eller en jämnare serie hjälper. |
-| verdandi.bands | Det som faktiskt hände hamnade i det smala bandet {in50} procent av gångerna och i det breda {in90} procent. Banden lovar hälften och nio av tio. |
+| verdandi.fair.plain | {Period} träffade Norn i snitt inom {procent} procent, ungefär som att upprepa {jamfort}. |
+| verdandi.poor | Norn såg inget tydligt mönster i den här datan, så prognosen blir bred. Det hjälper ofta att ta med en längre period, eller att lägga ihop siffrorna per vecka eller månad. |
+| verdandi.means.palitlig | Pålitlig betyder att du kan planera efter prognosen. |
+| verdandi.means.ungefarlig | Ungefärlig betyder att du ska planera efter banden snarare än efter linjen. |
+| verdandi.means.osaker | Osäker betyder att prognosen bara är en fingervisning. |
+| verdandi.bands.held | Banden höll ungefär vad de lovar. Det breda bandet ska fånga nio fall av tio och fångade {in90} procent, det smala ska fånga hälften och fångade {in50} procent. |
+| verdandi.bands.narrow | Banden var för smala. Det breda bandet ska fånga nio fall av tio men fångade bara {in90} procent, så verkligheten kan svänga mer än Norn tror. |
 | verdandi.chart | {namn} från {start} till {slut}. Den senare delen visar Norns gissning som band och det som faktiskt hände som en grå linje. |
 | verdandi.d.error | Medelfel per {enhet} |
 | verdandi.d.naive | Om du upprepat {jamfort} |
