@@ -1,16 +1,10 @@
 // What the worker does with one request. Kept apart from worker.ts so the Node tests run the same code.
 import type * as Ort from "onnxruntime-web";
-import type { Backtest, Forecast, ForecastOptions, Series } from "./Forecaster.ts";
+import { MAX_HISTORY, type Backtest, type Forecast, type ForecastOptions, type Series } from "./Forecaster.ts";
 import { forecast as timestral, LEVELS } from "./vendor/timestral.js";
 
 const at = (level: number) => LEVELS.indexOf(level);
 
-/**
- * The longest history the model sees (the model takes up to 32,768; the vendored default is 4,096). 8,192 is
- * about 11 months of hours: in backtests on hourly consumption it beat 4,096 and longer caps added nothing, while
- * time grows about in step with the history (owner's decision 2026-10-22, numbers in docs/ARCHITECTURE.md).
- */
-export const MAX_HISTORY = 8192;
 
 export async function runForecast(
   ort: typeof Ort,

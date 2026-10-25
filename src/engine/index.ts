@@ -60,3 +60,4 @@ export function createForecaster(before: () => Promise<unknown> = async () => {}
 export { backtestSteps, grade, improvement, percentFits, score, SEASON, THRESHOLDS, type Grade, type Score } from "./backtest.ts";
 export { EVENTS, eventOn, eventSeries, type EventId } from "./holidays.ts";
 export { summarize, type Summary, type Summing } from "./summary.ts";
+export { MAX_HISTORY } from "./Forecaster.ts";

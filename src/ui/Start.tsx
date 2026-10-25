@@ -38,6 +38,9 @@ export function Start({ fel, onFil, onText, onExempel }: Props) {
             <li>{COPY["start.gets.trust"]}</li>
             <li>{COPY["start.gets.private"]}</li>
           </ul>
+          <p>
+            <a className="n-textlank" href="/om">{COPY["om.link"]}</a>
+          </p>
         </div>
         <Slappyta onFiler={(files) => onFil(files[0])} fel={fel} />
       </div>

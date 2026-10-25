@@ -16,6 +16,10 @@ body { margin: 0; background: var(--grund); color: var(--text); font-family: var
 /* Verdandi: how the test works, three steps in a row, stacked when narrow. */
 .provet { margin: var(--space-2) 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--space-3) var(--space-6); }
 .provet li { display: flex; gap: var(--space-3); align-items: flex-start; }
+/* "Så fungerar Norn" (/om): a column of text that reads at the width of a line. */
+.om .avsnitt { max-width: 720px; gap: var(--space-4); }
+.om__lista { margin: 0; padding-left: var(--space-6); display: flex; flex-direction: column; gap: var(--space-2); }
+.om__lankar { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-6); }
 /* Skuld: the reminder of the test, under the answer. */
 .provet-rad { display: flex; align-items: center; flex-wrap: wrap; gap: var(--space-2) var(--space-3); }
 .avsnitt { display: flex; flex-direction: column; gap: var(--space-3); }
@@ -29,9 +33,9 @@ body { margin: 0; background: var(--grund); color: var(--text); font-family: var
 .knapprad { display: flex; flex-wrap: wrap; gap: var(--space-2); }
 /* The phone page (design/DESIGN.md). */
 .telefon { padding-top: var(--space-8); gap: var(--space-8); }
-.telefon__steg { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: var(--space-4); }
-.telefon__steg li { display: flex; gap: var(--space-3); align-items: flex-start; }
-.telefon__steg strong { font-weight: 600; }
+.steglista { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: var(--space-4); }
+.steglista li { display: flex; gap: var(--space-3); align-items: flex-start; }
+.steglista strong { font-weight: 600; }
 /* A step number: the phone page's steps and Verdandi's test. */
 .nummer {
   flex: none; width: 28px; height: 28px; border-radius: var(--radius-full); background: var(--indigo); color: var(--pa-indigo);

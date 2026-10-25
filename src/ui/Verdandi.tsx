@@ -146,6 +146,12 @@ export function Verdandi({ series, forecaster, download, units, onNext }: Props)
                 jamfort,
               })}
             </p>
+            <p className="liten">
+              <a className="n-textlank" href="/om#betygen" target="_blank" rel="noopener">
+                {COPY["om.link"]}
+                <span className="n-dold"> ({COPY["link.newtab"]})</span>
+              </a>
+            </p>
           </Fraga>
           <div>
             <Knapp onClick={onNext}>{COPY["verdandi.next"]}</Knapp>

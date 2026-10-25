@@ -14,7 +14,7 @@ from timestral import TimestralForecaster
 ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "public" / "data"
 OUT = ROOT / "src" / "engine" / "fixtures" / "parity.json"
-MAX_CONTEXT = 8192  # MAX_HISTORY in src/engine/run.ts; longer histories are cut to it before forecasting
+MAX_CONTEXT = 8192  # MAX_HISTORY in src/engine/Forecaster.ts; longer histories are cut to it before forecasting
 BACKTEST = {"timme": 168, "dag": 91, "vecka": 26, "månad": 12}  # docs/UX.md
 
 

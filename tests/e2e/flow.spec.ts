@@ -177,6 +177,23 @@ test("Skuld reminds of the test, which runs once, and links back to it", async (
   await page.getByRole("button", { name: "Visa vad som kommer" }).click();
   await expect(reminder).toBeVisible();
   expect(await backtests()).toBe(1);
+  // The footer's link to the explanation page opens a new tab, so this forecast is not lost.
+  await expect(page.getByRole("link", { name: /Så fungerar Norn/ })).toHaveAttribute("target", "_blank");
+});
+
+test("the explanation page opens from Start and loads no model", async ({ context, page }) => {
+  const w = watch(context, page);
+  await page.goto("/");
+  await page.getByRole("link", { name: "Så fungerar Norn", exact: true }).click();
+  await expect(page).toHaveURL(/\/om$/);
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Så fungerar Norn");
+  await expect(page.getByRole("heading", { name: "Modellen, Timestral från Mistral AI" })).toBeVisible();
+  await expect(page.getByText(/Högst 8\s192 värden/)).toBeVisible();
+  await expect(page.getByText(/minst 75 procent av det som hände/)).toBeVisible();
+  await page.getByRole("link", { name: "Till Norn" }).click();
+  await expect(page.locator(".n-slappyta")).toBeVisible();
+  expect(w.foreign()).toEqual([]);
+  expect(w.requests.filter((u) => u.includes("/model/") || u.includes(".wasm"))).toEqual([]);
 });
 
 test("an event switched on asks the model only for the forecast with events", async ({ page }) => {

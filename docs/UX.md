@@ -69,6 +69,14 @@ Runs automatically after **Ja**. A backtest on the last period, its length set b
   - **Hur säker vill du vara?** Three choices: "Troligast", "Räcker i 9 fall av 10", "Räcker i 19 fall av 20". The answer sentence updates. This is the planning level for stock or staff.
 - At the bottom: **Ladda ner** (CSV with all quantiles), **Skriv ut**, **Kopiera länk** (settings only, never data).
 
+## Så fungerar Norn (`/om`)
+
+A page of its own for the curious reader who wants the reasoning, the model and the details (owner, 2026-10-25). Plain words first, the technical part further down: what Norn is and why, what it can be used for, the three steps and why the test comes first, how to read the bands, the grades and their rule, where the data is, the Timestral model from Mistral AI, a technical part with the facts in a table, what Norn does not do, and the project with its links.
+
+- Reached from Start (a link under the three points), from the footer on every screen, from Verdandi's "Visa detaljer" (to the grades) and from the phone page. Phones get the page too; it loads no model.
+- The footer and Verdandi open it in a new tab, since the user's data lives only in the tab they are in. Start and the phone page open it in the same tab.
+- It is the only place outside "Visa detaljer" where words like kvantil and backtest appear, each explained where it first does. Its two links out (the code on GitHub and Timestral on Hugging Face) open in a new tab; the user flow still links nowhere but Prompt Agency.
+
 ## Always
 
 - The footer says it is an experiment from Prompt Agency, with no support, and that the data never leaves the computer. Credits to Mistral (Timestral), amine40 (ONNX export and JavaScript port) and the data sources.

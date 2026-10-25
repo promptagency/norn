@@ -174,4 +174,6 @@ export interface SidhuvudProps {
 /** The footer on every screen. Children replace the credits line. */
 export interface SidfotProps {
   children?: ReactNode;
+  /** Leaves out the link to "Så fungerar Norn", on that page itself. */
+  utanOm?: boolean;
 }

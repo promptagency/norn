@@ -17,6 +17,10 @@ Norn används av den som har siffror över tid och vill veta vad som väntar, ut
 - Felmeddelanden säger vad som hände och vad man kan göra, i den ordningen.
 - Belopp med mellanslag som tusentalsavgränsare och "kr" efter, "412 000 kr". Decimalkomma.
 
+## Sidan Så fungerar Norn
+
+Texten på `/om` har nycklarna `om.*`, i tabellen nedan. Samma regler gäller. I avsnittet För den som vill veta mer får tekniska ord som kvantil och backtest finnas, alltid förklarade där de dyker upp första gången. Fakta om Timestral kommer från Mistral AI:s modellkort, kod och lanseringstext, inte ur minnet.
+
 ## Fasta strängar
 
 Utkast. Ändras när skärmskisserna är godkända.
@@ -204,3 +208,78 @@ Utkast. Ändras när skärmskisserna är godkända.
 | footer.experiment | Norn är ett experiment från Prompt Agency. Ingen support, ingen garanti. Din data lämnar aldrig datorn. |
 | footer.credits | Prognoserna görs av Timestral från Mistral AI, i webbläsaren tack vare amine40:s ONNX-export. Exempeldata från SCB, eSett och Wikimedia. |
 | footer.version | Version {version} |
+| om.link | Så fungerar Norn |
+| om.back | Till Norn |
+| om.heading | Så fungerar Norn |
+| om.lead | Norn gör prognoser av dina egna siffror, i din webbläsare. Här står varför Norn finns, hur det går till och vad som driver det. Först med vanliga ord, längre ner med fler detaljer. |
+| om.what.heading | Vad Norn är |
+| om.what.1 | Du har siffror över tid. Försäljning per dag, elförbrukningen per timme, besökare per vecka. Norn visar vad som troligen kommer och hur säker du kan vara på det. |
+| om.what.2 | Verktyg för prognoser är oftast byggda för analytiker. De pratar om modeller, parametrar och konfidensintervall. Norn är för alla andra. Du behöver inte kunna statistik och du behöver inte ställa in något. |
+| om.what.3 | Norn säger alltid hur osäker prognosen är. Ett ärligt svar med ett brett spann är mer värt än en exakt siffra som inte stämmer. |
+| om.use.heading | Vad du kan använda det till |
+| om.use.butik | Inköp. Hur mycket ska du beställa inför julhandeln? Välj nivån som räcker i nio fall av tio, så tar varorna slut mer sällan. |
+| om.use.personal | Bemanning. Hur många behövs i kassan nästa lördag? Prognosen per dag visar vilka dagar som brukar sticka ut. |
+| om.use.el | Elräkningen. Vad landar förbrukningen på nästa månad? Det troligaste värdet ger en budget, och det breda bandet visar hur mycket det kan slå fel. |
+| om.use.besok | Besökare. Hur många kommer till biblioteket, badet eller webbplatsen i sommar? Slå på röda dagar eller industrisemestern om de ligger i perioden. |
+| om.use.niva | Under Hur säker vill du vara väljer du vilken siffra du planerar efter. Troligast är bäst i snitt. En högre nivå kostar lite mer men räcker oftare. |
+| om.steps.heading | Så går det till |
+| om.steps.urd | Urd, din data. Norn läser filen, hittar kolumnen för tid och den med siffror, och säger med en mening vad den ser. Du bekräftar att det stämmer. |
+| om.steps.verdandi | Verdandi, provet. Innan Norn tittar framåt prövar den sig själv. Den gömmer den senaste perioden i din fil, gissar på den utan facit och jämför sedan med det som faktiskt hände. Det ger ett betyg för just dina siffror. |
+| om.steps.skuld | Skuld, prognosen. Nu får Norn se allt och gissar på det som kommer. Du väljer hur långt fram, hur säker du vill vara och om någon händelse ligger i perioden. |
+| om.steps.why | Provet kommer först av en anledning. En prognos går inte att kontrollera förrän det är för sent. Provet går att kontrollera direkt, och det är gjort på dina egna siffror, inte på någon annans. |
+| om.steps.names | Stegen har fått namn efter de tre nornorna i den nordiska mytologin, som spinner ödets tråd. Urd står för det som varit, Verdandi för det som är och Skuld för det som kommer. |
+| om.bands.heading | Så läser du banden |
+| om.bands.1 | Prognosen är en prickad linje med två band runt sig. Linjen är det troligaste värdet. Det mörkare bandet visar var det hamnar i hälften av fallen, det ljusare var det hamnar i nio fall av tio. |
+| om.bands.2 | Banden blir bredare ju längre fram du tittar. Det är inget fel. Ju längre bort något ligger, desto mer hinner hända, och det säger Norn rakt ut. |
+| om.bands.3 | I provet ser du om banden höll. Låg det som hände inne i det breda bandet ungefär nio gånger av tio, så stämmer Norns osäkerhet för dina siffror. |
+| om.grades.heading | Betygen |
+| om.grades.palitlig | Pålitlig. Norn träffade nära i provet, eller klart bättre än den enkla gissningen, och banden höll. Du kan planera efter prognosen. |
+| om.grades.ungefarlig | Ungefärlig. Norn gjorde bättre än att gissa men missade mer. Planera efter banden snarare än efter linjen. |
+| om.grades.osaker | Osäker. Norn hittade inget tydligt mönster. Se prognosen som en fingervisning. Fler värden, eller siffror summerade per vecka eller månad, hjälper ofta. |
+| om.grades.naive | Den enkla gissningen är att upprepa samma timme eller dag förra veckan, eller samma vecka, månad eller kvartal förra året. Slår Norn inte den, finns det ingen anledning att lita på Norn. |
+| om.grades.rule | Regeln i siffror. Pålitlig kräver att minst {inom} procent av det som hände låg i det breda bandet, och att Norn antingen missade med högst {nara} procent eller missade minst {battre} procent mindre än den enkla gissningen, utan att missa med mer än {langt} procent. Osäker betyder att Norn varken gjorde bättre än den enkla gissningen eller missade med högst {nara} procent. Ungefärlig är allt däremellan. |
+| om.privacy.heading | Din data stannar hos dig |
+| om.privacy.1 | Filen läses i din webbläsare och prognosen görs i din webbläsare. Ingenting av din data skickas någonstans. Norn har ingen server som tar emot filer, inga konton och inga kakor. |
+| om.privacy.2 | Datan finns bara i minnet medan fliken är öppen. Stänger du den är den borta. Det enda som sparas är det du själv laddar ner. |
+| om.privacy.3 | Första gången laddar Norn ner modellen, {mb} MB, från samma adress som sidan. Webbläsaren sparar den, så efter den första prognosen går Norn att använda utan nätverk. |
+| om.privacy.4 | Besök räknas anonymt, en sidvisning per besök, i Prompt Agencys egen statistiktjänst. Aldrig något från din fil. |
+| om.model.heading | Modellen, Timestral från Mistral AI |
+| om.model.1 | Prognoserna görs av Timestral, en familj modeller för tidsserier från det franska AI-företaget Mistral AI, släppt i oktober 2026. |
+| om.model.2 | Timestral är en grundmodell. Den har tränats i förväg på stora mängder tidsserier, de flesta skapade för ändamålet, och har lärt sig hur mönster över tid brukar se ut. Dygnsrytmer, veckor, säsonger och trender. Därför kan den göra prognoser på siffror den aldrig har sett, utan att tränas om eller ställas in. |
+| om.model.3 | Timestral finns i fyra storlekar. Norn använder den näst minsta, med 28 miljoner parametrar, som är liten nog att köras i en vanlig webbläsare. |
+| om.model.4 | Att den går att köra i webbläsaren har Norn amine40 att tacka, som har gjort om modellen till ett format webbläsaren kan köra och skrivit prognosfunktionen i JavaScript. |
+| om.tech.heading | För den som vill veta mer |
+| om.tech.lead | Här får de tekniska orden finnas, med en förklaring där de dyker upp. |
+| om.tech.k.model | Modell |
+| om.tech.v.model | Timestral-28M från Mistral AI |
+| om.tech.k.arch | Uppbyggnad |
+| om.tech.v.arch | En transformer i 12 lager som läser serien i bitar om 32 värden |
+| om.tech.k.output | Svar från modellen |
+| om.tech.v.output | 21 kvantiler, från 1 till 99 procent |
+| om.tech.k.history | Historik som modellen får se |
+| om.tech.v.history | Högst {max} värden, modellen klarar 32 768 |
+| om.tech.k.horizon | Prognos per körning |
+| om.tech.v.horizon | Upp till 1 024 värden, längre bit för bit |
+| om.tech.k.weights | Vikter |
+| om.tech.v.weights | amine40:s ONNX-export i fp16, {mb} MB, räknas i fp32 |
+| om.tech.k.runtime | Körs med |
+| om.tech.v.runtime | onnxruntime-web {version} i en Web Worker, på flera trådar |
+| om.tech.k.licence | Licenser |
+| om.tech.v.licence | Koden MIT, Timestrals vikter Mistral AI:s Modified MIT |
+| om.tech.quantiles | Modellen ger inte ett värde per tidpunkt utan 21 kvantiler. En kvantil på 5 procent är ett värde som utfallet bara hamnar under i fem fall av hundra. Norn visar tre av dem. Medianen är linjen, 25 till 75 procent det smala bandet och 5 till 95 procent det breda. Filen du laddar ner har alla 21. |
+| om.tech.history | Norn visar modellen högst {max} värden bakåt, ungefär elva månader med timvärden. I våra prov på timdata gav det bättre prognoser än 4 096 värden, medan längre historik inte gav något mer men tog längre tid. |
+| om.tech.backtest | Provet i Verdandi kallas backtest. Norn gömmer de senaste 7 dagarna för timdata, det senaste året för dag- och månadsdata, ett halvår för veckodata och fyra perioder för kvartal och år. Felet mäts som medelfelet per tidpunkt och jämförs med felet för den enkla gissningen. |
+| om.tech.events | Händelser som midsommar och röda dagar skickas till modellen som en extra serie som är känd i förväg, med en etta de dagar händelsen infaller. Modellen ser i din historik vad de dagarna brukade betyda. |
+| om.tech.totals | Summan för en hel period är försiktig. Modellen ger ett spann per tidpunkt, inte för summan, så Norn lägger ihop spannen. Det blir bredare än nödvändigt, därför står det i minst nio fall av tio. |
+| om.tech.check | Prognoserna i webbläsaren stämmer med Mistrals eget Python-paket. Med fp16-vikterna skiljer de sig mindre än 0,7 procent av det breda bandets bredd. |
+| om.not.heading | Vad Norn inte gör |
+| om.not.promise | Norn lovar inte att prognosen slår in. Den visar vad som är troligt. |
+| om.not.one | Norn gör prognos på en kolumn i taget. |
+| om.not.account | Det finns inga konton och inga sparade projekt. Vill du spara, ladda ner prognosen. |
+| om.not.data | Siffrorna behöver jämna steg i tid, timmar, dagar, veckor, månader, kvartal eller år, och minst 64 värden. |
+| om.not.support | Det finns ingen support. Norn är ett experiment. |
+| om.project.heading | Om projektet |
+| om.project.1 | Norn är ett experiment från Prompt Agency och fri programvara under MIT-licensen. Koden finns öppet på GitHub. |
+| om.project.code | Koden på GitHub |
+| om.project.model | Timestral hos Hugging Face |
+| om.project.thanks | Tack till Mistral AI för Timestral, amine40 för ONNX-exporten och JavaScript-koden, och SCB, eSett och Wikimedia för exempeldatan. |

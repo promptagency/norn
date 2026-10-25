@@ -39,3 +39,10 @@ export interface Forecaster {
   forecast(series: Series, horizon: number, options?: ForecastOptions): Promise<Forecast>;
   backtest(series: Series, horizon: number, options?: ForecastOptions): Promise<Backtest>;
 }
+
+/**
+ * The longest history the model sees (the model takes up to 32,768; the vendored default is 4,096). 8,192 is
+ * about 11 months of hours: in backtests on hourly consumption it beat 4,096 and longer caps added nothing, while
+ * time grows about in step with the history (owner's decision 2026-10-22, numbers in docs/ARCHITECTURE.md).
+ */
+export const MAX_HISTORY = 8192;

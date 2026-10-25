@@ -4,6 +4,7 @@ import "../design/fonts.css";
 import "../design/tokens.css";
 import { countVisit } from "./ui/analytics.ts";
 import { App } from "./ui/App.tsx";
+import { Om } from "./ui/Om.tsx";
 import { isPhone, Telefon } from "./ui/Telefon.tsx";
 import { serviceWorkerReady } from "./ui/serviceWorker.ts";
 
@@ -17,7 +18,7 @@ const phone = isPhone();
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    {Galleri ? <Suspense><Galleri /></Suspense> : phone ? <Telefon /> : <App />}
+    {Galleri ? <Suspense><Galleri /></Suspense> : location.pathname === "/om" ? <Om /> : phone ? <Telefon /> : <App />}
   </StrictMode>,
 );
 

@@ -20,3 +20,9 @@ for (const path of ["/", "/?exempel=wikipedia&horisont=1"]) {
     expect(requests.filter((u) => u.includes("/model/") || u.includes(".wasm") || u.includes("worker"))).toEqual([]);
   });
 }
+
+test("a phone can read the explanation page", async ({ page }) => {
+  await page.goto("/om");
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Så fungerar Norn");
+  await expect(page.getByRole("heading", { name: "Öppna Norn på en dator" })).toHaveCount(0);
+});

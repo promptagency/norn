@@ -142,6 +142,10 @@ Approved by the owner on 2026-10-24 (mockups in the brainstorm, not on the canva
 
 Approved by the owner on 2026-10-25. Verdandi's lead is in `ingress`, followed by the test's three steps in a row (stacked when narrow), each with the phone page's indigo number marker. In Skuld one row under the answer holds `Betyg`, the test's sentence in `brod` and a `Knapp lank` "Se provet". The step bar's hints are "Din data", "Provet" and "Prognosen".
 
+## Så fungerar Norn
+
+Approved by the owner on 2026-10-25. One column of text at most 720 px wide, so lines stay readable: the page heading in `rubrik-xl`, the lead in `ingress`, each section headed in `rubrik-m`, body text in `brod`. The three steps use the phone page's numbered list. The technical facts sit in a `Kort` with `Nyckeltal`. One `primar` button at the end, Till Norn. Both themes, from the tokens like every screen.
+
 ## The phone page
 
 Phones get one page instead of the app (decision in `PLAN.md`), approved on the design canvas "Norn skärmskisser" (artboard Telefon) on 2026-10-21. One column, 16 px side margin, light and dark from the tokens like every other screen.

@@ -32,12 +32,21 @@ export function Sidhuvud({ logoSrc, hemHref = "/", children }: SidhuvudProps) {
   );
 }
 
-export function Sidfot({ children }: SidfotProps) {
+export function Sidfot({ children, utanOm }: SidfotProps) {
   return (
     <footer className="n-sidfot">
       <div className="n-sidfot__inre">
         <p>{withAgencyLink(COPY["footer.experiment"])}</p>
         <p>{children ?? COPY["footer.credits"]}</p>
+        {!utanOm && (
+          <p>
+            {/* A new tab, so a forecast in progress is not lost: the user's data lives only in this tab. */}
+            <a className="n-textlank" href="/om" target="_blank" rel="noopener">
+              {COPY["om.link"]}
+              <span className="n-dold"> ({COPY["link.newtab"]})</span>
+            </a>
+          </p>
+        )}
         <p>{t("footer.version", { version })}</p>
       </div>
     </footer>

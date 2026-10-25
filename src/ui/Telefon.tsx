@@ -56,7 +56,7 @@ export function Telefon() {
 
         <section className="avsnitt">
           <h2 className="rubrik-s">{COPY["mobil.steps"]}</h2>
-          <ol className="telefon__steg">
+          <ol className="steglista">
             {STEPS.map((key, i) => {
               const text = COPY[key];
               return (
@@ -72,6 +72,9 @@ export function Telefon() {
         <Kort>
           <h2 className="rubrik-s">{COPY["mobil.tech.heading"]}</h2>
           <p>{COPY["mobil.tech"]}</p>
+          <p>
+            <a className="n-textlank" href="/om">{COPY["om.link"]}</a>
+          </p>
         </Kort>
 
         <Kort framhavd>
