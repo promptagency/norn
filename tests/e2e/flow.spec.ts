@@ -282,7 +282,6 @@ test("a chart zooms in on a stretch of time and back", async ({ page }) => {
   await page.locator(".n-exempelkort", { hasText: "Detaljhandel" }).click();
   const chart = page.locator("svg.n-graf");
   const zoom = page.locator(".n-graf__zoom");
-  const zoomed = page.locator(".n-graf__zoomad");
   await expect(zoom).toContainText("Dra över grafen");
   await chart.scrollIntoViewIfNeeded(); // since the 2026-10-25 spacing, the chart can start below a 720 px window
   const box = (await chart.boundingBox())!;
@@ -290,13 +289,13 @@ test("a chart zooms in on a stretch of time and back", async ({ page }) => {
   await page.mouse.down();
   await page.mouse.move(box.x + box.width * 0.7, box.y + box.height / 2, { steps: 5 });
   await page.mouse.up();
-  await expect(zoomed).toContainText(/^Visar \w+ \d{4} till \w+ \d{4}\./);
-  await zoomed.getByRole("button", { name: "Visa hela perioden" }).click();
+  await expect(zoom).toContainText(/^Visar \w+ \d{4} till \w+ \d{4}\./);
+  await page.getByRole("button", { name: "Visa allt" }).click();
   await expect(zoom).toContainText("Dra över grafen");
   // The keyboard does the same: plus zooms in, Esc shows all again.
   await chart.focus();
   await page.keyboard.press("+");
-  await expect(zoomed).toContainText("Visar");
+  await expect(zoom).toContainText("Visar");
   await page.keyboard.press("Escape");
   await expect(zoom).toContainText("Dra över grafen");
 });

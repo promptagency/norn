@@ -178,7 +178,7 @@ Prognosgrafen, en och samma komponent för historiken i Urd, backtestet i Verdan
 - Varje värde på den lodräta axeln får en svag linje i `kant` bakom banden. Inga lodräta linjer.
 - Ge `enhet`, så står enheten en gång ovanför den lodräta axeln. Exemplen har en enhet i `examples.json`; för en egen fil används kolumnens namn.
 - Ge `tidtext`, så visar grafen värdena under pekaren: en linje, en punkt på varje kurva och ett litet kort med tid och värden. Det fungerar med mus, finger och piltangenter. Utan `tidtext` står grafen still, som illustrationen på telefonsidan.
-- Med `tidtext` går det också att zooma in på tiden: dra över grafen med musen, nyp med två fingrar, eller tryck plus och minus. Medan grafen är inzoomad står vilken period som visas ovanför den, med knappen Visa hela perioden, och Esc visar allt igen. Den lodräta axeln anpassas till det som visas. Ge `xEtiketter` som en funktion av första och sista punkten, så följer etiketterna med in.
+- Med `tidtext` går det också att zooma in på tiden: dra över grafen med musen, nyp med två fingrar, eller tryck plus och minus. Medan grafen är inzoomad står knappen Visa allt med en zooma ut-ikon i grafens övre högra hörn, och under grafen vilken period som visas. Esc visar också allt igen. Den lodräta axeln anpassas till det som visas. Ge `xEtiketter` som en funktion av första och sista punkten, så följer etiketterna med in.
 - Ge alltid `beskrivning`, som läses av skärmläsare, och sätt `Forklaring` under grafen.
 - Skriv `xEtiketter` i användarens enhet. `formatY` lägger till enheten på den lodräta axeln, som har högst fyra värden.
 - Grafen ritar alla punkter den får. Minska långa historiker med `bucketMeans` först, till exempel snitt per vecka för timdata över flera år.

@@ -96,14 +96,17 @@ export function Prognosgraf({
 
   return (
     <>
-      {/* Zoomed in: say which stretch, with a clear way back above the chart, where the eye is (owner, 2026-10-25). */}
-      {view && tidtext && (
-        <div className="n-graf__zoomad liten">
-          <span>{t("graf.zoom.shown", { start: tidtext(from), slut: tidtext(to) })}</span>
-          <Knapp variant="sekundar" onClick={() => setZoom(null)}>{COPY["graf.zoom.reset"]}</Knapp>
-        </div>
-      )}
       <div className="n-graf-ram">
+        {/* Zoomed in: the way back sits in the chart's top right corner, with a zoom-out icon (owner, 2026-10-25). */}
+        {view && (
+          <Knapp variant="sekundar" className="n-graf__allt" onClick={() => setZoom(null)}>
+            <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
+              <circle cx="6.5" cy="6.5" r="5" fill="none" stroke="currentColor" strokeWidth="1.8" />
+              <path d="M4 6.5h5M10.2 10.2 14.5 14.5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+            </svg>
+            {COPY["graf.zoom.reset"]}
+          </Knapp>
+        )}
         <svg
           className="n-graf"
           viewBox={`0 0 ${layout.width} ${hojd}`}
@@ -165,10 +168,16 @@ export function Prognosgraf({
           </g>
         )}
       </svg>
-      {zoomable && tidtext && !view && (
+      {zoomable && tidtext && (
         <div className="n-graf__zoom liten">
-          {COPY["graf.zoom.hint"]}
-          <span className="n-dold"> {COPY["graf.zoom.keys"]}</span>
+          {view ? (
+            t("graf.zoom.shown", { start: tidtext(from), slut: tidtext(to) })
+          ) : (
+            <>
+              {COPY["graf.zoom.hint"]}
+              <span className="n-dold"> {COPY["graf.zoom.keys"]}</span>
+            </>
+          )}
         </div>
       )}
       {reading && hover !== null && tidtext && (
