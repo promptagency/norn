@@ -17,14 +17,14 @@ export function BandBild() {
         prognos={ILLUSTRATION}
         yIntervall={RANGE}
         formatY={blank}
-        hojd={760}
+        hojd={420}
         beskrivning={COPY["om.fig.bands"]}
         markeringar={[
-          // Above: the most likely line, the wide band and its widening. Below: the narrow band.
-          { index: at(2), varde: MEDIAN[2], text: COPY["legend.median"], dx: -300, dy: -200 },
-          { index: at(4), varde: MEDIAN[4] + SPREAD.band90(5), text: COPY["om.fig.band90"], dx: -60, dy: -150 },
-          { index: at(5), varde: MEDIAN[5] - SPREAD.band50(6), text: COPY["om.fig.band50"], dx: -80, dy: 170 },
-          { index: at(10), varde: MEDIAN[10] + SPREAD.band90(11), text: COPY["om.fig.bands.wider"], dx: -160, dy: -45 },
+          // Above: the most likely line and the wide band. Below: the narrow band and the widening.
+          { index: at(2), varde: MEDIAN[2], text: COPY["legend.median"], dx: -170, dy: -130 },
+          { index: at(6), varde: MEDIAN[6] + SPREAD.band90(7), text: COPY["legend.band90"], dx: 0, dy: -55 },
+          { index: at(5), varde: MEDIAN[5] - SPREAD.band50(6), text: COPY["legend.band50"], dx: -150, dy: 150 },
+          { index: at(10), varde: MEDIAN[10] - SPREAD.band90(11), text: COPY["om.fig.bands.wider"], dx: -90, dy: 90 },
         ]}
       />
       <Forklaring poster={["median", "band50", "band90"]} />
