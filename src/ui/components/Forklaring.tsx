@@ -21,13 +21,17 @@ const POSTER: Record<Forklaringspost, { text: string; ritning: ReactNode }> = {
 
 export function Forklaring({ poster }: ForklaringProps) {
   return (
-    <ul className="n-forklaring">
-      {poster.map((p) => (
-        <li key={p} className="n-forklaring__post">
-          {POSTER[p].ritning}
-          {POSTER[p].text}
-        </li>
-      ))}
-    </ul>
+    <>
+      <ul className="n-forklaring">
+        {poster.map((p) => (
+          <li key={p} className="n-forklaring__post">
+            {POSTER[p].ritning}
+            {POSTER[p].text}
+          </li>
+        ))}
+      </ul>
+      {/* "Nio fall av tio" sounds surer than "hälften", yet its band is wider: say why (owner, 2026-10-25). */}
+      {poster.includes("band90") && <p className="n-forklaring__not">{COPY["legend.bands"]}</p>}
+    </>
   );
 }

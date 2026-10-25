@@ -110,9 +110,10 @@ Utkast. Ändras när skärmskisserna är godkända.
 | legend.outcome | Det som faktiskt hände |
 | legend.median | Troligast |
 | legend.median.backtest | Norns troligaste gissning |
-| legend.band50 | Hamnar här i hälften av fallen |
-| legend.band90 | Hamnar här i nio fall av tio |
-| graf.nio | I nio fall av tio |
+| legend.band50 | Smala bandet, hälften av fallen |
+| legend.band90 | Breda bandet, nio fall av tio |
+| legend.bands | Ju säkrare du vill vara, desto bredare blir bandet. |
+| graf.nio | Breda bandet, nio fall av tio |
 | graf.intervall | {lag} till {hog} |
 | graf.klockslag | {datum} kl. {tid} |
 | graf.vecka | veckan från {datum} |
@@ -233,7 +234,7 @@ Utkast. Ändras när skärmskisserna är godkända.
 | om.steps.why | Provet kommer först av en anledning. En prognos går inte att kontrollera förrän det är för sent. Provet går att kontrollera direkt, och det är gjort på dina egna siffror, inte på någon annans. |
 | om.steps.names | Stegen har fått namn efter de tre nornorna i den nordiska mytologin, som spinner ödets tråd. Urd står för det som varit, Verdandi för det som är och Skuld för det som kommer. |
 | om.bands.heading | Så läser du banden |
-| om.bands.1 | Prognosen är en prickad linje med två band runt sig. Linjen är det troligaste värdet. Det mörkare bandet visar var det hamnar i hälften av fallen, det ljusare var det hamnar i nio fall av tio. |
+| om.bands.1 | Prognosen är en prickad linje med två band runt sig. Linjen är det troligaste värdet. Det smala bandet visar var det hamnar i hälften av fallen, det breda var det hamnar i nio fall av tio. Ju säkrare du vill vara, desto bredare blir bandet. |
 | om.bands.2 | Banden blir bredare ju längre fram du tittar. Det är inget fel. Ju längre bort något ligger, desto mer hinner hända, och det säger Norn rakt ut. |
 | om.bands.3 | I provet ser du om banden höll. Låg det som hände inne i det breda bandet ungefär nio gånger av tio, så stämmer Norns osäkerhet för dina siffror. |
 | om.grades.heading | Betygen |

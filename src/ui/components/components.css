@@ -253,6 +253,7 @@
 .n-forklaring__band--50 { background: var(--prognos-band-50); }
 .n-forklaring__band--90 { background: var(--prognos-band-90); }
 .n-forklaring__linje { flex: none; }
+.n-forklaring__not { margin: var(--space-2) 0 0; font-size: 14px; line-height: 20px; color: var(--text-dampad); }
 
 /* Fråga ----------------------------------------------------------------- */
 .n-fraga { background: var(--yta); border: 1px solid var(--kant); border-radius: var(--radius-lg); padding: var(--space-4) var(--space-6); color: var(--text); }

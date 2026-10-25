@@ -85,7 +85,7 @@ The chart is Norn's most important picture, and where the thread lives on now th
 |---|---|---|---|
 | `prognos-historik` | `#26325F` | `#EFE8DA` | Solid line, 2.5 px |
 | `prognos-median` | `= ockra` | `= ockra` | Dotted (dash 1, gap 6, round caps), 2.5 px |
-| `prognos-band-90` | `#C9CEE3` | `#323C74` | Fill, drawn first |
+| `prognos-band-90` | `#E3D9C3` | `#323C74` | Fill, drawn first. Unbleached linen in the light theme (owner, 2026-10-25), blue in the dark |
 | `prognos-band-50` | `#9AA3CC` | `#4E5A9C` | Fill, on top of band-90 |
 | `prognos-nu` | `= krapp` | `= krapp` | Vertical line, 2 px |
 | `prognos-utfall` | `#6B6A72` | `#A3A7C2` | Solid line, 2 px, backtest only |
@@ -94,11 +94,11 @@ Rules:
 
 - The bands take more of the picture than the median line. Uncertainty is the point, not the line.
 - The future never looks as certain as the past: the median is dotted, history is solid. The median is ochre, so it stands out from the blue bands it runs through (3.4:1 against band-50 in the light theme).
-- Always explain the bands in words next to the chart ("Hamnar här i nio fall av tio"). Colour never carries meaning alone. The bands also differ in lightness, not only in hue.
+- Always explain the bands in words next to the chart, by width and by how often: "Smala bandet, hälften av fallen", "Breda bandet, nio fall av tio", and under the legend "Ju säkrare du vill vara, desto bredare blir bandet." (owner, 2026-10-25: "nio fall av tio" sounded surer than "hälften" yet its band is wider). Colour never carries meaning alone. The bands also differ in lightness, not only in hue; in the light theme also in hue, sand around indigo.
 - At most four values on the vertical axis (owner's decision 2026-10-21, was three), with the unit written once, each with a faint 1 px line across the chart in `kant`, drawn behind the bands (owner's decision 2026-10-21; before that the chart had no grid). No vertical grid lines.
 - The vertical axis's unit is written once, above its top value, in `etikett` weight: the example's unit from `examples.json` ("MWh per timme"), or the column's own name for a user's file (owner's decision 2026-10-21). The horizontal axis carries only its dates.
 - Time on the horizontal axis in the user's unit (days, weeks, months), never "steps".
-- Hover indicator (owner's decision 2026-10-21): a 1 px vertical guide line in `kant-kontroll`, a dot on each line at that time (that line's own colour, ochre on the median, a 2 px ring in `yta`), and a small card on `yta` with a `kant` border and `radius-sm` that gives the time ("18 oktober 2026 kl. 03:00") and the values in the legend's words: "Det som varit", "Det som faktiskt hände", "Troligast", "I nio fall av tio … till …". It follows the pointer and a finger, and the arrow keys (Home and End too) when the chart has focus. The card sits at the top of the chart, on the side away from the edge. The phone page's illustration has none.
+- Hover indicator (owner's decision 2026-10-21): a 1 px vertical guide line in `kant-kontroll`, a dot on each line at that time (that line's own colour, ochre on the median, a 2 px ring in `yta`), and a small card on `yta` with a `kant` border and `radius-sm` that gives the time ("18 oktober 2026 kl. 03:00") and the values in the legend's words: "Det som varit", "Det som faktiskt hände", "Troligast", "Breda bandet, nio fall av tio … till …". It follows the pointer and a finger, and the arrow keys (Home and End too) when the chart has focus. The card sits at the top of the chart, on the side away from the edge. The phone page's illustration has none.
 
 ## Type
 

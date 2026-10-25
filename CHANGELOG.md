@@ -6,6 +6,7 @@ Notable changes to Norn. The format follows [Keep a Changelog](https://keepachan
 
 ### Changed
 
+- **The two bands are easier to tell apart.** In the light theme the wide band is sand around the blue narrow one, and the legend says which is which: the narrow band holds half of the cases, the wide one nine of ten, and the surer you want to be, the wider the band.
 - **Norn's best guess stands out.** The dotted line in the forecast is dark ochre instead of the same blue as the bands it runs through.
 
 ### Added

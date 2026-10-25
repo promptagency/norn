@@ -137,7 +137,7 @@ test("the chart says its unit and shows the values under the pointer", async ({ 
   await page.mouse.move(box.x + box.width * 0.8, box.y + box.height / 2);
   const card = page.locator(".n-graf-kort");
   await expect(card).toContainText("Troligast");
-  await expect(card).toContainText("I nio fall av tio");
+  await expect(card).toContainText("Breda bandet, nio fall av tio");
   await page.mouse.move(box.x + box.width * 0.2, box.y + box.height / 2);
   await expect(card).toContainText("Det som varit");
   // The keyboard reaches the same values.
