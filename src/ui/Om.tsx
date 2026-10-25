@@ -26,12 +26,20 @@ const Lead = ({ k }: { k: CopyKey }) => {
   return <p>{emphasize(text, text.slice(0, text.indexOf(".") + 1))}</p>;
 };
 
-const Section = ({ id, heading, children }: { id: string; heading: CopyKey; children: React.ReactNode }) => (
-  <section className="avsnitt om__avsnitt" id={id}>
-    <h2 className="rubrik-m">{COPY[heading]}</h2>
-    {children}
-  </section>
-);
+/** A section of the page. With `bild`, the picture stands beside the text on a wide screen and under it on a narrow one. */
+const Section = ({ id, heading, bild, children }: { id: string; heading: CopyKey; bild?: React.ReactNode; children: React.ReactNode }) =>
+  bild ? (
+    <section className="om__avsnitt om__avsnitt--bild" id={id}>
+      <h2 className="rubrik-m">{COPY[heading]}</h2>
+      <div className="om__text">{children}</div>
+      <div className="om__bild">{bild}</div>
+    </section>
+  ) : (
+    <section className="avsnitt om__avsnitt" id={id}>
+      <h2 className="rubrik-m">{COPY[heading]}</h2>
+      {children}
+    </section>
+  );
 
 const External = ({ href, children }: { href: string; children: string }) => (
   <a className="n-textlank" href={href} target="_blank" rel="noopener">
@@ -76,9 +84,8 @@ export function Om() {
           <p className="dampad">{COPY["om.steps.names"]}</p>
         </Section>
 
-        <Section id="banden" heading="om.bands.heading">
+        <Section id="banden" heading="om.bands.heading" bild={<BandBild />}>
           <p>{COPY["om.bands.1"]}</p>
-          <BandBild />
           <p>{COPY["om.bands.2"]}</p>
           <p>{COPY["om.bands.3"]}</p>
         </Section>
@@ -101,9 +108,8 @@ export function Om() {
           </p>
         </Section>
 
-        <Section id="data" heading="om.privacy.heading">
+        <Section id="data" heading="om.privacy.heading" bild={<Flode />}>
           <p>{COPY["om.privacy.1"]}</p>
-          <Flode />
           <p>{COPY["om.privacy.2"]}</p>
           <p>{t("om.privacy.3", { mb })}</p>
           <p>{COPY["om.privacy.4"]}</p>
@@ -116,7 +122,7 @@ export function Om() {
           <p>{COPY["om.model.4"]}</p>
         </Section>
 
-        <Section id="teknik" heading="om.tech.heading">
+        <Section id="teknik" heading="om.tech.heading" bild={<KvantilBild />}>
           <p className="dampad">{COPY["om.tech.lead"]}</p>
           <Kort>
             <Nyckeltal
@@ -133,7 +139,6 @@ export function Om() {
             />
           </Kort>
           <p>{COPY["om.tech.quantiles"]}</p>
-          <KvantilBild />
           <p>{t("om.tech.history", { max })}</p>
           <p>{COPY["om.tech.backtest"]}</p>
           <p>{COPY["om.tech.events"]}</p>

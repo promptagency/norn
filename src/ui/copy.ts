@@ -283,6 +283,8 @@ export const COPY = {
   "om.project.thanks": "Tack till Mistral AI för Timestral, amine40 för ONNX-exporten och JavaScript-koden, och SCB, eSett och Wikimedia för exempeldatan.",
   "om.fig.bands": "En prognos med pilar som visar Troligast, det smala och det breda bandet, och hur banden blir bredare längre fram.",
   "om.fig.bands.wider": "Bredare längre fram",
+  "om.fig.band50": "Smala bandet",
+  "om.fig.band90": "Breda bandet",
   "om.fig.urd": "Urd, det som varit",
   "om.fig.verdandi": "Verdandi, provet med facit",
   "om.fig.skuld": "Skuld, det som kommer",

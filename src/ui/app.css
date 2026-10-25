@@ -31,9 +31,19 @@ body { margin: 0; background: var(--grund); color: var(--text); font-family: var
 .provet li { display: flex; gap: var(--space-3); align-items: flex-start; }
 /* "Så fungerar Norn" (/om): a column of text that reads at the width of a line. */
 .om .avsnitt { max-width: 720px; gap: var(--space-4); }
+/* A section with a picture: text and picture side by side on a wide screen, the picture under the text when
+   narrow (owner, 2026-10-25). The picture stays in view while its section scrolls past. */
+.om__avsnitt--bild { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-4) var(--space-12); align-items: start; }
+.om__text { display: flex; flex-direction: column; gap: var(--space-4); }
+.om__bild { min-width: 0; }
+.om__bild .n-graf :is(path, line), .om__bilder .n-graf :is(path, line) { vector-effect: non-scaling-stroke; }
+@media (min-width: 1000px) {
+  .om__avsnitt--bild { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); }
+  .om__avsnitt--bild > h2 { grid-column: 1 / -1; }
+  .om__bild { position: sticky; top: var(--space-6); }
+  .om__bild .n-graf__markering text { font-size: 34px; } /* the picture is drawn at about 40 percent here */
+}
 .om__bilder { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--space-4); }
-/* Drawn at a third of the width: lines keep their thickness instead of shrinking with the drawing. */
-.om__bilder .n-graf :is(path, line) { vector-effect: non-scaling-stroke; }
 .om__betyg { display: flex; gap: var(--space-4); align-items: flex-start; }
 .om__betyg .n-betyg { flex: none; margin-top: 2px; }
 /* The privacy diagram: what comes in, the computer with everything that stays, what goes out. */
