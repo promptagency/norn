@@ -4,6 +4,8 @@ import { MAX_HISTORY, type Backtest, type Forecast, type ForecastOptions, type S
 import { forecast as timestral, LEVELS } from "./vendor/timestral.js";
 
 const at = (level: number) => LEVELS.indexOf(level);
+/** Measured: 1e12 forecasts cleanly, 1e300 gives NaN. */
+const BIG = 1e15;
 
 
 export async function runForecast(
@@ -13,13 +15,17 @@ export async function runForecast(
   horizon: number,
   options: ForecastOptions = {},
 ): Promise<Forecast> {
+  // The model squares values on the way, so a series near 1e300 overflows to NaN. Above BIG, it gets the series
+  // divided by a power of ten and the answer is scaled back; below, it gets the values untouched.
+  const largest = series.reduce((m: number, v) => (v === null ? m : Math.max(m, Math.abs(v))), 0);
+  const scale = largest > BIG ? 10 ** Math.floor(Math.log10(largest)) : 1;
   const { quantiles, levels } = await timestral(ort, session, {
-    target: [series],
+    target: [scale === 1 ? series : series.map((v) => (v === null ? null : v / scale))],
     horizon,
     knownCovariates: options.known?.length ? options.known : null,
     maxContext: MAX_HISTORY,
   });
-  const q = quantiles[0];
+  const q = scale === 1 ? quantiles[0] : quantiles[0].map((qs) => qs.map((v) => v * scale));
   const col = (level: number) => q.map((qs) => qs[at(level)]);
   return {
     median: col(0.5),

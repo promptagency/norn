@@ -21,8 +21,8 @@ export type Grade = "palitlig" | "ungefarlig" | "osaker";
  */
 export const THRESHOLDS = { betterThanNaive: 0.2, inside90: 0.75, closeError: 0.1, farError: 0.35 };
 
-/** How much smaller Norn's error was than the naive guess's, 0.25 for a quarter smaller. */
-export const improvement = (s: Score) => (s.naiveError > 0 ? 1 - s.error / s.naiveError : -Infinity);
+/** How much smaller Norn's error was than the naive guess's, 0.25 for a quarter smaller. Null when the naive guess was perfect. */
+export const improvement = (s: Score) => (s.naiveError > 0 ? 1 - s.error / s.naiveError : null);
 
 /** The error is small enough to trust on its own, even where the naive guess is about as good. */
 export const isClose = (s: Score) => percentFits(s) && s.relative <= THRESHOLDS.closeError;
@@ -34,7 +34,7 @@ export const isClose = (s: Score) => percentFits(s) && s.relative <= THRESHOLDS.
  * comparison with the naive guess counts.
  */
 export function grade(s: Score): Grade {
-  const better = improvement(s);
+  const better = improvement(s) ?? -Infinity;
   const far = percentFits(s) && s.relative > THRESHOLDS.farError;
   if (!(better > 0) && !isClose(s)) return "osaker";
   const held = s.inside90 >= THRESHOLDS.inside90;
@@ -46,8 +46,8 @@ export interface Score {
   error: number;
   /** The same for repeating the last season. */
   naiveError: number;
-  /** Norn's error as a share of the mean absolute value of what happened. */
-  relative: number;
+  /** Norn's error as a share of the mean absolute value of what happened. Null when everything that happened was zero. */
+  relative: number | null;
   /** Share of what happened inside the half band and the nine-in-ten band. */
   inside50: number;
   inside90: number;
@@ -58,7 +58,7 @@ export interface Score {
 }
 
 /** Say the error as a percent only when the values stay above zero and the percent stays sane (near zero it explodes). */
-export const percentFits = (s: Score) => s.positive && s.relative <= 1;
+export const percentFits = (s: Score): s is Score & { relative: number } => s.positive && s.relative !== null && s.relative <= 1;
 
 const lastObserved = (s: Series) => s.findLast((v) => v !== null) ?? null;
 
@@ -86,7 +86,7 @@ export function score(history: Series, bt: Backtest, season: number): Score | nu
   return {
     error: error / count,
     naiveError: naiveError / count,
-    relative: size ? error / size : Infinity,
+    relative: size ? error / size : null,
     inside50: in50 / count,
     inside90: in90 / count,
     count,

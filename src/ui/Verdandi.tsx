@@ -44,6 +44,7 @@ export function Verdandi({ series, forecaster, download, units, onNext }: Props)
   const jamfort = comparedWith(series.frequency);
   const g = result && result !== "fel" ? graded(series, result) : null;
   const s = g?.s, niva = g?.niva;
+  const better = s ? improvement(s) : null;
 
   let svar: ReactNode;
   if (result === "fel" || (result && !s)) svar = COPY["error.model"];
@@ -55,8 +56,8 @@ export function Verdandi({ series, forecaster, download, units, onNext }: Props)
     if (percentFits(s)) {
       const procent = `${percent(s.relative)} procent`;
       // Without clearly beating the naive guess, the sentence must not claim it did.
-      const plain = !(improvement(s) >= THRESHOLDS.betterThanNaive);
-      const key = good ? (plain ? "verdandi.good.plain" : "verdandi.good") : !(improvement(s) > 0) ? "verdandi.fair.plain" : "verdandi.fair";
+      const plain = better === null || better < THRESHOLDS.betterThanNaive;
+      const key = good ? (plain ? "verdandi.good.plain" : "verdandi.good") : better === null || better <= 0 ? "verdandi.fair.plain" : "verdandi.fair";
       svar = emphasize(t(key, { Period, procent: percent(s.relative), jamfort }), procent);
     } else {
       // Near zero or below it a percent explodes, so the miss is said in the data's own numbers.
@@ -125,8 +126,8 @@ export function Verdandi({ series, forecaster, download, units, onNext }: Props)
                 { etikett: t("verdandi.d.naive", { jamfort }), varde: amount(s.naiveError) },
                 ...(percentFits(s) ? [{ etikett: COPY["verdandi.d.relative"], varde: `${percent(s.relative)} %` }] : []),
                 // What the grade rule compares, so the numbers add up. Missing for a series with nothing to beat.
-                ...(Number.isFinite(improvement(s))
-                  ? [{ etikett: t("verdandi.d.improvement", { jamfort }), varde: `${percent(improvement(s))} %` }]
+                ...(better !== null
+                  ? [{ etikett: t("verdandi.d.improvement", { jamfort }), varde: `${percent(better)} %` }]
                   : []),
                 { etikett: COPY["verdandi.d.in50"], varde: t("verdandi.d.share", { andel: percent(s.inside50), vantat: 50 }) },
                 { etikett: COPY["verdandi.d.in90"], varde: t("verdandi.d.share", { andel: percent(s.inside90), vantat: 90 }) },
