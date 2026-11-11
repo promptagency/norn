@@ -14,3 +14,4 @@ dist-ds
 .cache/
 public/model/
 .superpowers/
+.claude/loop/
