@@ -5,11 +5,12 @@ import logoPositiv from "../../design/logo/norn-logotyp-positiv.svg";
 import { buildSeries, detectColumns, type Columns, type Combine, type DataSeries } from "../data/detect.ts";
 import type { Units } from "../data/describe.ts";
 import { loadExample, loadExamples, type Example } from "../data/examples.ts";
-import { parseExcel, parseText, type Table } from "../data/parse.ts";
-import { createForecaster, EVENTS, type EventId } from "../engine/index.ts";
+import { decode, parseExcel, parseText, type Table } from "../data/parse.ts";
+import { createForecaster } from "../engine/index.ts";
 import { NORNORNA, Sidfot, Sidhuvud, Steg } from "./components/index.ts";
 import { Faq } from "./Faq.tsx";
 import { COPY, t } from "./copy.ts";
+import { readLink } from "./link.ts";
 import { serviceWorkerReady, setHoldsData } from "./serviceWorker.ts";
 import { Skuld, type SkuldSettings } from "./Skuld.tsx";
 import { Start } from "./Start.tsx";
@@ -60,7 +61,7 @@ export function App() {
   const failed = () => setScreen({ name: "start", fel: COPY["error.file"] });
 
   const onFil = (file: File) =>
-    (/\.xlsx?$/i.test(file.name) ? file.arrayBuffer().then(parseExcel) : file.text().then(parseText)).then((table) => open(table), failed);
+    (/\.xlsx?$/i.test(file.name) ? file.arrayBuffer().then(parseExcel) : file.arrayBuffer().then((b) => parseText(decode(b)))).then((table) => open(table), failed);
   const onText = useCallback((text: string) => open(parseText(text)), [open]);
   // Example data is fetched under the service worker's control, like the model, so it is there offline later.
   const fetchExample = (ex: Example) => serviceWorkerReady().then(() => loadExample(ex));
@@ -68,30 +69,21 @@ export function App() {
 
   // A copied link opens its example straight in Skuld; Urd and Verdandi stay one click back.
   useEffect(() => {
-    const q = new URLSearchParams(location.search);
-    const id = q.get("exempel");
-    if (!id) return;
+    // Read once without the list, so a page without a link does not wait for it.
+    if (!readLink(location.search, [])) return;
     loadExamples()
-      .then((all) => all.find((e) => e.id === id) ?? Promise.reject(new Error(id)))
-      .then(fetchExample)
-      .then(({ table, target, units }) => {
+      .then(async (all) => {
+        const link = readLink(location.search, all)!;
+        if (!link.ok) return setScreen({ name: "start", fel: t(link.error.key) });
+        const { table, target, units } = await fetchExample(all.find((e) => e.id === link.value.id)!);
         const c = detectColumns(table);
         if (!c.ok) throw new Error(c.error.key);
-        const wanted = table.headers.indexOf(q.get("kolumn") ?? target);
+        const wanted = table.headers.indexOf(link.value.kolumn ?? target);
         const value = c.value.numeric.includes(wanted) ? wanted : table.headers.indexOf(target);
         const r = buildSeries(table, c.value, value);
         if (!r.ok) throw new Error(r.error.key);
-        const sakerhet = q.get("sakerhet");
-        setScreen({
-          name: "skuld",
-          series: r.value,
-          urd: { table, columns: c.value, value, units },
-          initial: {
-            horisont: Number(q.get("horisont")) || 0,
-            sakerhet: sakerhet === "90" || sakerhet === "95" ? sakerhet : "median",
-            handelser: (q.get("handelser")?.split(",") ?? []).filter((e): e is EventId => (EVENTS as string[]).includes(e)),
-          },
-        });
+        const { horisont, sakerhet, handelser } = link.value;
+        setScreen({ name: "skuld", series: r.value, urd: { table, columns: c.value, value, units }, initial: { horisont, sakerhet, handelser } });
       })
       .catch(failed);
   }, []);

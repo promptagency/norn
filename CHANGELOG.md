@@ -4,6 +4,18 @@ Notable changes to Norn. The format follows [Keep a Changelog](https://keepachan
 
 ## [Unreleased]
 
+### Added
+
+- **More files read correctly:** ISO weeks (2024V01, 2024-W01, vecka 1 2024), 2024/01/31, and under a Datum or Tid column also 20240131 and Excel's serial dates. Files saved as UTF-16 or by Excel on Windows (Windows-1252) keep their å, ä and ö.
+
+### Changed
+
+- **Thousands separators are read per column:** 1,234 is 1234 when the same column has 1,234.5 or 1,234,567, and 1.234 otherwise. A column that uses the comma both ways is not offered as numbers. 1.234.567 now reads as a number, and 1,5,6 no longer does.
+- **Two rows for the same day are asked about, not averaged:** only the repeated hour of daylight saving is averaged unasked.
+- **An empty file says it cannot be read**, instead of saying there is no time column.
+- **A link to an example that does not exist says so**, instead of saying the file cannot be read. A link without a horizon opens at the default one.
+- **Very large values (above 10^15) are forecast** instead of failing with "Ladda om sidan".
+
 ## [0.1.7] - 2026-10-25
 
 ### Added

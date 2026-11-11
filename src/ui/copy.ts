@@ -203,6 +203,7 @@ export const COPY = {
   "enhet.kvartal.flera": "kvartal",
   "enhet.år": "år",
   "enhet.år.flera": "år",
+  "error.link": "Länken pekar på ett exempel som inte finns. Välj ett av exemplen nedan, eller släpp en egen fil.",
   "error.file": "Norn kan inte läsa filen. Spara den som CSV eller Excel och försök igen, eller klistra in siffrorna direkt.",
   "error.notime": "Norn hittar ingen kolumn med datum eller tid. Filen behöver en kolumn för tid och en med siffror. Datum som 2026-10-01 eller 1 oktober 2026 fungerar, liksom månader som 2026-10.",
   // The page "Så fungerar Norn" at /om (PLAN.md, 2026-10-25). Plain words first, the technical part further down.
