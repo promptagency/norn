@@ -33,7 +33,7 @@ group("parseTime", () => {
   it("rejects days that do not exist", () => expect(parseTime("2024-02-30")).toBeNull());
   it("reads plain years only when asked", () => {
     expect(parseTime("2024")).toBeNull();
-    expect(parseTime("2024", true)).toEqual({ time: day("2024-01-01T00:00"), kind: "år" });
+    expect(parseTime("2024", "År")).toEqual({ time: day("2024-01-01T00:00"), kind: "år" });
   });
 });
 

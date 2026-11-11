@@ -1,7 +1,7 @@
 // Finds the time column, the number columns and the frequency, and lays the values out on a regular grid
 // with gaps as null. Errors carry a copy key so the UI can say what happened and what to do.
 import type { CopyKey } from "../ui/copy.ts";
-import { parseNumber, parseTime, type Table, type Time, type TimeKind } from "./parse.ts";
+import { numberReader, parseNumber, parseTime, type Table, type Time, type TimeKind } from "./parse.ts";
 
 export type Frequency = "timme" | "dag" | "vecka" | "månad" | "kvartal" | "år";
 
@@ -31,7 +31,7 @@ export interface DataSeries {
 export type Combine = "summa" | "snitt";
 
 /** The period rows are put together in: days for dates and times, otherwise the kind itself. */
-const PERIOD: Record<TimeKind, Frequency> = { tid: "dag", datum: "dag", månad: "månad", kvartal: "kvartal", år: "år" };
+const PERIOD: Record<TimeKind, Frequency> = { tid: "dag", datum: "dag", vecka: "vecka", månad: "månad", kvartal: "kvartal", år: "år" };
 const periodStart = (kind: TimeKind, t: Time) => (PERIOD[kind] === "dag" ? Math.floor(t / DAY) * DAY : t);
 
 export interface DataError {
@@ -43,7 +43,7 @@ export type Result<T> = { ok: true; value: T } | { ok: false; error: DataError }
 
 export const MIN_VALUES = 64;
 const NUMERIC_SHARE = 0.9; // of non-empty cells, for a column to count as numbers
-const TOLERATED = 0.01; // share of rows that may sit off the grid or repeat a time (daylight saving)
+const TOLERATED = 0.01; // share of rows that may sit off the grid, or repeat an hour (daylight saving)
 
 const HOUR = 3_600_000, DAY = 24 * HOUR;
 const FIXED: Partial<Record<Frequency, number>> = { timme: HOUR, dag: DAY, vecka: 7 * DAY };
@@ -52,15 +52,18 @@ const MONTHS: Partial<Record<Frequency, number>> = { månad: 1, kvartal: 3, år:
 const share = <T,>(xs: T[], ok: (x: T) => boolean) => (xs.length ? xs.filter(ok).length / xs.length : 0);
 const filled = (col: string[]) => col.filter((c) => c !== "");
 
-/** Guesses the time column (the first where nearly every cell is a time, unless `chosen`) and the number columns. */
+/**
+ * Guesses the time column (the first where nearly every cell is a time, unless `chosen`) and the number columns.
+ * A column that uses the comma or the dot both as thousands and as decimal separator is not offered as numbers.
+ */
 export function detectColumns(table: Table, chosen?: number): Result<Columns> {
+  if (table.rows.every((r) => r.every((c) => c === ""))) return { ok: false, error: { key: "error.file" } };
   const cols = table.headers.map((_, i) => table.rows.map((r) => r[i]));
-  const isYears = (i: number) => /^(år|ar|year)$/i.test(table.headers[i]);
-  const times = cols.flatMap((c, i) => (share(filled(c), (s) => parseTime(s, isYears(i)) !== null) >= NUMERIC_SHARE ? [i] : []));
+  const times = cols.flatMap((c, i) => (share(filled(c), (s) => parseTime(s, table.headers[i]) !== null) >= NUMERIC_SHARE ? [i] : []));
   const time = chosen !== undefined && times.includes(chosen) ? chosen : times[0];
   if (time === undefined) return { ok: false, error: { key: "error.notime" } };
   const numeric = cols.flatMap((c, i) =>
-    i !== time && share(filled(c), (s) => !Number.isNaN(parseNumber(s))) >= NUMERIC_SHARE && filled(c).length ? [i] : [],
+    i !== time && share(filled(c), (s) => !Number.isNaN(parseNumber(s))) >= NUMERIC_SHARE && filled(c).length && numberReader(c) ? [i] : [],
   );
   if (!numeric.length) {
     const other = table.headers.find((_, i) => i !== time);
@@ -105,9 +108,9 @@ function timeAt(freq: Frequency, from: Time, k: number): Time {
  */
 export function buildSeries(table: Table, columns: Columns, value: number, combine?: Combine): Result<DataSeries> {
   const name = table.headers[value];
-  const isYears = /^(år|ar|year)$/i.test(table.headers[columns.time]);
+  const header = table.headers[columns.time];
   const parsed = table.rows
-    .map((r) => ({ t: parseTime(r[columns.time], isYears), r }))
+    .map((r) => ({ t: parseTime(r[columns.time], header), r }))
     .filter((p): p is { t: NonNullable<typeof p.t>; r: string[] } => p.t !== null)
     .sort((a, b) => a.t.time - b.t.time);
   const irregular: Result<DataSeries> = { ok: false, error: { key: "error.irregular" } };
@@ -126,14 +129,18 @@ export function buildSeries(table: Table, columns: Columns, value: number, combi
   const length = slots.reduce((m: number, s) => Math.max(m, s ?? 0), 0) + 1;
   const offGrid = slots.filter((s) => s === null).length;
   const repeats = parsed.length - new Set(slots).size;
+  // Only the autumn hour of daylight saving may repeat unasked; two rows for one day could be two sales.
+  if (!combine && freq !== "timme" && repeats > 0) return { ok: false, error: { key: "urd.many", values: { enhet: freq } } };
   if (!combine && (offGrid + repeats > Math.max(1, TOLERATED * parsed.length) || length > 2 * parsed.length)) return unclear;
 
   const cols = [value, ...columns.numeric.filter((c) => c !== value)];
+  const readers = cols.map((c) => numberReader(table.rows.map((r) => r[c])));
+  if (!readers[0]) return { ok: false, error: { key: "error.column", values: { namn: name } } };
   const grids = cols.map(() => Array.from({ length }, () => [] as number[]));
   parsed.forEach((p, k) => {
     if (slots[k] === null) return;
     cols.forEach((c, j) => {
-      const v = parseNumber(p.r[c]);
+      const v = readers[j]?.(p.r[c]) ?? null;
       if (v !== null && Number.isFinite(v)) grids[j][slots[k]!].push(v);
     });
   });
