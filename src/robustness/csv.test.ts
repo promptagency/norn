@@ -186,10 +186,11 @@ group("order, gaps and repeats", () => {
     expect(s.values.slice(29, 36)).toEqual([29, null, null, null, null, null, 35]);
   });
 
-  it("collapses rows repeated exactly, as an export run twice gives them", () => {
-    const s = series(`datum;v\n${[...rows, ...rows.slice(0, 40)].join("\n")}`);
-    expect(s).toMatchObject({ missing: 0 });
-    expect(s.values).toEqual(Array.from({ length: 100 }, (_, i) => i));
+  // A log with one row per visitor ("2024-03-01;1") repeats rows too, so collapsing would undercount; Urd asks,
+  // and "snitt" mends an export run twice (owner, 2026-11-11).
+  it("asks about rows repeated exactly, rather than collapsing them", () => {
+    expect(errorKey(`datum;v\n${[...rows, ...rows.slice(0, 40)].join("\n")}`)).toBe("urd.many");
+    expect(errorKey(`datum;besök\n${[...days(80), "2024-01-05"].map((d) => `${d};1`).join("\n")}`)).toBe("urd.many");
   });
 
   it("asks when many days have rows with different values", () => {
