@@ -183,6 +183,7 @@ export const COPY = {
   "urd.count": "{antal} {enheter}.",
   "urd.count.missing": "{antal} {enheter}, {saknas} saknas.",
   "urd.bucketed": "Visas som snitt per {grupp}. Norn räknar på varje {enhet}.",
+  "urd.mixed": "Kolumnen {namn} är inte med. Den har tal skrivna på två sätt, som 1,5 och 1,234.5, så Norn vet inte var decimalen är. Skriv talen på ett sätt i ditt kalkylark och försök igen.",
   "urd.time": "Vilken kolumn har tiden?",
   "urd.many": "Filen har flera rader per {enhet}. Ska Norn lägga ihop dem?",
   "urd.many.pick": "Hur ska raderna läggas ihop?",

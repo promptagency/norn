@@ -4,6 +4,10 @@ Notable changes to Norn. The format follows [Keep a Changelog](https://keepachan
 
 ## [Unreleased]
 
+### Changed
+
+- **Urd names a number column it leaves out**, when the column writes its numbers two ways, such as 1,5 and 1,234.5, and says how to fix it.
+
 ## [0.2.0] - 2026-11-12
 
 ### Added

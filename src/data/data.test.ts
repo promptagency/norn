@@ -190,3 +190,11 @@ group("Skuld's horizons and totals", () => {
     expect(summing({ ...base, values: [0.35, 1.2], combined: "summa" })).toBe("summa");
   });
 });
+
+group("detectColumns", () => {
+  it("names a number column that uses the comma both ways instead of offering it", () => {
+    const rows = Array.from({ length: 70 }, (_, i) => `2024-01-${String((i % 28) + 1).padStart(2, "0")};${i};"${i % 2 ? "1,5" : "1,234.5"}"`);
+    const c = detectColumns(parseText(`Datum;Besökare;Pris\n${rows.join("\n")}`));
+    expect(c.ok && c.value).toMatchObject({ numeric: [1], mixed: [2] });
+  });
+});

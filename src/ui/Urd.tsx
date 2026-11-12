@@ -96,6 +96,10 @@ export function Urd({ table, columns, value, combine, units, onColumns, onCombin
         </section>
       )}
 
+      {columns.mixed.map((c) => (
+        <p key={c} className="liten dampad">{t("urd.mixed", { namn: columnName(table.headers[c]) })}</p>
+      ))}
+
       {result.ok && (
         <section className="bekrafta">
           <span className="ingress bekrafta__fraga">{COPY["urd.confirm"]}</span>

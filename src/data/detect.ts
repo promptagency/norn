@@ -11,6 +11,8 @@ export interface Columns {
   times: number[];
   /** Columns where nearly every cell is a number, in file order. */
   numeric: number[];
+  /** Number columns left out because they use the comma or the dot both as thousands and as decimal separator. */
+  mixed: number[];
 }
 
 export interface DataSeries {
@@ -62,14 +64,16 @@ export function detectColumns(table: Table, chosen?: number): Result<Columns> {
   const times = cols.flatMap((c, i) => (share(filled(c), (s) => parseTime(s, table.headers[i]) !== null) >= NUMERIC_SHARE ? [i] : []));
   const time = chosen !== undefined && times.includes(chosen) ? chosen : times[0];
   if (time === undefined) return { ok: false, error: { key: "error.notime" } };
-  const numeric = cols.flatMap((c, i) =>
-    i !== time && share(filled(c), (s) => !Number.isNaN(parseNumber(s))) >= NUMERIC_SHARE && filled(c).length && numberReader(c) ? [i] : [],
+  const numbers = cols.flatMap((c, i) =>
+    i !== time && filled(c).length && share(filled(c), (s) => !Number.isNaN(parseNumber(s))) >= NUMERIC_SHARE ? [i] : [],
   );
+  const numeric = numbers.filter((i) => numberReader(cols[i]));
+  const mixed = numbers.filter((i) => !numeric.includes(i));
   if (!numeric.length) {
     const other = table.headers.find((_, i) => i !== time);
     return { ok: false, error: other ? { key: "error.column", values: { namn: other } } : { key: "error.short" } };
   }
-  return { ok: true, value: { time, times, numeric } };
+  return { ok: true, value: { time, times, numeric, mixed } };
 }
 
 function frequencyOf(kind: TimeKind, times: Time[]): Frequency | null {
