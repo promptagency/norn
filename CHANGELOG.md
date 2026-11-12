@@ -4,6 +4,8 @@ Notable changes to Norn. The format follows [Keep a Changelog](https://keepachan
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-11-12
+
 ### Added
 
 - **More files read correctly:** ISO weeks (2024V01, 2024-W01, vecka 1 2024), 2024/01/31, and under a Datum or Tid column also 20240131 and Excel's serial dates. Files saved as UTF-16 or by Excel on Windows (Windows-1252) keep their å, ä and ö.
@@ -90,7 +92,8 @@ The first tagged version. Norn has been live at nornor.app since 2026-10-21; thi
 - **Works offline** after the first forecast.
 - **The version in the footer.**
 
-[Unreleased]: https://github.com/promptagency/norn/compare/v0.1.7...HEAD
+[Unreleased]: https://github.com/promptagency/norn/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/promptagency/norn/compare/v0.1.7...v0.2.0
 [0.1.7]: https://github.com/promptagency/norn/compare/v0.1.6...v0.1.7
 [0.1.6]: https://github.com/promptagency/norn/compare/v0.1.5...v0.1.6
 [0.1.5]: https://github.com/promptagency/norn/compare/v0.1.4...v0.1.5
