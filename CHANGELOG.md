@@ -4,6 +4,8 @@ Notable changes to Norn. The format follows [Keep a Changelog](https://keepachan
 
 ## [Unreleased]
 
+## [0.2.1] - 2026-11-12
+
 ### Changed
 
 - **Urd names a number column it leaves out**, when the column writes its numbers two ways, such as 1,5 and 1,234.5, and says how to fix it.
@@ -96,7 +98,8 @@ The first tagged version. Norn has been live at nornor.app since 2026-10-21; thi
 - **Works offline** after the first forecast.
 - **The version in the footer.**
 
-[Unreleased]: https://github.com/promptagency/norn/compare/v0.2.0...HEAD
+[Unreleased]: https://github.com/promptagency/norn/compare/v0.2.1...HEAD
+[0.2.1]: https://github.com/promptagency/norn/compare/v0.2.0...v0.2.1
 [0.2.0]: https://github.com/promptagency/norn/compare/v0.1.7...v0.2.0
 [0.1.7]: https://github.com/promptagency/norn/compare/v0.1.6...v0.1.7
 [0.1.6]: https://github.com/promptagency/norn/compare/v0.1.5...v0.1.6
