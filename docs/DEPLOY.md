@@ -54,7 +54,7 @@ The footer shows the version from `package.json`, built into the app. A unit tes
 
 **If a push does not go live.** Skrubba's launch saw deploys fail at the last step with "Failed to publish your Function. Got error: Unknown internal error occurred". It is on Cloudflare's side; retrying the same deployment fixed it every time (Workers & Pages → norn → Deployments → the failed one → Retry deployment).
 
-**Visit counting.** `functions/api/event.ts` passes the page's anonymous page view on to Plausible (`plausible.app.promptagency.se`, site `nornor.app`, which must exist in Plausible). Automated browsers are never counted.
+**Visit counting.** `functions/api/event.ts` passes the page's anonymous page view on to Plausible (`plausible.promptagency.se`, site `nornor.app`, which must exist in Plausible). Automated browsers are never counted.
 
 **The model.** The build downloads amine40's ONNX files from Hugging Face at a pinned revision and checks their sha256 (`scripts/fetch-model.mjs`), retrying a 429 up to five times. If amine40's repositories go away, new builds fail loudly while the live site keeps working (open question in `PLAN.md`).
 
