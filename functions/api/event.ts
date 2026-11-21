@@ -11,7 +11,7 @@
 
 import { PRODUCT_URL } from "../../src/config.ts";
 
-const PLAUSIBLE = "https://plausible.app.promptagency.se/api/event";
+const PLAUSIBLE = "https://plausible.promptagency.se/api/event";
 const SITE = new URL(PRODUCT_URL).hostname;
 const MAX_BODY = 2048;
 
